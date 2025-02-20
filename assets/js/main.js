@@ -49,11 +49,12 @@
    * Preloader
    */
   const preloader = document.querySelector('#preloader');
-  if (preloader) {
-    window.addEventListener('load', () => {
-      preloader.remove();
-    });
-  }
+
+window.addEventListener('load', () => {
+    preloader.style.opacity = '0'; // Fade out effect
+    setTimeout(() => preloader.remove(), 600); // Remove after fade-out
+});
+
 
   /**
    * Scroll top button
