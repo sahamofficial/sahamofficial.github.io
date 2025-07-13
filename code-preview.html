@@ -211,6 +211,26 @@
         font-size: 2.2rem;
       }
     }
+
+    .gradient-border-input {
+  padding: 2px; /* Acts as border thickness */
+  background: linear-gradient(135deg, #42ad9f, #69607d);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+.gradient-border-input input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  outline: none;
+  background: white;
+  font-size: 1rem;
+  display: block;
+}
   </style>
 </head>
 
@@ -220,6 +240,11 @@
       <h1>UI Elements Gallery</h1>
       <p class="subtitle">Beautiful, interactive components for your projects</p>
     </header>
+
+<div class="gradient-border-input">
+  <input type="text" id="searchInput" placeholder="Search UI Elements..." />
+</div>
+
 
     <div class="gallery">
 
@@ -237,7 +262,7 @@
       <!-- format -->
 
       <!-- Ripple Button -->
-      <div class="card">
+      <div class="card" data-title="buttons">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
           <iframe srcdoc='
 <html>
@@ -327,7 +352,7 @@
         </div>
       </div>
       <!-- explore-button -->
-      <div class="card">
+      <div class="card" data-title="buttons explore hover">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
           <iframe srcdoc='
 <html>
@@ -511,7 +536,7 @@
         </div>
       </div>
       <!-- download button -->
-      <div class="card">
+      <div class="card" data-title="buttons download hover">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
           <iframe srcdoc='
 <!DOCTYPE html>
@@ -814,7 +839,7 @@ body {
         </div>
       </div>
       <!-- copy button -->
-      <div class="card">
+      <div class="card" data-title="buttons hover copy">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
           <iframe srcdoc='
 <!DOCTYPE html>
@@ -1151,7 +1176,7 @@ body {
         </div>
       </div>
       <!-- subscribe button -->
-      <div class="card">
+      <div class="card" data-title="buttons hover subscribe">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
           <iframe srcdoc='
 <!DOCTYPE html>
@@ -1232,7 +1257,7 @@ body {
         </div>
       </div>
       <!-- view document -->
-      <div class="card">
+      <div class="card" data-title="buttons hover view document download">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
           <iframe srcdoc='
       <!DOCTYPE html>
@@ -1361,7 +1386,7 @@ body {
         </div>
       </div>
       <!-- hover me -->
-      <div class="card">
+      <div class="card" data-title="buttons hover me">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
           <iframe srcdoc='
       <html>
@@ -1551,7 +1576,7 @@ body {
         </div>
       </div>
       <!-- loader -->
-      <div class="card">
+      <div class="card" data-title="loader three dot">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
           <iframe srcdoc='
       <html>
@@ -1699,6 +1724,21 @@ body {
     </div>
 
   </div>
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const cards = document.querySelectorAll('.card');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase();
+
+      cards.forEach(card => {
+        const text = card.getAttribute('data-title')?.toLowerCase() || '';
+        const matches = text.includes(query);
+        card.style.display = matches ? 'block' : 'none';
+      });
+    });
+  </script>
+
   <!-- Vendor JS Files -->
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
