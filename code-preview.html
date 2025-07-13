@@ -225,96 +225,278 @@
         </header>
 
         <div class="gallery">
-            <!-- Ripple Button Card - Original iframe content preserved -->
+            <!-- Ripple Button -->
             <div class="card">
-                <div class="card-header">
-                    <h3><i class="bi bi-magic"></i> Ripple Button</h3>
-                </div>
-                <div class="card-body">
+                <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
                     <iframe srcdoc='
-  <html>
-    <head>
-      <style>
-        .btn {
-          outline: 0;
-          display: inline-flex;
-          align-items: center;
-          justify-content: space-between;
-          background: linear-gradient(135deg, #40B3A2, #2D8B78);
-          min-width: 220px;
-          border: 0;
-          border-radius: 8px;
-          box-shadow: 0 4px 16px rgba(0, 0, 0, .15);
-          padding: 18px 24px;
-          color: #fff;
-          font-size: 14px;
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-          font-weight: 600;
-          letter-spacing: 1.2px;
-          text-transform: uppercase;
-          overflow: hidden;
-          cursor: pointer;
-          position: relative;
-          transition: all 0.3s ease;
+<html>
+  <head>
+    <style>
+      .btn {
+        outline: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        background: linear-gradient(135deg, #40B3A2, #2D8B78);
+        min-width: 220px;
+        border: 0;
+        border-radius: 8px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, .15);
+        padding: 18px 24px;
+        color: #fff;
+        font-size: 14px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-weight: 600;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        overflow: hidden;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.3s ease;
+      }
+      .btn:hover { 
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, .2);
+        opacity: 0.98;
+      }
+      .btn:active {
+        transform: translateY(0);
+      }
+      .btn .animation {
+        width: 12px;
+        height: 12px;
+        border-radius: 100%;
+        background: rgba(255,255,255,0.4);
+        animation: ripple 1s linear infinite;
+        margin: 0 12px;
+      }
+      @keyframes ripple {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+          box-shadow:
+            0 0 0 0 rgba(255,255,255,0.2),
+            0 0 0 10px rgba(255,255,255,0.2),
+            0 0 0 20px rgba(255,255,255,0.2),
+            0 0 0 30px rgba(255,255,255,0.1);
         }
-        .btn:hover { 
-          transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(0, 0, 0, .2);
-          opacity: 0.98;
+        100% {
+          transform: scale(1.1);
+          opacity: 0;
+          box-shadow:
+            0 0 0 10px rgba(255,255,255,0.2),
+            0 0 0 20px rgba(255,255,255,0.2),
+            0 0 0 30px rgba(255,255,255,0.1),
+            0 0 0 40px rgba(255,255,255,0);
         }
-        .btn:active {
-          transform: translateY(0);
-        }
-        .btn .animation {
-          width: 12px;
-          height: 12px;
-          border-radius: 100%;
-          background: rgba(255,255,255,0.4);
-          animation: ripple 1s linear infinite;
-          margin: 0 12px;
-        }
-        @keyframes ripple {
-          0% {
-            transform: scale(1);
-            opacity: 1;
-            box-shadow:
-              0 0 0 0 rgba(255,255,255,0.2),
-              0 0 0 10px rgba(255,255,255,0.2),
-              0 0 0 20px rgba(255,255,255,0.2),
-              0 0 0 30px rgba(255,255,255,0.1);
-          }
-          100% {
-            transform: scale(1.1);
-            opacity: 0;
-            box-shadow:
-              0 0 0 10px rgba(255,255,255,0.2),
-              0 0 0 20px rgba(255,255,255,0.2),
-              0 0 0 30px rgba(255,255,255,0.1),
-              0 0 0 40px rgba(255,255,255,0);
-          }
-        }
-        html, body {
-          height: 100%;
-          margin: 0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background: #f5f7fa;
-        }
-      </style>
-    </head>
-    <body>
-      <button class="btn">
-        <i class="animation"></i>
-        <span>BUTTON</span>
-        <i class="animation"></i>
-      </button>
-    </body>
-  </html>'>
-</iframe>
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f5f7fa;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="btn">
+      <i class="animation"></i>
+      <span>BUTTON</span>
+      <i class="animation"></i>
+    </button>
+  </body>
+</html>'>
+                    </iframe>
 
-                    <span class="tag">Animation</span>
-                    <a href="editor.html?id=ripple-button" class="get-code-btn">
+                    <a href="editor.html?id=ripple-button" class="get-code-btn"
+                        style="margin-top: 20px; align-self: center;">
+                        <i class="bi bi-code"></i> Get Code
+                    </a>
+                </div>
+            </div>
+            <!-- explore-button -->
+            <div class="card">
+                <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
+                    <iframe srcdoc='
+<html>
+  <head>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f9f9f9;
+      }
+      .magic-button {
+        position: relative;
+        width: 140px;
+        height: 60px;
+        background: #000;
+        border: none;
+        border-radius: 12px;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        perspective: 1000px;
+        transform-style: preserve-3d;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+      .magic-text {
+        position: relative;
+        z-index: 2;
+        transition: all 0.4s ease;
+        display: inline-block;
+      }
+      .magic-icon {
+        position: absolute;
+        right: 20px;
+        opacity: 0;
+        transform: translateX(-10px) rotate(90deg);
+        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        z-index: 2;
+      }
+      .magic-particles {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+      }
+      .particle {
+        position: absolute;
+        background: #a1ff14;
+        border-radius: 50%;
+        opacity: 0;
+        transition: all 0.6s ease;
+      }
+      .magic-button:hover {
+        background: #111;
+        transform: translateY(-5px) rotateX(10deg);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+      }
+      .magic-button:hover .magic-text {
+        transform: translateX(-15px);
+      }
+      .magic-button:hover .magic-icon {
+        opacity: 1;
+        transform: translateX(0) rotate(0);
+      }
+      .magic-button:active {
+        transform: translateY(-2px) rotateX(5deg);
+      }
+      .particle:nth-child(1) {
+        width: 8px;
+        height: 8px;
+        top: 15%;
+        left: 20%;
+      }
+      .particle:nth-child(2) {
+        width: 6px;
+        height: 6px;
+        top: 25%;
+        left: 60%;
+      }
+      .particle:nth-child(3) {
+        width: 4px;
+        height: 4px;
+        top: 60%;
+        left: 30%;
+      }
+      .particle:nth-child(4) {
+        width: 6px;
+        height: 6px;
+        top: 70%;
+        left: 70%;
+      }
+      .particle:nth-child(5) {
+        width: 8px;
+        height: 8px;
+        top: 45%;
+        left: 50%;
+      }
+      .magic-button:hover .particle {
+        opacity: 1;
+        transform: translate(15px, -15px);
+      }
+      .magic-button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg,
+          transparent 45%,
+          #a1ff14 49%,
+          #a1ff14 51%,
+          transparent 55%);
+        background-size: 200% 200%;
+        opacity: 0;
+        z-index: 1;
+        transition: all 0.4s ease;
+        mix-blend-mode: overlay;
+      }
+      .magic-button:hover::before {
+        opacity: 0.6;
+        animation: glitch 0.8s infinite alternate;
+      }
+      @keyframes glitch {
+        0% { background-position: 0 0; }
+        20% { background-position: -5% -10%; }
+        40% { background-position: 10% 5%; }
+        60% { background-position: 5% -5%; }
+        80% { background-position: -5% 5%; }
+        100% { background-position: 0 0; }
+      }
+      .magic-button::after {
+        content: "";
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        border: 2px solid #a1ff14;
+        border-radius: 14px;
+        opacity: 0;
+        z-index: 0;
+        transition: all 0.4s ease;
+      }
+      .magic-button:hover::after {
+        opacity: 1;
+        animation: borderPulse 2s infinite;
+      }
+      @keyframes borderPulse {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.02); opacity: 0.8; }
+        100% { transform: scale(1); opacity: 1; }
+      }
+    </style>
+  </head>
+  <body>
+    <button class="magic-button">
+      <span class="magic-text">Explore</span>
+      <span class="magic-icon">→</span>
+      <span class="magic-particles">
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+      </span>
+    </button>
+  </body>
+</html>'>
+                    </iframe>
+
+                    <a href="editor.html?id=explore-button" class="get-code-btn"
+                        style="margin-top: 20px; align-self: center;">
                         <i class="bi bi-code"></i> Get Code
                     </a>
                 </div>
