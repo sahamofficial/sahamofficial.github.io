@@ -170,7 +170,8 @@ h1,h2,h3,h4,h5,h6{
   
   /* Navbar Styling */
   .navmenu {
-    padding: 0;
+    padding: 0;overflow-y: hidden;
+
     z-index: 9997;
     background: linear-gradient(135deg, #040b14, #081525, #002137, #00253e);
     background-size: 400% 400%;

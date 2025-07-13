@@ -1,52 +1,305 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+      <link href="favicon.png" rel="icon" type="image/x-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
   <meta charset="UTF-8" />
   <title>Code Editor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
   <style>
-    body { font-family: Arial; margin: 20px; }
-    .container { display: flex; gap: 20px; }
-    textarea {
-      width: 45%;
-      height: 400px;
-      font-family: monospace;
-      font-size: 14px;
-      padding: 10px;
+    :root {
+      --primary: #40B3A2;
+      --primary-dark: #2d7a6d;
+      --secondary: #6C5B7B;
+      --accent: #F8B195;
+      --dark: #2A363B;
+      --light: #F9F9F9;
+      --code-bg: #282c34;
+      --editor-bg: #f8f9fa;
+      --border: #e1e4e8;
     }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background-color: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+      padding: 2rem;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(248, 177, 149, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(108, 91, 123, 0.1) 0%, transparent 20%);
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--dark);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: inline-block;
+    }
+    
+    .container {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .editor-pane {
+      flex: 1;
+      min-width: 300px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .editor-pane:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
+    
+    .editor-header {
+      background: var(--primary);
+      color: white;
+      padding: 0.8rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 600;
+    }
+    
+    .editor-header h2 {
+      display: flex;
+      align-items: center;
+    }
+    
+    .editor-header i {
+      margin-right: 0.8rem;
+      font-size: 1.2rem;
+    }
+    
+    .copy-btn {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+    
+    .copy-btn:hover {
+      background: rgba(255,255,255,0.3);
+    }
+    
+    .copy-btn i {
+      margin-right: 0.4rem;
+    }
+    
+    textarea {
+      width: 100%;
+      height: 400px;
+      font-family: 'Fira Code', 'Courier New', monospace;
+      font-size: 14px;
+      padding: 1rem;
+      border: none;
+      resize: none;
+      outline: none;
+      background: var(--editor-bg);
+      color: var(--code-bg);
+      tab-size: 2;
+      line-height: 1.5;
+    }
+    
+    textarea:focus {
+      background: white;
+    }
+    
+    .preview-container {
+      margin-top: 1rem;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+    
+    .preview-header {
+      background: var(--secondary);
+      color: white;
+      padding: 0.8rem 1.2rem;
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+    }
+    
+    .preview-header i {
+      margin-right: 0.8rem;
+      font-size: 1.2rem;
+    }
+    
     iframe {
       width: 100%;
-      height: 300px;
-      border: 1px solid #ccc;
-      margin-top: 20px;
+      height: 400px;
+      border: none;
+      background: white;
+    }
+    
+    .controls {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .btn {
+      padding: 0.8rem 1.5rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(64, 179, 162, 0.3);
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(64, 179, 162, 0.4);
+      background: var(--primary-dark);
+    }
+    
+    .btn i {
+      margin-right: 0.5rem;
+    }
+    
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--dark);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      textarea {
+        height: 300px;
+      }
+      
+      iframe {
+        height: 300px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h1>HTML & CSS Code Editor</h1>
+  <h1><i class="bi bi-code-square"></i> HTML & CSS Code Editor</h1>
+  
   <div class="container">
-    <div>
-      <h2>HTML</h2>
-      <textarea id="htmlCode"></textarea>
+    <div class="editor-pane">
+      <div class="editor-header">
+        <h2><i class="bi bi-filetype-html"></i>HTML</h2>
+        <button class="copy-btn" onclick="copyHtml()">
+          <i class="bi bi-clipboard"></i> Copy
+        </button>
+      </div>
+      <textarea id="htmlCode" spellcheck="false"></textarea>
     </div>
-    <div>
-      <h2>CSS</h2>
-      <textarea id="cssCode"></textarea>
+    
+    <div class="editor-pane">
+      <div class="editor-header">
+        <h2><i class="bi bi-filetype-css"></i>CSS</h2>
+        <button class="copy-btn" onclick="copyCss()">
+          <i class="bi bi-clipboard"></i> Copy
+        </button>
+      </div>
+      <textarea id="cssCode" spellcheck="false"></textarea>
     </div>
   </div>
 
-  <h2>Preview</h2>
-  <iframe id="preview"></iframe>
+  <div class="preview-container">
+    <div class="preview-header">
+      <i class="bi bi-eye-fill"></i>
+      <h2>Preview</h2>
+    </div>
+    <iframe id="preview"></iframe>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="updatePreview()">
+      <i class="bi bi-arrow-repeat"></i> Refresh
+    </button>
+    <button class="btn" onclick="copyAllCode()">
+      <i class="bi bi-clipboard"></i> Copy All Code
+    </button>
+  </div>
+
+  <div class="toast" id="toast"></div>
 
   <script>
     const htmlCode = document.getElementById('htmlCode');
     const cssCode = document.getElementById('cssCode');
     const preview = document.getElementById('preview');
+    const toast = document.getElementById('toast');
 
-const codeSnippets = {
-  'ripple-button': {
-    html: `<button class="btn"><i class="animation"></i>BUTTON<i class="animation"></i></button>`,
-    css: `.btn {
+    const codeSnippets = {
+      'ripple-button': {
+        html: `<button class="btn"><i class="animation"></i>BUTTON<i class="animation"></i></button>`,
+        css: `.btn {
   outline: 0;
   display: inline-flex;
   align-items: center;
@@ -91,13 +344,13 @@ const codeSnippets = {
   }
 }` },
 
-  'glow-card': {
-    html: `<div class="card">
+      'glow-card': {
+        html: `<div class="card">
   <div class="content">
     <span>HOVER ME</span>
   </div>
 </div>`,
-    css: `.card {
+        css: `.card {
   width: 190px;
   height: 254px;
   background: #171717;
@@ -172,8 +425,16 @@ const codeSnippets = {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }`
-  }
-};
+      }
+    };
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
 
     function getQueryParam(name) {
       const urlParams = new URLSearchParams(window.location.search);
@@ -192,6 +453,25 @@ const codeSnippets = {
       preview.srcdoc = code;
     }
 
+    function copyHtml() {
+      navigator.clipboard.writeText(htmlCode.value)
+        .then(() => showToast('HTML copied to clipboard!'))
+        .catch(err => console.error('Failed to copy HTML: ', err));
+    }
+
+    function copyCss() {
+      navigator.clipboard.writeText(cssCode.value)
+        .then(() => showToast('CSS copied to clipboard!'))
+        .catch(err => console.error('Failed to copy CSS: ', err));
+    }
+
+    function copyAllCode() {
+      const code = `<style>${cssCode.value}</style>\n${htmlCode.value}`;
+      navigator.clipboard.writeText(code)
+        .then(() => showToast('All code copied to clipboard!'))
+        .catch(err => console.error('Failed to copy: ', err));
+    }
+
     htmlCode.addEventListener('input', updatePreview);
     cssCode.addEventListener('input', updatePreview);
 
@@ -201,7 +481,34 @@ const codeSnippets = {
       htmlCode.value = codeSnippets[id].html;
       cssCode.value = codeSnippets[id].css;
       updatePreview();
+    } else {
+      // Default empty state
+      updatePreview();
     }
   </script>
+   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+  <div id="preloader">
+
+    <div class="three-body">
+      <div class="three-body__dot"></div>
+      <div class="three-body__dot"></div>
+      <div class="three-body__dot"></div>
+    </div>
+
+  </div> <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/typed.js/typed.umd.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
