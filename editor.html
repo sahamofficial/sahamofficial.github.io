@@ -106,8 +106,14 @@
 
     iframe {
       flex: 1;
-      border: none;
-      background: white;
+      background-color: white;
+      background-image: radial-gradient(rgba(0, 0, 0, 0.15) 1px, transparent 1px);
+      background-size: 30px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
     .copy-btn {
@@ -130,13 +136,9 @@
       gap: 1rem;
       justify-content: center;
       margin-top: 1.5rem;
-      /* You can increase this if needed */
       margin-bottom: 2rem;
-      /* Push it slightly up from bottom */
       position: relative;
-      /* Remove absolute positioning */
     }
-
 
     .btn {
       padding: 0.6rem 1.2rem;
@@ -243,7 +245,7 @@
       //   css:``
       // },
       // format
-     
+
       'ripple-button': {
         html: `<button class="btn">
     <i class="animation"></i>
@@ -321,7 +323,7 @@
         0 0 0 40px rgba(255, 255, 255, 0);
     }
   }`
-      },    
+      },
       'explore-button': {
         html: `<button class="magic-button">
   <span class="magic-text">Explore</span>
@@ -737,7 +739,7 @@ document.querySelectorAll('.cyber-button').forEach(button => {
   `
       },
       'copy-button': {
-  html: `
+        html: `
 <div class="button-wrap">
   <button>
     <span>Copy</span>
@@ -753,7 +755,7 @@ document.querySelectorAll('.cyber-button').forEach(button => {
   <rect fill="url(#dottedGrid)" height="100%" width="100%"></rect>
 </svg>
   `,
-  css: `
+        css: `
 @property --angle-1 {
   syntax: "<angle>";
   inherits: false;
@@ -917,8 +919,62 @@ button:active::after {
   --angle-1: -75deg;
 }
   `
-},
-};
+      },
+      'subscribe-button': {
+        html: `
+<button class="Subscribe-btn">
+  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="10" viewBox="0 0 38 15" class="arrow">
+    <path d="M31.364 7.05a1 1 0 0 0 0-1.414L25.707.636a1 1 0 1 0-1.414 1.414L29.536 7.05l-5.243 5.243a1 1 0 0 0 1.414 1.414l5.657-5.657zM1 7h30v-2H1v2z"/>
+  </svg>
+  Subscribe
+</button>
+  `,
+        css: `
+.Subscribe-btn {
+  height: 45px;
+  width: 120px;
+  border: none;
+  border-radius: 15px;
+  color: #000;
+  cursor: pointer;
+  background-color: #fff;
+  font-weight: 500;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.3s;
+}
+.arrow {
+  position: absolute;
+  margin-right: 150px;
+  transition: all 0.3s;
+}
+.Subscribe-btn:hover {
+  color: white;
+}
+.Subscribe-btn:hover .arrow {
+  margin-right: 0;
+  animation: jello-vertical 0.9s both;
+  transform-origin: right;
+}
+@keyframes jello-vertical {
+  0% { transform: scale3d(1, 1, 1); }
+  30% { transform: scale3d(0.75, 1.25, 1); }
+  40% { transform: scale3d(1.25, 0.75, 1); }
+  50% { transform: scale3d(0.85, 1.15, 1); }
+  65% { transform: scale3d(1.05, 0.95, 1); }
+  75% { transform: scale3d(0.95, 1.05, 1); }
+  100% { transform: scale3d(1, 1, 1); }
+}
+.Subscribe-btn:active {
+  transform: scale(0.9);
+}
+  `
+      }
+      ,
+    };
 
     function showToast(message) {
       toast.textContent = message;

@@ -813,10 +813,10 @@ body {
           </a>
         </div>
       </div>
-<!-- copy button -->
+      <!-- copy button -->
       <div class="card">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
-         <iframe srcdoc='
+          <iframe srcdoc='
 <!DOCTYPE html>
 <html>
 <head>
@@ -1149,11 +1149,94 @@ body {
             <i class="bi bi-code"></i> Get Code
           </a>
         </div>
-      </div> 
+      </div>
+      <!-- subscribe button -->
+      <div class="card">
+        <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
+          <iframe srcdoc='
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      margin: 0;
+      background-color: #292524;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .Subscribe-btn {
+      height: 45px;
+      width: 130px;
+      border: none;
+      border-radius: 15px;
+      color: #000;
+      cursor: pointer;
+      background-color: #ffffff;
+      font-weight: 500;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .arrow {
+      position: absolute;
+      margin-right: 150px;
+      transition: all 0.3s;
+    }
+
+    .Subscribe-btn:hover {
+      color: white;
+    }
+
+    .Subscribe-btn:hover .arrow {
+      margin-right: 0;
+      animation: jello-vertical 0.9s both;
+      transform-origin: right;
+    }
+
+    @keyframes jello-vertical {
+      0% { transform: scale3d(1, 1, 1); }
+      30% { transform: scale3d(0.75, 1.25, 1); }
+      40% { transform: scale3d(1.25, 0.75, 1); }
+      50% { transform: scale3d(0.85, 1.15, 1); }
+      65% { transform: scale3d(1.05, 0.95, 1); }
+      75% { transform: scale3d(0.95, 1.05, 1); }
+      100% { transform: scale3d(1, 1, 1); }
+    }
+
+    .Subscribe-btn:active {
+      transform: scale(0.9);
+    }
+  </style>
+</head>
+<body>
+  <button class="Subscribe-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="10" viewBox="0 0 38 15" class="arrow">
+      <path d="M31.364 7.05a1 1 0 0 0 0-1.414L25.707.636a1 1 0 1 0-1.414 1.414L29.536 7.05l-5.243 5.243a1 1 0 0 0 1.414 1.414l5.657-5.657zM1 7h30v-2H1v2z"/>
+    </svg>
+    Subscribe
+  </button>
+</body>
+</html>
+'></iframe>
+
+          <a href="editor.html?id=subscribe-button" class="get-code-btn" style="margin-top: 20px; align-self: center;">
+            <i class="bi bi-code"></i> Get Code
+          </a>
+        </div>
+      </div>
+
+
     </div>
 
     <footer>
-      <p>© 2023 UI Elements Gallery. All components are free to use.</p>
+      <p>© 2025 UI Elements Gallery. All components are free to use.</p>
     </footer>
     <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
         class="bi bi-arrow-up-short"></i></a>
