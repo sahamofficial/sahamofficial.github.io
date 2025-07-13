@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Code Preview</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="code-block">
+    <h2>HTML</h2>
+    <pre><code class="language-html">&lt;div class="card"&gt;Click Me!&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="code-block">
+    <h2>CSS</h2>
+    <pre><code class="language-css">.card {
+  padding: 1rem;
+  background: #4CAF50;
+  color: white;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <h2>JavaScript</h2>
+    <pre><code class="language-js">document.querySelector('.card').onclick = () =&gt; {
+  alert('Card clicked!');
+};</code></pre>
+  </div>
+
+  <h2>Live Preview</h2>
+  <iframe id="preview" class="preview-frame"></iframe>
+
+  <script src="preview.js"></script>
+</body>
+</html>
