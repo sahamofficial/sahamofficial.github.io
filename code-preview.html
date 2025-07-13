@@ -218,7 +218,7 @@
   <div class="container">
     <header>
       <h1>UI Elements Gallery</h1>
-      <p class="subtitle">Beautiful, interactive components for your next project</p>
+      <p class="subtitle">Beautiful, interactive components for your projects</p>
     </header>
 
     <div class="gallery">
@@ -1231,10 +1231,10 @@ body {
           </a>
         </div>
       </div>
-
+      <!-- view document -->
       <div class="card">
-  <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
-    <iframe srcdoc='
+        <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
+          <iframe srcdoc='
       <!DOCTYPE html>
       <html>
       <head>
@@ -1355,11 +1355,202 @@ body {
       </html>
     ' style="width: 100%; height: 200px; border: none;"></iframe>
 
-    <a href="editor.html?id=view-document" class="get-code-btn" style="margin-top: 20px; align-self: center;">
+          <a href="editor.html?id=view-document" class="get-code-btn" style="margin-top: 20px; align-self: center;">
+            <i class="bi bi-code"></i> Get Code
+          </a>
+        </div>
+      </div>
+
+<div class="card">
+  <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
+    <iframe srcdoc='
+      <html>
+      <head>
+        <style>
+          body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: transparent;
+            font-family: "Segoe UI", sans-serif;
+          }
+
+          .super-blob-btn {
+            position: relative;
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            border-radius: 40em;
+            width: 10em;
+            height: 3.5em;
+            z-index: 1;
+            color: white;
+            cursor: pointer;
+            overflow: hidden;
+            border: none;
+            outline: none;
+            background: transparent;
+            perspective: 1000px;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+          }
+
+          .super-blob-btn .text {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 40em;
+            background: linear-gradient(
+              rgba(255, 255, 255, 0.3),
+              rgba(255, 255, 255, 0.1)
+            );
+            z-index: 1;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 
+              0 4px 20px rgba(0, 0, 0, 0.1),
+              inset 0 2px 0 rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+          }
+
+          .super-blob-btn .blob {
+            position: absolute;
+            z-index: -1;
+            border-radius: 50%;
+            width: 6em;
+            height: 6em;
+            filter: blur(12px);
+            transition: 
+              transform 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+              background 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+              filter 0.8s ease;
+            will-change: transform;
+          }
+
+          .super-blob-btn .blob:nth-child(2) {
+            left: -1.5em;
+            top: -1.5em;
+            background: #ff930f;
+            transform-origin: right bottom;
+          }
+
+          .super-blob-btn .blob:nth-child(3) {
+            left: 2.5em;
+            top: -2em;
+            background: #bf0fff;
+            transform-origin: center bottom;
+          }
+
+          .super-blob-btn .blob:nth-child(4) {
+            left: 5em;
+            top: -1em;
+            background: #ff1b6b;
+            transform-origin: left bottom;
+          }
+
+          .super-blob-btn .blob:nth-child(5) {
+            left: 5.5em;
+            top: 2em;
+            background: #0061ff;
+            transform-origin: left top;
+          }
+
+          .super-blob-btn .glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, transparent 70%);
+            opacity: 0;
+            z-index: 0;
+            transition: opacity 0.6s ease;
+          }
+
+          .super-blob-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+          }
+
+          .super-blob-btn:hover .text {
+            background: linear-gradient(
+              rgba(255, 255, 255, 0.4),
+              rgba(255, 255, 255, 0.15)
+            );
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+          }
+
+          .super-blob-btn:hover .blob:nth-child(2) {
+            background: #0061ff;
+            transform: scale(1.5) rotate(20deg);
+          }
+
+          .super-blob-btn:hover .blob:nth-child(3) {
+            background: #ff1b6b;
+            transform: scale(1.4) rotate(-15deg);
+          }
+
+          .super-blob-btn:hover .blob:nth-child(4) {
+            background: #bf0fff;
+            transform: scale(1.6) rotate(10deg);
+          }
+
+          .super-blob-btn:hover .blob:nth-child(5) {
+            background: #ff930f;
+            transform: scale(1.5) rotate(-20deg);
+          }
+
+          .super-blob-btn:hover .blob {
+            filter: blur(16px);
+          }
+
+          .super-blob-btn:hover .glow {
+            opacity: 0.3;
+          }
+
+          .super-blob-btn:active {
+            transform: translateY(1px) scale(0.98);
+          }
+
+          .super-blob-btn:active .text {
+            box-shadow: 
+              0 2px 10px rgba(0, 0, 0, 0.1),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+          }
+
+          .super-blob-btn:active .blob {
+            filter: blur(20px);
+            transform: scale(1.1);
+          }
+        </style>
+      </head>
+      <body>
+        <button class="super-blob-btn">
+          <span class="text">Hover Me</span>
+          <span class="blob"></span>
+          <span class="blob"></span>
+          <span class="blob"></span>
+          <span class="blob"></span>
+          <span class="glow"></span>
+        </button>
+      </body>
+      </html>
+    ' width="100%" height="200" style="border: none;"></iframe>
+
+    <a href="editor.html?id=blob-button" class="get-code-btn" style="margin-top: 20px; align-self: center;">
       <i class="bi bi-code"></i> Get Code
     </a>
   </div>
 </div>
+
 
     </div>
 
