@@ -2,244 +2,257 @@
 <html lang="en">
 
 <head>
-    <link href="favicon.png" rel="icon" type="image/x-icon">
+  <link href="favicon.png" rel="icon" type="image/x-icon">
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com" rel="preconnect">
-    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
 
-    <!-- Vendor CSS Files -->
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
-    <!-- Main CSS File -->
-    <link href="assets/css/main.css" rel="stylesheet">
-    <meta charset="UTF-8" />
-    <title>Code Editor</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>Code Editor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
     :root {
-        --primary: #40B3A2;
-        --primary-dark: #2d7a6d;
-        --secondary: #6C5B7B;
-        --accent: #F8B195;
-        --dark: #2A363B;
-        --light: #F9F9F9;
-        --code-bg: #282c34;
-        --editor-bg: #f8f9fa;
-        --border: #e1e4e8;
+      --primary: #40B3A2;
+      --primary-dark: #2d7a6d;
+      --secondary: #6C5B7B;
+      --accent: #F8B195;
+      --dark: #2A363B;
+      --light: #F9F9F9;
+      --code-bg: #282c34;
+      --editor-bg: #f8f9fa;
+      --border: #e1e4e8;
     }
 
     * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    html, body {
-        height: 100%;
-        font-family: 'Poppins', Arial, sans-serif;
-        background-color: var(--light);
-        color: var(--dark);
-        overflow: hidden;
+    html,
+    body {
+      height: 100%;
+      font-family: 'Poppins', Arial, sans-serif;
+      background-color: var(--light);
+      color: var(--dark);
+      overflow: hidden;
     }
 
     h1 {
-        font-size: 1.5rem;
-        font-weight: 700;
-        padding: 1rem;
-        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        text-align: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-align: center;
     }
 
     .editor-wrapper {
-        display: flex;
-        height: 60vh;
-        gap: 1rem;
-        padding: 1rem;
+      display: flex;
+      height: 60vh;
+      gap: 1rem;
+      padding: 1rem;
     }
 
-    .editor-pane, .preview-container {
-        flex: 1;
-        background: white;
-        border-radius: 10px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
+    .editor-pane,
+    .preview-container {
+      flex: 1;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
-    .editor-header, .preview-header {
-        background: var(--primary);
-        color: white;
-        padding: 0.6rem 1rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-weight: 600;
+    .editor-header,
+    .preview-header {
+      background: var(--primary);
+      color: white;
+      padding: 0.6rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
     }
 
     textarea {
-        flex: 1;
-        width: 100%;
-        font-family: 'Fira Code', monospace;
-        font-size: 14px;
-        padding: 1rem;
-        border: none;
-        resize: none;
-        outline: none;
-        background: var(--editor-bg);
-        color: var(--code-bg);
+      flex: 1;
+      width: 100%;
+      font-family: 'Fira Code', monospace;
+      font-size: 14px;
+      padding: 1rem;
+      border: none;
+      resize: none;
+      outline: none;
+      background: var(--editor-bg);
+      color: var(--code-bg);
     }
 
     iframe {
-        flex: 1;
-        border: none;
-        background: white;
+      flex: 1;
+      border: none;
+      background: white;
     }
 
     .copy-btn {
-        background: rgba(255, 255, 255, 0.2);
-        border: none;
-        color: white;
-        padding: 0.3rem 0.8rem;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.85rem;
-        transition: all 0.2s ease;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
     }
 
     .copy-btn:hover {
-        background: rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.35);
     }
 
-   .controls {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    margin-top: 1.5rem;  /* You can increase this if needed */
-    margin-bottom: 2rem; /* Push it slightly up from bottom */
-    position: relative;  /* Remove absolute positioning */
-}
+    .controls {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+      /* You can increase this if needed */
+      margin-bottom: 2rem;
+      /* Push it slightly up from bottom */
+      position: relative;
+      /* Remove absolute positioning */
+    }
 
 
     .btn {
-        padding: 0.6rem 1.2rem;
-        background: var(--primary);
-        color: white;
-        border: none;
-        border-radius: 50px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.3s;
+      padding: 0.6rem 1.2rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
     }
 
     .btn:hover {
-        background: var(--primary-dark);
+      background: var(--primary-dark);
     }
 
     .toast {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: var(--dark);
-        color: white;
-        padding: 1rem 1.5rem;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        transform: translateY(100px);
-        opacity: 0;
-        transition: all 0.3s ease;
-        z-index: 1000;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--dark);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
     }
 
     .toast.show {
-        transform: translateY(0);
-        opacity: 1;
+      transform: translateY(0);
+      opacity: 1;
     }
 
     @media (max-width: 1024px) {
-        .editor-wrapper {
-            flex-direction: column;
-            height: auto;
-            overflow-y: auto;
-        }
+      .editor-wrapper {
+        flex-direction: column;
+        height: auto;
+        overflow-y: auto;
+      }
 
-        .editor-pane, .preview-container {
-            height: 400px;
-        }
+      .editor-pane,
+      .preview-container {
+        height: 400px;
+      }
 
-        .controls {
-            position: static;
-            justify-content: center;
-            margin: 1rem 0;
-            transform: none;
-        }
+      .controls {
+        position: static;
+        justify-content: center;
+        margin: 1rem 0;
+        transform: none;
+      }
     }
-</style>
+  </style>
 
 </head>
 
 <body>
-    <h1><i class="bi bi-code-square"></i> HTML & CSS Code Editor</h1>
+  <h1><i class="bi bi-code-square"></i> HTML & CSS Code Editor</h1>
 
-    <div class="editor-wrapper">
-        <div class="editor-pane">
-            <div class="editor-header">
-                <span><i class="bi bi-filetype-html"></i> HTML</span>
-                <button class="copy-btn" onclick="copyHtml()">Copy</button>
-            </div>
-            <textarea id="htmlCode" spellcheck="false"></textarea>
-        </div>
-
-        <div class="editor-pane">
-            <div class="editor-header">
-                <span><i class="bi bi-filetype-css"></i> CSS</span>
-                <button class="copy-btn" onclick="copyCss()">Copy</button>
-            </div>
-            <textarea id="cssCode" spellcheck="false"></textarea>
-        </div>
-
-        <div class="preview-container">
-            <div class="preview-header">
-                <span><i class="bi bi-eye-fill"></i> Preview</span>
-            </div>
-            <iframe id="preview"></iframe>
-        </div>
+  <div class="editor-wrapper">
+    <div class="editor-pane">
+      <div class="editor-header">
+        <span><i class="bi bi-filetype-html"></i> HTML</span>
+        <button class="copy-btn" onclick="copyHtml()">Copy</button>
+      </div>
+      <textarea id="htmlCode" spellcheck="false"></textarea>
     </div>
 
-    <div class="controls">
-        <button class="btn" onclick="updatePreview()"><i class="bi bi-arrow-repeat"></i> Refresh</button>
-        <button class="btn" onclick="copyAllCode()"><i class="bi bi-clipboard"></i> Copy All Code</button>
+    <div class="editor-pane">
+      <div class="editor-header">
+        <span><i class="bi bi-filetype-css"></i> CSS</span>
+        <button class="copy-btn" onclick="copyCss()">Copy</button>
+      </div>
+      <textarea id="cssCode" spellcheck="false"></textarea>
     </div>
 
-    <div class="toast" id="toast"></div>
+    <div class="preview-container">
+      <div class="preview-header">
+        <span><i class="bi bi-eye-fill"></i> Preview</span>
+      </div>
+      <iframe id="preview"></iframe>
+    </div>
+  </div>
 
-    <script>
-        const htmlCode = document.getElementById('htmlCode');
-        const cssCode = document.getElementById('cssCode');
-        const preview = document.getElementById('preview');
-        const toast = document.getElementById('toast');
+  <div class="controls">
+    <button class="btn" onclick="updatePreview()"><i class="bi bi-arrow-repeat"></i> Refresh</button>
+    <button class="btn" onclick="copyAllCode()"><i class="bi bi-clipboard"></i> Copy All Code</button>
+  </div>
 
-        const codeSnippets = {
-            // ripple-button
-            'ripple-button': {
-                html: `<button class="btn">
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const htmlCode = document.getElementById('htmlCode');
+    const cssCode = document.getElementById('cssCode');
+    const preview = document.getElementById('preview');
+    const toast = document.getElementById('toast');
+
+    const codeSnippets = {
+      // format
+      // '':{html:``,
+      //   css:
+      // }
+      // format
+
+      // ripple-button
+      'ripple-button': {
+        html: `<button class="btn">
     <i class="animation"></i>
     <span class="btn-text">BUTTON</span>
     <i class="animation"></i>
   </button>`,
 
-                css: `.btn {
+        css: `.btn {
     outline: 0;
     display: inline-flex;
     align-items: center;
@@ -309,10 +322,10 @@
         0 0 0 40px rgba(255, 255, 255, 0);
     }
   }`
-            },
-            // explore-button
-            'explore-button': {
-                html: `<button class="magic-button">
+      },
+      // explore-button
+      'explore-button': {
+        html: `<button class="magic-button">
   <span class="magic-text">Explore</span>
   <span class="magic-icon">→</span>
   <span class="magic-particles">
@@ -323,7 +336,7 @@
     <span class="particle"></span>
   </span>
 </button>`,
-                css: `.magic-button {
+        css: `.magic-button {
   position: relative;
   width: 140px;
   height: 60px;
@@ -444,24 +457,24 @@
   50% { transform: scale(1.02); opacity: 0.8; }
   100% { transform: scale(1); opacity: 1; }
 }`
-            }
-        };
+      }
+    };
 
-        function showToast(message) {
-            toast.textContent = message;
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
 
-        function getQueryParam(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
-        }
+    function getQueryParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
 
-        function updatePreview() {
-            const code = `
+    function updatePreview() {
+      const code = `
         <html>
           <head>
             <style>${cssCode.value}</style>
@@ -469,66 +482,66 @@
           <body>${htmlCode.value}</body>
         </html>
       `;
-            preview.srcdoc = code;
-        }
+      preview.srcdoc = code;
+    }
 
-        function copyHtml() {
-            navigator.clipboard.writeText(htmlCode.value)
-                .then(() => showToast('HTML copied to clipboard!'))
-                .catch(err => console.error('Failed to copy HTML: ', err));
-        }
+    function copyHtml() {
+      navigator.clipboard.writeText(htmlCode.value)
+        .then(() => showToast('HTML copied to clipboard!'))
+        .catch(err => console.error('Failed to copy HTML: ', err));
+    }
 
-        function copyCss() {
-            navigator.clipboard.writeText(cssCode.value)
-                .then(() => showToast('CSS copied to clipboard!'))
-                .catch(err => console.error('Failed to copy CSS: ', err));
-        }
+    function copyCss() {
+      navigator.clipboard.writeText(cssCode.value)
+        .then(() => showToast('CSS copied to clipboard!'))
+        .catch(err => console.error('Failed to copy CSS: ', err));
+    }
 
-        function copyAllCode() {
-            const code = `<style>${cssCode.value}</style>\n${htmlCode.value}`;
-            navigator.clipboard.writeText(code)
-                .then(() => showToast('All code copied to clipboard!'))
-                .catch(err => console.error('Failed to copy: ', err));
-        }
+    function copyAllCode() {
+      const code = `<style>${cssCode.value}</style>\n${htmlCode.value}`;
+      navigator.clipboard.writeText(code)
+        .then(() => showToast('All code copied to clipboard!'))
+        .catch(err => console.error('Failed to copy: ', err));
+    }
 
-        htmlCode.addEventListener('input', updatePreview);
-        cssCode.addEventListener('input', updatePreview);
+    htmlCode.addEventListener('input', updatePreview);
+    cssCode.addEventListener('input', updatePreview);
 
-        // Load from query param
-        const id = getQueryParam('id');
-        if (codeSnippets[id]) {
-            htmlCode.value = codeSnippets[id].html;
-            cssCode.value = codeSnippets[id].css;
-            updatePreview();
-        } else {
-            // Default empty state
-            updatePreview();
-        }
-    </script>
-    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-            class="bi bi-arrow-up-short"></i></a>
-    <div id="preloader">
+    // Load from query param
+    const id = getQueryParam('id');
+    if (codeSnippets[id]) {
+      htmlCode.value = codeSnippets[id].html;
+      cssCode.value = codeSnippets[id].css;
+      updatePreview();
+    } else {
+      // Default empty state
+      updatePreview();
+    }
+  </script>
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+  <div id="preloader">
 
-        <div class="three-body">
-            <div class="three-body__dot"></div>
-            <div class="three-body__dot"></div>
-            <div class="three-body__dot"></div>
-        </div>
+    <div class="three-body">
+      <div class="three-body__dot"></div>
+      <div class="three-body__dot"></div>
+      <div class="three-body__dot"></div>
+    </div>
 
-    </div> <!-- Vendor JS Files -->
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/vendor/php-email-form/validate.js"></script>
-    <script src="assets/vendor/aos/aos.js"></script>
-    <script src="assets/vendor/typed.js/typed.umd.js"></script>
-    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-    <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
-    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-    <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
-    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  </div> <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/typed.js/typed.umd.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
 
-    <!-- Main JS File -->
-    <script src="assets/js/main.js"></script>
+  <!-- Main JS File -->
+  <script src="assets/js/main.js"></script>
 </body>
 
 </html>
