@@ -240,7 +240,7 @@
     const codeSnippets = {
       // format
       // '':{html:``,
-      //   css:
+      //   css:``
       // }
       // format
 
@@ -457,6 +457,286 @@
   50% { transform: scale(1.02); opacity: 0.8; }
   100% { transform: scale(1); opacity: 1; }
 }`
+      },
+      'download-button': {
+        html: `
+<button class="cyber-button">
+  <div class="cyber-glare"></div>
+  <div class="cyber-overlay"></div>
+  <div class="cyber-content">
+    <div class="cyber-icon">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M22 12L12 2L2 12L12 22L22 12Z" stroke="currentColor" stroke-width="2"/>
+        <path d="M8 12H16" stroke="currentColor" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="cyber-text">
+      <span>D</span>
+        <span>O</span>
+        <span>W</span>
+        <span>N</span>
+        <span>L</span>
+        <span>O</span>
+        <span>A</span>
+        <span>D</span>
+    </div>
+  </div>
+  <div class="cyber-sent">
+    <div class="cyber-check">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="cyber-status">SENT</div>
+  </div>
+  <div class="cyber-particles"></div>
+</button>
+  `,
+        css: `
+:root {
+  --cyber-primary: #00f0ff;
+  --cyber-secondary: #ff00f0;
+  --cyber-bg: #0a0a14;
+  --cyber-border: #2a2a4a;
+  --cyber-glow: 0 0 10px var(--cyber-primary),
+                0 0 20px var(--cyber-primary),
+                0 0 30px var(--cyber-primary);
+}
+
+.cyber-button {
+  position: relative;
+  background: var(--cyber-bg);
+  border: 2px solid var(--cyber-border);
+  border-radius: 12px;
+  padding: 1.5rem 2.5rem;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--cyber-primary);
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.2),
+              0 0 10px rgba(0, 240, 255, 0.1);
+  transform-style: preserve-3d;
+  perspective: 500px;
+}
+
+.cyber-button:hover {
+  box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.4),
+              0 0 20px rgba(0, 240, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.cyber-button:active {
+  transform: translateY(1px);
+}
+
+.cyber-glare {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    transparent 45%,
+    rgba(0, 240, 255, 0.1) 50%,
+    transparent 55%
+  );
+  transform: rotate(45deg);
+  transition: all 0.6s ease;
+  pointer-events: none;
+}
+
+.cyber-button:hover .cyber-glare {
+  animation: cyberGlare 2s linear infinite;
+}
+
+@keyframes cyberGlare {
+  0% { transform: translateX(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) rotate(45deg); }
+}
+
+.cyber-overlay {
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(0, 240, 255, 0.05) 50%, 
+      transparent 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.cyber-button:hover .cyber-overlay {
+  opacity: 1;
+  animation: cyberScan 3s linear infinite;
+}
+
+@keyframes cyberScan {
+  0% { background-position: -100% 0; }
+  100% { background-position: 100% 0; }
+}
+
+.cyber-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.cyber-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease;
+}
+
+.cyber-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.cyber-text {
+  display: flex;
+}
+
+.cyber-text span {
+  display: inline-block;
+  transform: translateY(0);
+  transition: all 0.3s ease;
+  text-shadow: var(--cyber-glow);
+}
+
+.cyber-button:hover .cyber-text span {
+  animation: cyberBounce 0.6s ease infinite alternate;
+}
+
+.cyber-button:hover .cyber-text span:nth-child(2n) {
+  animation-delay: 0.1s;
+}
+
+@keyframes cyberBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); color: var(--cyber-secondary); }
+}
+
+.cyber-sent {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: var(--cyber-bg);
+  transform: translateY(100%);
+  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  z-index: 3;
+}
+
+.cyber-check {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--cyber-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.4s ease 0.2s;
+}
+
+.cyber-check svg {
+  width: 60%;
+  height: 60%;
+}
+
+.cyber-status {
+  font-size: 1.2rem;
+  letter-spacing: 4px;
+  color: var(--cyber-primary);
+  text-shadow: var(--cyber-glow);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.4s ease 0.4s;
+}
+
+.cyber-button:active .cyber-sent {
+  transform: translateY(0);
+}
+
+.cyber-button:active .cyber-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.cyber-button:active .cyber-status {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cyber-button:active .cyber-content {
+  opacity: 0;
+}
+
+.cyber-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.cyber-particles::before {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--cyber-primary);
+  border-radius: 50%;
+  animation: cyberParticle 1s ease-out forwards;
+  box-shadow: 0 0 5px 2px var(--cyber-primary);
+}
+
+@keyframes cyberParticle {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx, 0), var(--ty, -100px));
+    opacity: 0;
+  }
+}
+  `,
+        js: `
+// Generate particles
+document.querySelectorAll('.cyber-button').forEach(button => {
+  button.addEventListener('click', function() {
+    const particles = this.querySelector('.cyber-particles');
+    particles.innerHTML = '';
+    
+    for (let i = 0; i < 20; i++) {
+      const particle = document.createElement('div');
+      particle.style.setProperty('--tx', \`\${Math.random() * 100 - 50}px\`);
+      particle.style.setProperty('--ty', \`\${Math.random() * -150 - 50}px\`);
+      particle.style.left = \`\${Math.random() * 100}%\`;
+      particle.style.top = \`\${Math.random() * 100}%\`;
+      particle.style.animationDelay = \`\${Math.random() * 0.5}s\`;
+      particles.appendChild(particle);
+    }
+  });
+});
+  `
       }
     };
 
