@@ -237,7 +237,7 @@
   </div>
 
   <div class="controls">
-    <button class="btn" onclick="updatePreview()"><i class="bi bi-arrow-repeat"></i> Refresh</button>
+    <button class="btn" onclick="refreshPage()"><i class="bi bi-arrow-repeat"></i> Refresh</button>
     <button class="btn" onclick="copyAllCode()"><i class="bi bi-clipboard"></i> Copy All Code</button>
   </div>
 
@@ -1726,6 +1726,10 @@ button:active::after {
       return urlParams.get(name);
     }
 
+    function refreshPage() {
+      location.reload();
+    }
+
     function updatePreview() {
       const preview = document.getElementById('preview');
       const html = htmlEditor.getValue();
@@ -1753,7 +1757,6 @@ button:active::after {
     </html>
   `;
     }
-
     function copyHtml() {
       navigator.clipboard.writeText(htmlEditor.getValue())
         .then(() => showToast('HTML copied to clipboard!'))
