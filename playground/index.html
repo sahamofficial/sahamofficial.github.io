@@ -123,6 +123,7 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      border: none;
     }
 
     .copy-btn {
@@ -1726,15 +1727,31 @@ button:active::after {
     }
 
     function updatePreview() {
-      const code = `
-      <html>
-        <head>
-          <style>${cssEditor.getValue()}</style>
-        </head>
-        <body>${htmlEditor.getValue()}</body>
-      </html>
-    `;
-      preview.srcdoc = code;
+      const preview = document.getElementById('preview');
+      const html = htmlEditor.getValue();
+      const css = cssEditor.getValue();
+
+      preview.srcdoc = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        body {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+          margin: 0;
+          flex-direction: column;
+        }
+        ${css}
+      </style>
+    </head>
+    <body>
+      ${html.replace(/<body[^>]*>|<\/body>/g, '')}
+    </body>
+    </html>
+  `;
     }
 
     function copyHtml() {
