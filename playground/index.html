@@ -237,9 +237,8 @@
   </div>
 
   <div class="controls">
-<button class="btn" onclick="refreshPage()">
-  <i class="bi bi-arrow-repeat"></i> Refresh
-</button>   <button class="btn" onclick="copyAllCode()"><i class="bi bi-clipboard"></i> Copy All Code</button>
+    <button class="btn" onclick="updatePreview()"><i class="bi bi-arrow-repeat"></i> Refresh</button>
+    <button class="btn" onclick="copyAllCode()"><i class="bi bi-clipboard"></i> Copy All Code</button>
   </div>
 
   <div class="toast" id="toast"></div>
@@ -1726,36 +1725,13 @@ button:active::after {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(name);
     }
-f// Set up automatic preview updates
-function setupAutoUpdate() {
-  // Update preview whenever HTML changes
-  htmlEditor.on("change", function() {
-    updatePreview();
-  });
-  
-  // Update preview whenever CSS changes
-  cssEditor.on("change", function() {
-    updatePreview();
-  });
-}
 
-// Initialize this when the page loads
-window.onload = function() {
-  updatePreview(); // Initial preview
-  setupAutoUpdate(); // Enable auto-updates
-};
+    function updatePreview() {
+      const preview = document.getElementById('preview');
+      const html = htmlEditor.getValue();
+      const css = cssEditor.getValue();
 
-// Your existing updatePreview function (modified slightly)
-function updatePreview(event) {
-  if (event) event.preventDefault();
-  
-  const preview = document.getElementById('preview');
-  if (!preview) return;
-  
-  const html = htmlEditor.getValue();
-  const css = cssEditor.getValue();
-
-  preview.srcdoc = `
+      preview.srcdoc = `
     <!DOCTYPE html>
     <html>
     <head>
@@ -1776,12 +1752,8 @@ function updatePreview(event) {
     </body>
     </html>
   `;
-}
-
-// Keep your refreshPage function if you still want it
-function refreshPage() {
-  location.reload();
-}   function copyHtml() {
+    }
+    function copyHtml() {
       navigator.clipboard.writeText(htmlEditor.getValue())
         .then(() => showToast('HTML copied to clipboard!'))
         .catch(err => console.error('Failed to copy HTML: ', err));
