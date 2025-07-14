@@ -1541,7 +1541,96 @@ button:active::after {
   animation-play-state: running;
 }
   `
+      },
+      'whatsapp': {
+        html: `
+    <a href="https://wa.me/94766657397" target="_blank" class="whatsapp-btn">
+      <span class="wa-bubble"></span>
+      <span class="wa-content">
+        <i class="bi bi-whatsapp"></i>
+        <span>WhatsApp Chat</span>
+      </span>
+    </a>
+  `,
+        css: `
+    .whatsapp-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background-color: #25D366;
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .wa-content {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .wa-bubble {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: rgba(255,255,255,0.4);
+      border-radius: 50%;
+      z-index: 1;
+      opacity: 0;
+    }
+
+    .whatsapp-btn:hover {
+      transform: translateY(-3px);
+      background-color: #1ebe5d;
+      animation: wa-pulse 1.5s infinite;
+    }
+
+    .whatsapp-btn:hover .wa-bubble {
+      animation: wa-bubble 1.2s ease-out;
+    }
+
+    .whatsapp-btn i {
+      transition: transform 0.3s ease;
+    }
+
+    .whatsapp-btn:hover i {
+      transform: scale(1.2) rotate(15deg);
+    }
+
+    @keyframes wa-bubble {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+        left: 20%;
+        top: 50%;
       }
+      50% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: scale(8);
+        opacity: 0;
+        left: 80%;
+        top: 10%;
+      }
+    }
+
+    @keyframes wa-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+      70% { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+    }
+  `
+      },
+
     };
 
     function showToast(message) {
