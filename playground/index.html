@@ -1726,15 +1726,32 @@ button:active::after {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(name);
     }
-function refreshPage() {
-  // Reload the entire page
-  location.reload();
+f// Set up automatic preview updates
+function setupAutoUpdate() {
+  // Update preview whenever HTML changes
+  htmlEditor.on("change", function() {
+    updatePreview();
+  });
+  
+  // Update preview whenever CSS changes
+  cssEditor.on("change", function() {
+    updatePreview();
+  });
 }
- function updatePreview(event) {
-  // Prevent default button behavior (form submission/page refresh)
+
+// Initialize this when the page loads
+window.onload = function() {
+  updatePreview(); // Initial preview
+  setupAutoUpdate(); // Enable auto-updates
+};
+
+// Your existing updatePreview function (modified slightly)
+function updatePreview(event) {
   if (event) event.preventDefault();
   
   const preview = document.getElementById('preview');
+  if (!preview) return;
+  
   const html = htmlEditor.getValue();
   const css = cssEditor.getValue();
 
@@ -1759,7 +1776,12 @@ function refreshPage() {
     </body>
     </html>
   `;
-}    function copyHtml() {
+}
+
+// Keep your refreshPage function if you still want it
+function refreshPage() {
+  location.reload();
+}   function copyHtml() {
       navigator.clipboard.writeText(htmlEditor.getValue())
         .then(() => showToast('HTML copied to clipboard!'))
         .catch(err => console.error('Failed to copy HTML: ', err));
