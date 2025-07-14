@@ -1940,8 +1940,8 @@ body {
           </a>
         </div>
       </div>
-<!-- whatsapp -->
-      <div class="card" data-title="buttons hover whatsapp chat">
+      <!-- whatsapp -->
+      <div class="card" data-title="buttons hover whatsapp chat dm social">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
           <iframe srcdoc='
       <html>
@@ -2043,7 +2043,107 @@ body {
           </a>
         </div>
       </div>
+      <!-- instagram -->
+      <div class="card" data-title="buttons hover instagram dm chat social">
+        <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
+          <iframe srcdoc='
+      <html>
+        <head>
+          <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+          <style>
+            body {
+              margin: 0;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100vh;
+              background: #f9f9f9;
+              font-family: sans-serif;
+            }
 
+            .instagram-btn {
+              position: relative;
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+              padding: 10px 20px;
+              background: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
+              background-size: 150% 150%;
+              color: white;
+              font-weight: 600;
+              border: none;
+              border-radius: 8px;
+              text-decoration: none;
+              overflow: hidden;
+              transition: all 0.4s ease;
+            }
+
+            .ig-content {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              position: relative;
+              z-index: 2;
+            }
+
+            .ig-sparkles {
+              position: absolute;
+              width: 100%;
+              height: 100%;
+              background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, transparent 70%);
+              opacity: 0;
+              z-index: 1;
+            }
+
+            .instagram-btn:hover {
+              transform: translateY(-3px);
+              background-position: right center;
+              animation: ig-wobble 0.8s ease;
+            }
+
+            .instagram-btn:hover .ig-sparkles {
+              animation: ig-sparkle 0.8s forwards;
+            }
+
+            .instagram-btn i {
+              transition: all 0.3s ease;
+            }
+
+            .instagram-btn:hover i {
+              transform: scale(1.2);
+            }
+
+            @keyframes ig-sparkle {
+              0% { transform: scale(0.3); opacity: 0; }
+              50% { transform: scale(1.2); opacity: 0.6; }
+              100% { transform: scale(1); opacity: 0; }
+            }
+
+            @keyframes ig-wobble {
+              0%, 100% { transform: translateY(-3px) rotate(0deg); }
+              25% { transform: translateY(-3px) rotate(3deg); }
+              50% { transform: translateY(-3px) rotate(-3deg); }
+              75% { transform: translateY(-3px) rotate(1deg); }
+            }
+          </style>
+        </head>
+        <body>
+          <a href="https://www.instagram.com/the_blossoming_buds/" target="_blank" class="instagram-btn">
+            <span class="ig-sparkles"></span>
+            <span class="ig-content">
+              <i class="bi bi-instagram"></i>
+              <span>Instagram DM</span>
+            </span>
+          </a>
+        </body>
+      </html>
+    ' style="width: 100%; height: 150px; border: none;"></iframe>
+
+          <a href="../playground/?id=instagram" class="get-code-btn" style="margin-top: 20px; align-self: center;">
+            <i class="bi bi-code"></i> Get Code
+          </a>
+        </div>
+      </div>
 
     </div>
 
