@@ -237,7 +237,9 @@
   </div>
 
   <div class="controls">
-<button class="btn" onclick="updatePreview(event)"><i class="bi bi-arrow-repeat"></i> Refresh</button>    <button class="btn" onclick="copyAllCode()"><i class="bi bi-clipboard"></i> Copy All Code</button>
+<button class="btn" onclick="refreshPage()">
+  <i class="bi bi-arrow-repeat"></i> Refresh
+</button>   <button class="btn" onclick="copyAllCode()"><i class="bi bi-clipboard"></i> Copy All Code</button>
   </div>
 
   <div class="toast" id="toast"></div>
@@ -1724,7 +1726,10 @@ button:active::after {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(name);
     }
-
+function refreshPage() {
+  // Reload the entire page
+  location.reload();
+}
  function updatePreview(event) {
   // Prevent default button behavior (form submission/page refresh)
   if (event) event.preventDefault();
