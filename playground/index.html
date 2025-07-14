@@ -237,7 +237,7 @@
   </div>
 
   <div class="controls">
-    <button class="btn" onclick="refreshPage()"><i class="bi bi-arrow-repeat"></i> Refresh</button>
+    <button class="btn" onclick="updatePreview()"><i class="bi bi-arrow-repeat"></i> Refresh</button>
     <button class="btn" onclick="copyAllCode()"><i class="bi bi-clipboard"></i> Copy All Code</button>
   </div>
 
@@ -1724,10 +1724,6 @@ button:active::after {
     function getQueryParam(name) {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(name);
-    }
-
-    function refreshPage() {
-      location.reload();
     }
 
     function updatePreview() {
