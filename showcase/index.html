@@ -327,6 +327,76 @@
     </div> -->
       <!-- format -->
 
+      <!-- close button -->
+      <div class="card" data-title="buttons hover close x rotate cilck">
+        <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
+          <iframe srcdoc='
+      <html>
+        <head>
+          <style>
+            body {
+              margin: 0;
+              height: 100vh;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              background: #1e2029;
+            }
+            .close-btn {
+              position: relative;
+              width: 50px;
+              height: 50px;
+              background: linear-gradient(135deg, #ff4757, #e84118);
+              border: none;
+              border-radius: 50%;
+              cursor: pointer;
+              transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+            .close-btn:hover {
+              transform: rotate(90deg) scale(1.1);
+              background: linear-gradient(135deg, #ff6b81, #ff4757);
+            }
+            .close-btn:active {
+              transform: rotate(90deg) scale(0.95);
+              animation: spin 0.5s linear infinite;
+            }
+            .close-btn::before,
+            .close-btn::after {
+              content: "";
+              position: absolute;
+              width: 24px;
+              height: 3px;
+              background: white;
+              border-radius: 2px;
+              transition: all 0.3s ease;
+            }
+            .close-btn::before {
+              transform: rotate(45deg);
+            }
+            .close-btn::after {
+              transform: rotate(-45deg);
+            }
+            @keyframes spin {
+              0% { transform: rotate(0deg) scale(0.95); }
+              100% { transform: rotate(360deg) scale(0.95); }
+            }
+          </style>
+        </head>
+        <body>
+          <button class="close-btn" aria-label="Close"></button>
+        </body>
+      </html>'>
+          </iframe>
+
+          <a href="../playground/?id=close-rotate-button" class="get-code-btn"
+            style="margin-top: 20px; align-self: center;">
+            <i class="bi bi-code"></i> Get Code
+          </a>
+        </div>
+      </div>
       <!-- Ripple Button -->
       <div class="card" data-title="buttons">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
@@ -2336,7 +2406,7 @@ body {
         </div>
       </div>
 
-      <div class="card" data-title="buttons hover">
+      <div class="card" data-title="buttons hover follow us social youtube twitter LinkedIn whatsapp facebook silver">
         <div class=" card-body" style="display: flex; flex-direction: column; align-items: center;">
           <iframe srcdoc='
 <!DOCTYPE html>

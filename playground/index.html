@@ -310,7 +310,69 @@
       //   css:``
       // },
       // format
+      'close-rotate-button': {
+        html: `
+    <button class="close-btn" aria-label="Close"></button>
+  `,
+        css: `
+    body {
+      background: #1e2029;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
 
+    .close-btn {
+      position: relative;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #ff4757, #e84118);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .close-btn:hover {
+      transform: rotate(90deg) scale(1.1);
+      background: linear-gradient(135deg, #ff6b81, #ff4757);
+    }
+
+    .close-btn:active {
+      transform: rotate(90deg) scale(0.95);
+      animation: spin 0.5s linear infinite;
+    }
+
+    .close-btn::before,
+    .close-btn::after {
+      content: "";
+      position: absolute;
+      width: 24px;
+      height: 3px;
+      background: white;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .close-btn::before {
+      transform: rotate(45deg);
+    }
+
+    .close-btn::after {
+      transform: rotate(-45deg);
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg) scale(0.95); }
+      100% { transform: rotate(360deg) scale(0.95); }
+    }
+  `
+      },
       'ripple-button': {
         html: `<button class="btn">
     <i class="animation"></i>
