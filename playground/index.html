@@ -123,7 +123,6 @@
     textarea {
       flex: 1;
       width: 100%;
-      font-family: 'Fira Code', monospace;
       font-size: 14px;
       padding: 1rem;
       border: none;
@@ -310,6 +309,198 @@
       //   css:``
       // },
       // format
+      'messenger-button': {
+        html: `
+    <a href="#" target="_blank" class="messenger-btn-advanced">
+      <div class="msg-bubbles-container">
+        <div class="msg-bubble"></div>
+        <div class="msg-bubble"></div>
+        <div class="msg-bubble"></div>
+        <div class="msg-bubble"></div>
+        <div class="msg-bubble"></div>
+      </div>
+      <div class="msg-wave"></div>
+      <div class="msg-content-wrapper">
+        <div class="msg-icon">
+          <div class="msg-icon-circle"></div>
+          <i class="bi bi-messenger msg-icon-inner"></i>
+        </div>
+        <span>Message Us</span>
+      </div>
+    </a>
+  `,
+        css: `
+    @import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css');
+
+    body {
+      background: #1e2029;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .messenger-btn-advanced {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 28px;
+      background: linear-gradient(135deg, #0084ff, #006fff, #005bff);
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      border: none;
+      border-radius: 12px;
+      text-decoration: none;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 6px 20px rgba(0, 102, 255, 0.3);
+      z-index: 1;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .msg-content-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      z-index: 3;
+    }
+
+    .msg-icon {
+      position: relative;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+
+    .msg-icon-inner {
+      position: relative;
+      z-index: 2;
+    }
+
+    .msg-icon-circle {
+      position: absolute;
+      width: 36px;
+      height: 36px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      z-index: 1;
+    }
+
+    .msg-wave {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 200%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transform: translateX(-100%);
+      z-index: 2;
+    }
+
+    .msg-bubbles-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .msg-bubble {
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      opacity: 0;
+    }
+
+    .msg-bubble:nth-child(1) {
+      left: 15%; top: 80%; width: 8px; height: 8px;
+      animation: bubble-float 2s ease-out 0.1s infinite;
+    }
+    .msg-bubble:nth-child(2) {
+      left: 30%; top: 70%; width: 6px; height: 6px;
+      animation: bubble-float 2.2s ease-out 0.3s infinite;
+    }
+    .msg-bubble:nth-child(3) {
+      left: 50%; top: 90%; width: 10px; height: 10px;
+      animation: bubble-float 1.8s ease-out 0.2s infinite;
+    }
+    .msg-bubble:nth-child(4) {
+      left: 70%; top: 60%; width: 7px; height: 7px;
+      animation: bubble-float 2.1s ease-out 0.4s infinite;
+    }
+    .msg-bubble:nth-child(5) {
+      left: 85%; top: 75%; width: 5px; height: 5px;
+      animation: bubble-float 2.3s ease-out 0.5s infinite;
+    }
+
+    .messenger-btn-advanced:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 102, 255, 0.4);
+      animation: none;
+    }
+
+    .messenger-btn-advanced:hover .msg-icon {
+      transform: rotate(15deg) scale(1.2);
+    }
+
+    .messenger-btn-advanced:hover .msg-icon-circle {
+      animation: msg-pulse 1s ease-out forwards;
+    }
+
+    .messenger-btn-advanced:hover .msg-wave {
+      animation: wave 1.5s linear infinite;
+    }
+
+    .messenger-btn-advanced::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 10px;
+      box-shadow: 0 0 20px 5px rgba(0, 123, 255, 0.5);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: -1;
+    }
+
+    .messenger-btn-advanced:hover::after {
+      opacity: 1;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes wave {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    @keyframes msg-pulse {
+      0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+      70% { opacity: 0.7; }
+      100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+    }
+
+    @keyframes bubble-float {
+      0% { transform: translateY(0) scale(0.5); opacity: 0; }
+      20% { opacity: 0.7; }
+      100% { transform: translateY(-100px) scale(1.2); opacity: 0; }
+    }
+  `
+      },
       'close-rotate-button': {
         html: `
     <button class="close-btn" aria-label="Close"></button>
