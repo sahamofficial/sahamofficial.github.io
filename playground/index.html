@@ -30,9 +30,9 @@
   <!-- CodeMirror JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script> <!-- HTML -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js">
-
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9760151312817997"
+     crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
 
   <style>
@@ -310,7 +310,9 @@
       // },
       // format
       'messenger-button': {
-        html: `
+        html: `<head>
+         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+      </head>
     <a href="#" target="_blank" class="messenger-btn-advanced">
       <div class="msg-bubbles-container">
         <div class="msg-bubble"></div>
@@ -330,8 +332,6 @@
     </a>
   `,
         css: `
-    @import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css');
-
     body {
       background: #1e2029;
       display: flex;
@@ -507,7 +507,6 @@
   `,
         css: `
     body {
-      background: #1e2029;
       display: flex;
       justify-content: center;
       align-items: center;
