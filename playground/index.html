@@ -1761,7 +1761,7 @@ button:active::after {
       75% { transform: translateY(-3px) rotate(1deg); }
     }
   `
-        },
+      },
       'hyper3d-button': {
         html: `
 <button class="button-hyper3d">
@@ -1880,6 +1880,163 @@ button:active::after {
   mix-blend-mode: overlay;
   border-radius: inherit;
 }
+  `
+      },
+      'follow': {
+        html: `
+    <div class="button-wrapper">
+      <button>
+        Follow us
+
+        <!-- Twitter -->
+        <div class="icon-1">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path fill="#1DA1F2" d="M23.953 4.57a10 10 ... z"/>
+          </svg>
+        </div>
+
+        <!-- Facebook -->
+        <div class="icon-2">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path fill="#1877F2" d="M22.675 0H1.325C.593 0 ... z"/>
+          </svg>
+        </div>
+
+        <!-- Instagram -->
+        <div class="icon-3">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path fill="#E4405F" d="M12 2.163c3.204 0 ... z"/>
+          </svg>
+        </div>
+
+        <!-- YouTube -->
+        <div class="icon-4">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path fill="#FF0000" d="M23.498 6.186a3.016 ... z"/>
+          </svg>
+        </div>
+
+        <!-- LinkedIn -->
+        <div class="icon-5">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path fill="#0077B5" d="M20.447 20.452h-3.554 ... z"/>
+          </svg>
+        </div>
+      </button>
+    </div>
+  `,
+        css: `
+    body {
+      margin: 0;
+      background: linear-gradient(160deg, #e6e6e6, #d1d1d1, #f9f9f9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    button {
+      position: relative;
+      padding: 13px 35px;
+      font-size: 17px;
+      font-weight: 900;
+      color: #ffffff;
+      background: linear-gradient(145deg, #f2f2f2, #cfcfcf, #999999);
+      border: none;
+      border-radius: 8px;
+      box-shadow:
+        0 4px 0 #999999,
+        0 8px 15px rgba(0,0,0,0.2),
+        inset 0 2px 4px #ffffffb3;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+
+    .icon-1, .icon-2, .icon-3, .icon-4, .icon-5 {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translate(-50%, 0);
+      width: 0px;
+      height: auto;
+      transition: all .5s ease-in-out;
+      z-index: -1;
+    }
+
+    button:hover {
+      padding: 13px 25px;
+      border-radius: 8px 8px 24px 24px;
+    }
+
+    button:hover .icon-1 {
+      top: -250%;
+      left: 50%;
+      transform: translate(-50%, 0);
+      width: 50px;
+      animation: inIcon1 1s ease .45s forwards;
+    }
+
+    button:hover .icon-2 {
+      top: -200%;
+      left: 90%;
+      transform: translate(-50%, 0);
+      width: 75px;
+      animation: inIcon2 1s ease .45s forwards;
+    }
+
+    button:hover .icon-3 {
+      top: -130%;
+      left: 20%;
+      transform: translate(-50%, 0);
+      width: 60px;
+      animation: inIcon3 1s ease .45s forwards;
+    }
+
+    button:hover .icon-4 {
+      top: -300%;
+      left: 10%;
+      transform: translate(-50%, 0);
+      width: 85px;
+      animation: inIcon4 1s ease .45s forwards;
+    }
+
+    button:hover .icon-5 {
+      top: -350%;
+      left: 90%;
+      transform: translate(-50%, 0);
+      width: 85px;
+      animation: inIcon5 1s ease .45s forwards;
+    }
+
+    @keyframes inIcon1 {
+      0%, 100% { transform: translate(-50%, 0) rotate(0deg); transform-origin: 0 100%; }
+      25% { transform: translate(-50%, 0) rotate(5deg); }
+      50% { transform: translate(-50%, 0) rotate(1deg); }
+      65% { transform: translate(-50%, 0) rotate(3deg); }
+    }
+
+    @keyframes inIcon2 {
+      0%, 100% { transform: translate(-50%, 0) rotate(0deg); transform-origin: 0 100%; }
+      35% { transform: translate(-50%, 0) rotate(10deg); }
+      50% { transform: translate(-50%, 0) rotate(4deg); }
+      80% { transform: translate(-50%, 0) rotate(5deg); }
+    }
+
+    @keyframes inIcon3 {
+      0%, 100% { transform: translate(-50%, 0) rotate(0deg); transform-origin: 0 100%; }
+      35% { transform: translate(-50%, 0) rotate(-2deg); }
+    }
+
+    @keyframes inIcon4 {
+      0%, 100% { transform: translate(-50%, 0) rotate(0deg); transform-origin: 0 100%; }
+      40% { transform: translate(-50%, 0) rotate(-3deg); }
+    }
+
+    @keyframes inIcon5 {
+      0%, 100% { transform: translate(-50%, 0) rotate(0deg); transform-origin: 0 100%; }
+      35% { transform: translate(-50%, 0) rotate(-3deg); }
+    }
   `
       },
 
