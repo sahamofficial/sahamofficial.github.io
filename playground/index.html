@@ -100,6 +100,26 @@
       font-weight: 600;
     }
 
+    #htmlEditor {
+      width: 100%;
+      height: 100%;
+      font-family: 'Fira Code', monospace;
+      font-size: 14px;
+      border: none;
+      resize: none;
+      outline: none;
+      background: var(--editor-bg);
+      color: var(--text-color);
+      white-space: pre-wrap;
+      /* This ensures text wraps */
+      word-wrap: break-word;
+      /* Breaks long words if needed */
+      overflow-y: auto;
+      /* Vertical scroll if needed */
+      line-height: 1.5;
+      /* Better readability */
+    }
+
     textarea {
       flex: 1;
       width: 100%;
@@ -1772,9 +1792,7 @@ button:active::after {
         .catch(err => console.error('Failed to copy: ', err));
     }
 
-    // ✅ Wrap all init logic inside window.onload
     window.onload = function () {
-      // Initialize CodeMirror editors
       htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
         mode: "text/html",
         lineNumbers: true,
@@ -1787,18 +1805,15 @@ button:active::after {
         theme: "dracula"
       });
 
-      // Load snippet if any
       const id = getQueryParam('id');
       if (codeSnippets[id]) {
         htmlEditor.setValue(codeSnippets[id].html);
         cssEditor.setValue(codeSnippets[id].css);
       }
 
-      // Attach event listeners
       htmlEditor.on("change", updatePreview);
       cssEditor.on("change", updatePreview);
 
-      // Initial preview
       updatePreview();
     };
   </script>
@@ -1813,35 +1828,49 @@ button:active::after {
     </div>
 
   </div>
-  <!-- ✅ Place CodeMirror initialization here -->
   <script>
 
-    window.onload = function () {
-      htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
-        mode: "text/html",
-        lineNumbers: true,
-        theme: "dracula"
-      });
-
-      cssEditor = CodeMirror(document.getElementById("cssEditor"), {
-        mode: "css",
-        lineNumbers: true,
-        theme: "dracula"
-      });
-
-      // Load snippet if any
-      const id = getQueryParam('id');
-      if (codeSnippets[id]) {
-        htmlEditor.setValue(codeSnippets[id].html);
-        cssEditor.setValue(codeSnippets[id].css);
+   window.onload = function () {
+  htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
+    mode: "text/html",
+    lineNumbers: true,
+    theme: "dracula",
+    lineWrapping: true,
+    viewportMargin: Infinity, // Better scrolling
+    extraKeys: {
+      "Tab": function(cm) {
+        cm.replaceSelection("    ", "end"); // Insert 4 spaces on Tab
       }
+    }
+  });
 
-      updatePreview();
+  cssEditor = CodeMirror(document.getElementById("cssEditor"), {
+    mode: "css",
+    lineNumbers: true,
+    theme: "dracula",
+    lineWrapping: true,
+    viewportMargin: Infinity, // Better scrolling
+    extraKeys: {
+      "Tab": function(cm) {
+        cm.replaceSelection("    ", "end"); // Insert 4 spaces on Tab
+      }
+    }
+  });
 
-      htmlEditor.on('change', updatePreview);
-      cssEditor.on('change', updatePreview);
-    };
+  // Load snippet if ID is provided
+  const id = getQueryParam('id');
+  if (codeSnippets[id]) {
+    htmlEditor.setValue(codeSnippets[id].html);
+    cssEditor.setValue(codeSnippets[id].css);
+  }
 
+  // Update preview on editor changes
+  htmlEditor.on("change", updatePreview);
+  cssEditor.on("change", updatePreview);
+
+  // Initial preview update
+  updatePreview();
+};
   </script><!-- Vendor JS Files -->
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/vendor/php-email-form/validate.js"></script>
