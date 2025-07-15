@@ -19,7 +19,7 @@
   <link href="../assets/css/main.css" rel="stylesheet">
   <meta charset="UTF-8">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9760151312817997"
-     crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script>
   <title>UI Elements Gallery</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
   <style>
@@ -328,6 +328,284 @@
       </div>
     </div> -->
       <!-- format -->
+      <!-- menu -->
+      <div class="card" data-title="buttons hover click 9 nine menu circle">
+        <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
+          <iframe srcdoc='
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css");
+
+    body {
+      margin: 0;
+      background: #f8f9fa;
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+    }
+
+    .wrapper {
+      position: relative;
+      width: 52px;
+      height: 52px;
+      --black: #000000;
+      --ch-black: #141414;
+      --eer-black: #1b1b1b;
+      --night-rider: #2e2e2e;
+      --white: #ffffff;
+      --af-white: #f3f3f3;
+      --ch-white: #e1e1e1;
+    }
+
+    .circle {
+      display: block;
+      position: relative;
+      padding: 0;
+      z-index: 98;
+      margin: 0 auto;
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+      border-radius: 50%;
+      height: 52px;
+      width: 52px;
+      background-color: var(--white);
+      transition: all 0.3s ease;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .circle:hover {
+      background-color: var(--af-white);
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .dots-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: var(--night-rider);
+      transition: transform 0.3s ease;
+      transform-origin: center center;
+    }
+
+    .subs {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 52px;
+      height: 52px;
+      z-index: 0;
+    }
+
+    .sub-circle {
+      z-index: 0;
+      position: absolute;
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      transform: scale(0.5);
+      opacity: 0;
+      padding: 0;
+      margin: 0;
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+      border: none;
+      background: var(--white);
+    }
+
+    .sub-circle label {
+      background-color: var(--af-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--night-rider);
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .sub-circle label:hover {
+      cursor: pointer;
+      background-color: var(--ch-white);
+    }
+
+    .sub-circle i {
+      font-size: 16px;
+    }
+
+    .hidden-sub-trigger {
+      display: none;
+    }
+
+    .hidden-sub-trigger:checked ~ label {
+      background-color: var(--white);
+      box-shadow: inset 0 0 0 2px var(--night-rider);
+    }
+
+    .hidden-trigger {
+      display: none;
+    }
+
+    .subs button {
+      transform: scale(0.5);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .wrapper:not(.active):hover .subs button {
+      pointer-events: auto;
+    }
+
+    .wrapper:not(.active):hover .subs button:nth-of-type(1) {
+      transform: translate(0px, -70px) scale(1);
+      opacity: 1;
+      transition: all 0.2s ease 0.1s;
+    }
+    .wrapper:not(.active):hover .subs button:nth-of-type(2) {
+      transform: translate(70px, 0px) scale(1);
+      opacity: 1;
+      transition: all 0.2s ease 0.2s;
+    }
+    .wrapper:not(.active):hover .subs button:nth-of-type(3) {
+      transform: translate(0px, 70px) scale(1);
+      opacity: 1;
+      transition: all 0.2s ease 0.3s;
+    }
+    .wrapper:not(.active):hover .subs button:nth-of-type(4) {
+      transform: translate(-70px, 0px) scale(1);
+      opacity: 1;
+      transition: all 0.2s ease 0.4s;
+    }
+    .wrapper:not(.active):hover .subs button:nth-of-type(5) {
+      transform: translate(50px, -50px) scale(1);
+      opacity: 1;
+      transition: all 0.2s ease 0.5s;
+    }
+    .wrapper:not(.active):hover .subs button:nth-of-type(6) {
+      transform: translate(50px, 50px) scale(1);
+      opacity: 1;
+      transition: all 0.2s ease 0.6s;
+    }
+    .wrapper:not(.active):hover .subs button:nth-of-type(7) {
+      transform: translate(-50px, 50px) scale(1);
+      opacity: 1;
+      transition: all 0.2s ease 0.7s;
+    }
+    .wrapper:not(.active):hover .subs button:nth-of-type(8) {
+      transform: translate(-50px, -50px) scale(1);
+      opacity: 1;
+      transition: all 0.2s ease 0.8s;
+    }
+
+    .wrapper.active .subs button {
+      pointer-events: auto;
+    }
+    .wrapper.active .subs button:nth-of-type(1) {
+      transform: translate(0px, -70px) scale(1);
+      opacity: 1;
+      transition: all 0.2s ease 0.1s;
+    }
+    .wrapper.active .subs button:nth-of-type(2) {
+      transform: translate(70px, 0px) scale(1);
+      opacity: 1;
+      transition: all 0.2s ease 0.2s;
+    }
+    .wrapper.active .subs button:nth-of-type(3) {
+      transform: translate(0px, 70px) scale(1);
+      opacity: 1;
+      transition: all 0.2s ease 0.3s;
+    }
+    .wrapper.active .subs button:nth-of-type(4) {
+      transform: translate(-70px, 0px) scale(1);
+      opacity: 1;
+      transition: all 0.2s ease 0.4s;
+    }
+    .wrapper.active .subs button:nth-of-type(5) {
+      transform: translate(50px, -50px) scale(1);
+      opacity: 1;
+      transition: all 0.2s ease 0.5s;
+    }
+    .wrapper.active .subs button:nth-of-type(6) {
+      transform: translate(50px, 50px) scale(1);
+      opacity: 1;
+      transition: all 0.2s ease 0.6s;
+    }
+    .wrapper.active .subs button:nth-of-type(7) {
+      transform: translate(-50px, 50px) scale(1);
+      opacity: 1;
+      transition: all 0.2s ease 0.7s;
+    }
+    .wrapper.active .subs button:nth-of-type(8) {
+      transform: translate(-50px, -50px) scale(1);
+      opacity: 1;
+      transition: all 0.2s ease 0.8s;
+    }
+
+    .wrapper.active .dots-icon,
+    .wrapper:not(.active):hover .dots-icon {
+      transform: translate(-50%, -50%) rotate(90deg);
+    }
+
+    .circle:hover .dots-icon circle {
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <input type="checkbox" id="toggle" class="hidden-trigger">
+    <label for="toggle" class="circle">
+      <svg class="dots-icon" viewBox="0 0 24 24" width="24" height="24">
+        <g transform="translate(12 12)">
+          <circle cx="-6" cy="-6" r="1.5" fill="currentColor"/>
+          <circle cx="0" cy="-6" r="1.5" fill="currentColor"/>
+          <circle cx="6" cy="-6" r="1.5" fill="currentColor"/>
+          <circle cx="-6" cy="0" r="1.5" fill="currentColor"/>
+          <circle cx="0" cy="0" r="1.5" fill="currentColor"/>
+          <circle cx="6" cy="0" r="1.5" fill="currentColor"/>
+          <circle cx="-6" cy="6" r="1.5" fill="currentColor"/>
+          <circle cx="0" cy="6" r="1.5" fill="currentColor"/>
+          <circle cx="6" cy="6" r="1.5" fill="currentColor"/>
+        </g>
+      </svg>
+    </label>
+
+    <div class="subs">
+      <button class="sub-circle"><input type="radio" name="sub" class="hidden-sub-trigger" id="s1"><label for="s1"><i class="fas fa-edit"></i></label></button>
+      <button class="sub-circle"><input type="radio" name="sub" class="hidden-sub-trigger" id="s2"><label for="s2"><i class="fas fa-trash"></i></label></button>
+      <button class="sub-circle"><input type="radio" name="sub" class="hidden-sub-trigger" id="s3"><label for="s3"><i class="fas fa-share"></i></label></button>
+      <button class="sub-circle"><input type="radio" name="sub" class="hidden-sub-trigger" id="s4"><label for="s4"><i class="fas fa-cog"></i></label></button>
+      <button class="sub-circle"><input type="radio" name="sub" class="hidden-sub-trigger" id="s5"><label for="s5"><i class="fas fa-heart"></i></label></button>
+      <button class="sub-circle"><input type="radio" name="sub" class="hidden-sub-trigger" id="s6"><label for="s6"><i class="fas fa-bookmark"></i></label></button>
+      <button class="sub-circle"><input type="radio" name="sub" class="hidden-sub-trigger" id="s7"><label for="s7"><i class="fas fa-download"></i></label></button>
+      <button class="sub-circle"><input type="radio" name="sub" class="hidden-sub-trigger" id="s8"><label for="s8"><i class="fas fa-print"></i></label></button>
+    </div>
+  </div>
+
+  <script>
+    document.querySelector(".wrapper").addEventListener("click", function(e) {
+      if (e.target.closest(".circle")) {
+        this.classList.toggle("active");
+      }
+    });
+  </script>
+</body>
+</html>
+'></iframe>
+
+
+          <a href="../playground/?id=menu" class="get-code-btn" style="margin-top: 20px; align-self: center;">
+            <i class="bi bi-code"></i> Get Code
+          </a>
+
+        </div>
+      </div>
       <!-- message button -->
       <div class="card" data-title="buttons hover message us facebook messanger animation">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
