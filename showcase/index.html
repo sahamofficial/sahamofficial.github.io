@@ -100,6 +100,14 @@
       margin-top: 2rem;
     }
 
+    .gallery-load-more {
+      grid-column: 1 / -1;
+      /* Makes the container span all columns */
+      display: flex;
+      justify-content: center;
+      margin: 40px 0;
+    }
+
     .card {
       background: white;
       border-radius: 16px;
@@ -231,6 +239,62 @@
       background: white;
       font-size: 1rem;
       display: block;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    #loadMoreBtn {
+      margin: 40px auto;
+      display: block;
+      padding: 12px 32px;
+      background: var(--gradient);
+      color: var(--light);
+      border: none;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #loadMoreBtn:hover {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary) 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    #loadMoreBtn:active {
+      transform: translateY(0);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    #loadMoreBtn:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(64, 179, 162, 0.4);
+    }
+
+    /* Optional: Add a subtle shine effect */
+    #loadMoreBtn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(to right,
+          transparent 0%,
+          rgba(255, 255, 255, 0.2) 50%,
+          transparent 100%);
+      transition: left 0.7s ease;
+    }
+
+    #loadMoreBtn:hover::after {
+      left: 150%;
     }
   </style>
 </head>
@@ -2144,7 +2208,9 @@ body {
           </a>
         </div>
       </div>
-
+      <div class="gallery-load-more">
+        <button id="loadMoreBtn" style="margin: 40px auto; display: block;">Load More</button>
+      </div>
     </div>
 
     <footer>
@@ -2175,6 +2241,32 @@ body {
         const matches = text.includes(query);
         card.style.display = matches ? 'block' : 'none';
       });
+    });
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const cards = Array.from(document.querySelectorAll(".gallery .card"));
+      const loadMoreBtn = document.getElementById("loadMoreBtn");
+      const cardsPerPage = 6;
+      let currentIndex = 0;
+
+      // Initially hide all cards
+      cards.forEach(card => card.classList.add("hidden"));
+
+      function showNextCards() {
+        const nextCards = cards.slice(currentIndex, currentIndex + cardsPerPage);
+        nextCards.forEach(card => card.classList.remove("hidden"));
+        currentIndex += cardsPerPage;
+
+        if (currentIndex >= cards.length) {
+          loadMoreBtn.style.display = "none";
+        }
+      }
+
+      // Load first set of cards
+      showNextCards();
+
+      loadMoreBtn.addEventListener("click", showNextCards);
     });
   </script>
 
