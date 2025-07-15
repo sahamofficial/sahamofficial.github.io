@@ -314,7 +314,7 @@
     <div class="gallery">
 
       <!-- format -->
-      <!-- <div class="card" data-title="buttons hover>
+      <!-- <div class="card" data-title="buttons hover">
         <div class=" card-body" style="display: flex; flex-direction: column; align-items: center;">
         <iframe srcdoc=''>
         </iframe>
@@ -419,7 +419,7 @@
         </div>
       </div>
       <!-- explore-button -->
-      <div class="card" data-title="buttons explore hover">
+      <div class="card" data-title="buttons explore hover click">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
           <iframe srcdoc='
 <html>
@@ -603,7 +603,7 @@
         </div>
       </div>
       <!-- download button -->
-      <div class="card" data-title="buttons download hover">
+      <div class="card" data-title="buttons download hover click">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
           <iframe srcdoc='
 <!DOCTYPE html>
@@ -907,7 +907,7 @@ body {
         </div>
       </div>
       <!-- copy button -->
-      <div class="card" data-title="buttons hover copy">
+      <div class="card" data-title="buttons hover copy click">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
           <iframe srcdoc='
 <!DOCTYPE html>
@@ -1244,7 +1244,7 @@ body {
         </div>
       </div>
       <!-- subscribe button -->
-      <div class="card" data-title="buttons hover subscribe">
+      <div class="card" data-title="buttons hover subscribe click">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
           <iframe srcdoc='
 <!DOCTYPE html>
@@ -1455,7 +1455,7 @@ body {
         </div>
       </div>
       <!-- hover me -->
-      <div class="card" data-title="buttons hover me">
+      <div class="card" data-title="buttons hover me click">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
           <iframe srcdoc='
       <html>
@@ -1776,7 +1776,7 @@ body {
         </div>
       </div>
       <!-- like -->
-      <div class="card" data-title="buttons like bubble heart favourite">
+      <div class="card" data-title="buttons like bubble heart favourite click">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
           <iframe srcdoc='<!DOCTYPE html>
 <html lang="en">
@@ -2100,7 +2100,7 @@ body {
           </a>
         </body>
       </html>
-    ' style="width: 100%; height: 150px; border: none;"></iframe>
+    '></iframe>
 
           <a href="../playground/?id=whatsapp" class="get-code-btn" style="margin-top: 20px; align-self: center;">
             <i class="bi bi-code"></i> Get Code
@@ -2201,15 +2201,142 @@ body {
           </a>
         </body>
       </html>
-    ' style="width: 100%; height: 150px; border: none;"></iframe>
+    '></iframe>
 
           <a href="../playground/?id=instagram" class="get-code-btn" style="margin-top: 20px; align-self: center;">
             <i class="bi bi-code"></i> Get Code
           </a>
         </div>
       </div>
+      <!-- push me 3d -->
+      <div class="card" data-title="buttons hover click push me 3d">
+        <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
+          <iframe srcdoc='
+      <html>
+        <head>
+          <style>
+            body {
+              margin: 0;
+              padding: 0;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100vh;
+              background: #1e2029;
+              font-family: "Segoe UI", sans-serif;
+            }
+            .button-hyper3d {
+              position: relative;
+              background: transparent;
+              border: none;
+              padding: 0;
+              cursor: pointer;
+              transform-style: preserve-3d;
+              perspective: 1000px;
+              margin: 40px;
+              --button-depth: 10px;
+              --press-depth: 15px;
+              --main-color: #e67e22;
+              --shadow-color: #d35400;
+              --highlight-color: #f39c12;
+            }
+            .button-hyper3d-front, .button-hyper3d-side {
+              transition: all 0.3s cubic-bezier(0.5, 1.8, 0.9, 0.8);
+            }
+            .button-hyper3d-front {
+              position: relative;
+              display: inline-flex;
+              align-items: center;
+              padding: 16px 45px;
+              font-size: 18px;
+              font-weight: 700;
+              color: white;
+              background: linear-gradient(145deg, var(--highlight-color) 0%, var(--main-color) 50%, var(--shadow-color) 100%);
+              border-radius: 12px;
+              transform: translateZ(calc(var(--button-depth) / 2));
+              box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 2px 2px rgba(255,255,255,0.2), inset 0 -2px 4px rgba(0,0,0,0.2);
+              text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+              overflow: hidden;
+              z-index: 2;
+            }
+            .button-hyper3d-side {
+              position: absolute;
+              top: 50%;
+              left: 0;
+              width: 100%;
+              height: var(--button-depth);
+              background: var(--shadow-color);
+              border-radius: 0 0 12px 12px;
+              transform: rotateX(-90deg) translateY(calc(var(--button-depth) / 2));
+              transform-origin: top center;
+              filter: brightness(0.8);
+              box-shadow: 0 10px 15px rgba(0,0,0,0.3);
+              z-index: 1;
+            }
+            .button-glow {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 40%;
+              background: linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, transparent 100%);
+              border-radius: 12px 12px 0 0;
+            }
+            .button-text {
+              position: relative;
+            }
+            .button-hyper3d:hover .button-hyper3d-front {
+              transform: translateZ(calc(var(--button-depth) / 2 + 3px));
+              filter: brightness(1.1);
+            }
+            .button-hyper3d:hover .button-hyper3d-side {
+              height: calc(var(--button-depth) + 3px);
+              filter: brightness(0.9);
+            }
+            .button-hyper3d:active .button-hyper3d-front {
+              transform: translateZ(0);
+              transition: all 0.1s ease;
+              box-shadow: 0 1px 3px rgba(0,0,0,0.2), inset 0 4px 8px rgba(0,0,0,0.2);
+            }
+            .button-hyper3d:active .button-hyper3d-side {
+              height: var(--press-depth);
+              filter: brightness(0.6);
+              transition: all 0.1s ease;
+            }
+            .button-hyper3d-front::after {
+              content: "";
+              position: absolute;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              background-image: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 1px, transparent 1px),
+                                radial-gradient(circle at 80% 70%, rgba(0,0,0,0.1) 1px, transparent 1px);
+              background-size: 10px 10px;
+              mix-blend-mode: overlay;
+              border-radius: inherit;
+            }
+          </style>
+        </head>
+        <body>
+          <button class="button-hyper3d">
+            <span class="button-hyper3d-front">
+              <span class="button-glow"></span>
+              <span class="button-text">Push Me</span>
+            </span>
+            <span class="button-hyper3d-side"></span>
+          </button>
+        </body>
+      </html>' style="width: 100%; height: 220px; border: none; border-radius: 12px; overflow: hidden;">
+          </iframe>
 
-      
+          <a href="../playground/?id=hyper3d-button" class="get-code-btn" style="margin-top: 20px; align-self: center;">
+            <i class="bi bi-code"></i> Get Code
+          </a>
+        </div>
+      </div>
+
+
       <div class="gallery-load-more">
         <button id="loadMoreBtn" style="margin: 40px auto; display: block;">Load More</button>
       </div>
