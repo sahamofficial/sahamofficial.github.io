@@ -30,7 +30,10 @@
   <!-- CodeMirror JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script> <!-- HTML -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js">
+
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
 
   <style>
     :root {
@@ -248,6 +251,13 @@
     .CodeMirror::-webkit-scrollbar-thumb:hover {
       background-color: #666;
     }
+
+    .devicon-html5-plain,
+    .devicon-css3-plain {
+      font-size: 1.2rem;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
   </style>
 
 </head>
@@ -258,7 +268,7 @@
   <div class="editor-wrapper">
     <div class="editor-pane">
       <div class="editor-header">
-        <span><i class="bi bi-filetype-html"></i> HTML</span>
+        <span><i class="devicon-html5-plain colored"></i> HTML</span>
         <button class="copy-btn" onclick="copyHtml()">Copy</button>
       </div>
       <div id="htmlEditor"></div>
@@ -266,7 +276,7 @@
 
     <div class="editor-pane">
       <div class="editor-header">
-        <span><i class="bi bi-filetype-css"></i> CSS</span>
+        <span><i class="devicon-css3-plain colored"></i> CSS</span>
         <button class="copy-btn" onclick="copyCss()">Copy</button>
       </div>
       <div id="cssEditor"></div>
