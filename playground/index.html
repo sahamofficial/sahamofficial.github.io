@@ -34,7 +34,7 @@
 
   <style>
     :root {
-      --primary: #40B3A2;
+      --primary: #1e2029;
       --primary-dark: #2d7a6d;
       --secondary: #6C5B7B;
       --accent: #F8B195;
@@ -100,7 +100,7 @@
       font-weight: 600;
     }
 
-    #htmlEditor {
+    #htmlEditor, #cssEditor {
       width: 100%;
       height: 100%;
       font-family: 'Fira Code', monospace;
@@ -111,13 +111,9 @@
       background: var(--editor-bg);
       color: var(--text-color);
       white-space: pre-wrap;
-      /* This ensures text wraps */
       word-wrap: break-word;
-      /* Breaks long words if needed */
       overflow-y: auto;
-      /* Vertical scroll if needed */
       line-height: 1.5;
-      /* Better readability */
     }
 
     textarea {
