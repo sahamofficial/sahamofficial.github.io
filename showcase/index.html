@@ -2359,16 +2359,51 @@ body {
 
   </div>
   <script>
-    const searchInput = document.getElementById('searchInput');
-    const cards = document.querySelectorAll('.card');
+    document.addEventListener("DOMContentLoaded", function () {
+      const cards = Array.from(document.querySelectorAll(".gallery .card"));
+      const loadMoreBtn = document.getElementById("loadMoreBtn");
+      const searchInput = document.getElementById("searchInput");
+      const cardsPerPage = 6;
+      let currentIndex = 0;
 
-    searchInput.addEventListener('input', () => {
-      const query = searchInput.value.toLowerCase();
+      function showNextCards() {
+        const nextCards = cards.slice(currentIndex, currentIndex + cardsPerPage);
+        nextCards.forEach(card => card.classList.remove("hidden"));
+        currentIndex += cardsPerPage;
 
-      cards.forEach(card => {
-        const text = card.getAttribute('data-title')?.toLowerCase() || '';
-        const matches = text.includes(query);
-        card.style.display = matches ? 'block' : 'none';
+        if (currentIndex >= cards.length) {
+          loadMoreBtn.style.display = "none";
+        }
+      }
+
+      function resetCards() {
+        cards.forEach(card => {
+          card.classList.add("hidden");
+          card.style.display = "";
+        });
+        currentIndex = 0;
+        showNextCards();
+      }
+
+      resetCards();
+
+      loadMoreBtn.addEventListener("click", showNextCards);
+
+      searchInput.addEventListener("input", () => {
+        const query = searchInput.value.trim().toLowerCase();
+
+        if (query === "") {
+          loadMoreBtn.style.display = "block";
+          resetCards();
+        } else {
+          cards.forEach(card => {
+            const text = card.getAttribute("data-title")?.toLowerCase() || "";
+            const matches = text.includes(query);
+            card.classList.remove("hidden");
+            card.style.display = matches ? "block" : "none";
+          });
+          loadMoreBtn.style.display = "none";
+        }
       });
     });
   </script>
