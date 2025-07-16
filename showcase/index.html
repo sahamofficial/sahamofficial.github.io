@@ -328,10 +328,176 @@
       </div>
     </div> -->
       <!-- format -->
-       <!-- input -->
-       <div class="card" data-title="buttons hover">
+      <!-- add to cart -->
+      <div class="card" data-title="buttons hover add-to-cart">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
-   <iframe srcdoc='
+          <iframe srcdoc='
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #f8fafc;
+      margin: 0;
+    }
+
+    #cart-radio {
+      display: none;
+    }
+
+    .cart-container {
+      position: relative;
+    }
+
+    .cart-btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .cart-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px rgba(59, 130, 246, 0.3);
+    }
+
+    .cart-btn:hover .cart-icon {
+      transform: translateX(3px) rotate(-10deg);
+    }
+
+    .cart-icon {
+      transition: all 0.3s ease;
+      opacity: 1;
+      transform: translateX(0) rotate(0);
+    }
+
+    .checkmark {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%) scale(0);
+      opacity: 0;
+    }
+
+    .btn-text {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    #cart-radio:checked + .cart-btn {
+      background: linear-gradient(135deg, #10b981, #059669);
+      pointer-events: none;
+    }
+
+    #cart-radio:checked + .cart-btn .cart-icon {
+      animation: fly 0.8s ease forwards, resetIcon 0.1s ease 2.5s forwards;
+    }
+
+    #cart-radio:checked + .cart-btn .btn-text {
+      animation: fade 0.8s ease forwards, resetText 0.1s ease 2.5s forwards;
+    }
+
+    #cart-radio:checked + .cart-btn .checkmark {
+      animation: check 0.8s ease forwards, resetCheck 0.1s ease 2.5s forwards;
+    }
+
+    #cart-radio:checked + .cart-btn {
+      animation: resetBtn 0.1s ease 2.5s forwards;
+    }
+
+    @keyframes fly {
+      0% { transform: translateX(0) rotate(0); opacity: 1; }
+      50% { transform: translateX(60px) rotate(-30deg); opacity: 0.5; }
+      100% { transform: translateX(100px) rotate(-45deg); opacity: 0; }
+    }
+
+    @keyframes fade {
+      0% { opacity: 1; transform: translateX(0); }
+      50% { opacity: 0; transform: translateX(-20px); }
+      100% { opacity: 0; transform: translateX(-20px); }
+    }
+
+    @keyframes check {
+      0% { opacity: 0; transform: translateX(-50%) scale(0.5); }
+      50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+      100% { opacity: 1; transform: translateX(-50%) scale(1); }
+    }
+
+    @keyframes resetIcon {
+      to { opacity: 1; transform: translateX(0) rotate(0); }
+    }
+
+    @keyframes resetText {
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes resetCheck {
+      to { opacity: 0; transform: translateX(-50%) scale(0); }
+    }
+
+    @keyframes resetBtn {
+      to {
+        background: linear-gradient(135deg, #3b82f6, #6366f1);
+        pointer-events: auto;
+      }
+    }
+
+    #cart-radio:checked {
+      animation: uncheck 0.1s linear 2.6s forwards;
+    }
+
+    @keyframes uncheck {
+      to { visibility: hidden; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cart-container">
+    <input type="radio" id="cart-radio" name="cart">
+    <label for="cart-radio" class="cart-btn">
+      <svg class="cart-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="9" cy="21" r="1"></circle>
+        <circle cx="20" cy="21" r="1"></circle>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+      </svg>
+      <span class="btn-text">Add to Cart</span>
+      <svg class="checkmark" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+    </label>
+  </div>
+</body>
+</html>'>
+          </iframe>
+
+          <a href="../playground/?id=add-to-cart" class="get-code-btn" style="margin-top: 20px; align-self: center;">
+            <i class="bi bi-code"></i> Get Code
+          </a>
+
+        </div>
+      </div>
+      <!-- input -->
+      <div class="card" data-title="hover input-box name">
+        <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
+          <iframe srcdoc='
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -431,13 +597,13 @@
 
 
 
-        <a href="../playground/?id=input" class="get-code-btn" style="margin-top: 20px; align-self: center;">
-          <i class="bi bi-code"></i> Get Code
-        </a>
+          <a href="../playground/?id=input" class="get-code-btn" style="margin-top: 20px; align-self: center;">
+            <i class="bi bi-code"></i> Get Code
+          </a>
 
+        </div>
       </div>
-    </div>
-       <!-- search bar -->
+      <!-- search bar -->
       <div class="card" data-title="input search-bar 3d">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
           <iframe srcdoc='
