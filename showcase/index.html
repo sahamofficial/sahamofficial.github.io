@@ -401,25 +401,16 @@
       transform: translateX(0);
     }
 
-    #cart-radio:checked + .cart-btn {
-      background: linear-gradient(135deg, #10b981, #059669);
-      pointer-events: none;
-    }
-
     #cart-radio:checked + .cart-btn .cart-icon {
-      animation: fly 0.8s ease forwards, resetIcon 0.1s ease 2.5s forwards;
+      animation: fly 0.8s ease forwards, resetIcon 0.8s ease 0.8s forwards;
     }
 
     #cart-radio:checked + .cart-btn .btn-text {
-      animation: fade 0.8s ease forwards, resetText 0.1s ease 2.5s forwards;
+      animation: fade 0.8s ease forwards, resetText 0.8s ease 0.8s forwards;
     }
 
     #cart-radio:checked + .cart-btn .checkmark {
-      animation: check 0.8s ease forwards, resetCheck 0.1s ease 2.5s forwards;
-    }
-
-    #cart-radio:checked + .cart-btn {
-      animation: resetBtn 0.1s ease 2.5s forwards;
+      animation: check 0.8s ease forwards, resetCheck 0.8s ease 0.8s forwards;
     }
 
     @keyframes fly {
@@ -485,8 +476,9 @@
     </label>
   </div>
 </body>
-</html>'>
-          </iframe>
+</html>
+'></iframe>
+
 
           <a href="../playground/?id=add-to-cart" class="get-code-btn" style="margin-top: 20px; align-self: center;">
             <i class="bi bi-code"></i> Get Code

@@ -310,8 +310,7 @@
       // },
       // format
       'add-to-cart': {
-        html: `
-<div class="cart-container">
+        html: `<div class="cart-container">
   <input type="radio" id="cart-radio" name="cart">
   <label for="cart-radio" class="cart-btn">
     <svg class="cart-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -326,8 +325,8 @@
     </svg>
   </label>
 </div>
-`
-        ,
+
+`,
         css: `
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600&display=swap');
 
@@ -394,25 +393,16 @@ body {
   transform: translateX(0);
 }
 
-#cart-radio:checked + .cart-btn {
-  background: linear-gradient(135deg, #10b981, #059669);
-  pointer-events: none;
-}
-
 #cart-radio:checked + .cart-btn .cart-icon {
-  animation: fly 0.8s ease forwards, resetIcon 0.1s ease 2.5s forwards;
+  animation: fly 0.8s ease forwards, resetIcon 0.8s ease 0.8s forwards;
 }
 
 #cart-radio:checked + .cart-btn .btn-text {
-  animation: fade 0.8s ease forwards, resetText 0.1s ease 2.5s forwards;
+  animation: fade 0.8s ease forwards, resetText 0.8s ease 0.8s forwards;
 }
 
 #cart-radio:checked + .cart-btn .checkmark {
-  animation: check 0.8s ease forwards, resetCheck 0.1s ease 2.5s forwards;
-}
-
-#cart-radio:checked + .cart-btn {
-  animation: resetBtn 0.1s ease 2.5s forwards;
+  animation: check 0.8s ease forwards, resetCheck 0.8s ease 0.8s forwards;
 }
 
 @keyframes fly {
