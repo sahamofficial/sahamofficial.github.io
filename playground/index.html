@@ -309,6 +309,66 @@
       //   css:``
       // },
       // format
+      'premium-gold-button': {
+  html: `
+    <button class="gold-button">PREMIUM</button>
+  `,
+  css: `
+    .gold-button {
+      position: relative;
+      padding: 15px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #5a4a1f;
+      background: linear-gradient(135deg, 
+                    #f9e07b 0%, 
+                    #f5d76e 20%, 
+                    #e6c757 50%, 
+                    #d4b143 80%, 
+                    #c9a637 100%);
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(194, 158, 53, 0.6),
+                  0 6px 8px rgba(0, 0, 0, 0.2),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                  inset 0 -3px 0 rgba(0, 0, 0, 0.2);
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .gold-button:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, 
+                    transparent, 
+                    rgba(255, 255, 255, 0.2), 
+                    transparent);
+      transition: all 0.5s ease;
+    }
+
+    .gold-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(194, 158, 53, 0.8),
+                  0 8px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .gold-button:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 10px rgba(194, 158, 53, 0.6),
+                  inset 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .gold-button:hover:before {
+      left: 100%;
+    }
+  `
+},
       'menu': {
         html: `<head> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></head>
     <div class="wrapper">
