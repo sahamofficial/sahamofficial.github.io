@@ -309,6 +309,118 @@
       //   css:``
       // },
       // format
+      'hyper-gold-button': {
+  html: `<button class="hyper-gold-button"><span>SOLID GOLD</span></button>`,
+  css: `
+    .hyper-gold-button {
+      position: relative;
+      padding: 18px 36px;
+      font-family: 'Times New Roman', serif;
+      font-size: 20px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      color: #3a2e0f;
+      background:
+        linear-gradient(145deg,
+          #f8e072 0%,
+          #e6c34d 25%,
+          #d4a732 50%,
+          #c29526 75%,
+          #b88822 100%),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100" height="100" filter="url(%23noise)" opacity="0.15"/></svg>');
+      border: none;
+      border-radius: 8px;
+      border-top: 2px solid rgba(255, 236, 168, 0.7);
+      border-bottom: 2px solid rgba(110, 80, 20, 0.4);
+      box-shadow:
+        0 4px 20px rgba(210, 160, 50, 0.6),
+        0 6px 12px rgba(0, 0, 0, 0.3),
+        inset 0 2px 4px rgba(255, 255, 255, 0.4),
+        inset 0 -4px 6px rgba(0, 0, 0, 0.3),
+        -2px 0 8px rgba(255, 215, 100, 0.4),
+        2px 0 8px rgba(0, 0, 0, 0.2);
+      text-shadow:
+        0 1px 1px rgba(255, 255, 255, 0.6),
+        0 -1px 1px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      overflow: hidden;
+      transform: perspective(500px) rotateX(0deg);
+      transform-style: preserve-3d;
+    }
+
+    .hyper-gold-button:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.3) 0%, transparent 3%),
+        radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.2) 0%, transparent 3%),
+        linear-gradient(105deg, transparent 45%, rgba(255, 255, 255, 0.1) 45%, rgba(255, 255, 255, 0.1) 55%, transparent 55%);
+      border-radius: 6px;
+      pointer-events: none;
+    }
+
+    .hyper-gold-button:before {
+      content: '';
+      position: absolute;
+      top: -10%;
+      left: -60%;
+      width: 60%;
+      height: 120%;
+      background: linear-gradient(90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0) 100%);
+      transform: rotate(15deg);
+      transition: all 0.7s ease;
+      filter: blur(6px);
+    }
+
+    .hyper-gold-button:hover {
+      transform: perspective(500px) rotateX(5deg) translateY(-2px);
+      box-shadow:
+        0 6px 25px rgba(210, 160, 50, 0.8),
+        0 8px 15px rgba(0, 0, 0, 0.4),
+        inset 0 2px 4px rgba(255, 255, 255, 0.4),
+        inset 0 -4px 6px rgba(0, 0, 0, 0.3),
+        -3px 0 10px rgba(255, 215, 100, 0.5),
+        3px 0 10px rgba(0, 0, 0, 0.3);
+      color: #2a210b;
+    }
+
+    .hyper-gold-button:hover:before {
+      left: 120%;
+      transition-delay: 0.1s;
+    }
+
+    .hyper-gold-button:active {
+      transform: perspective(500px) rotateX(5deg) translateY(1px);
+      box-shadow:
+        0 3px 15px rgba(210, 160, 50, 0.5),
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        inset 0 4px 8px rgba(0, 0, 0, 0.3),
+        inset 0 -2px 4px rgba(255, 255, 255, 0.2);
+      background:
+        linear-gradient(145deg,
+          #e6c34d 0%,
+          #d4a732 25%,
+          #c29526 50%,
+          #b88822 75%,
+          #a87b1e 100%),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100" height="100" filter="url(%23noise)" opacity="0.2"/></svg>');
+    }
+
+    .hyper-gold-button span {
+      position: relative;
+      display: inline-block;
+      transform: translateZ(20px);
+    }
+  `
+},
       'premium-gold-button': {
   html: `
     <button class="gold-button">PREMIUM</button>
