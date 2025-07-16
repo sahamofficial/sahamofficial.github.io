@@ -327,6 +327,138 @@
 
       </div>
     </div> -->
+    <!-- moon rising animation -->
+    <div class="card" data-title="buttons hover moon rising animation">
+        <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
+        <iframe srcdoc='
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Sacramento&display=swap");
+
+    body {
+      background: linear-gradient(180deg, #0a043c 0%, #190a47 100%);
+      height: 150vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Sacramento", cursive;
+    }
+
+    .container, .button, .moon, .crater, .button span {
+      position: absolute;
+    }
+
+    .container {
+      width: 200px;
+      height: 200px;
+    }
+
+    a:hover .moon {
+      bottom: 176px;
+      transition: all 1s ease-in-out;
+      box-shadow: 0 0 20px rgba(200, 214, 229, 0.8);
+      filter: brightness(1.2);
+    }
+
+    a:hover .button {
+      box-shadow: 0 0 36px #5d54a4;
+      transition: all 1s ease-in-out;
+    }
+
+    a:hover .button span {
+      text-shadow: 0 0 10px rgba(200, 214, 229, 0.5);
+    }
+
+    .moon {
+      width: 64px;
+      height: 64px;
+      left: 55px;
+      bottom: 136px;
+      background: linear-gradient(180deg, #e6e6e6 0%, #a8a8c0 100%);
+      box-shadow: 0 0 20px rgba(200, 214, 229, 0.6);
+      z-index: 2;
+      border-radius: 50%;
+      transition: all 1s ease-in-out;
+    }
+
+    .crater {
+      background: rgba(166, 166, 182, 0.6);
+      border-radius: 50%;
+      z-index: 3;
+    }
+
+    .crater-1 {
+      width: 12px;
+      height: 12px;
+      top: 20px;
+      left: 15px;
+    }
+
+    .crater-2 {
+      width: 8px;
+      height: 8px;
+      top: 35px;
+      left: 40px;
+    }
+
+    .crater-3 {
+      width: 15px;
+      height: 15px;
+      top: 40px;
+      left: 20px;
+    }
+
+    .button {
+      width: 171px;
+      height: 65px;
+      background: #190a47;
+      box-shadow: 0 0 16px #5d54a4;
+      border-radius: 2px;
+      z-index: 3;
+      border: 2px solid;
+      transition: all 1s ease-in-out;
+      border-image: linear-gradient(#360154, #7e7cc9) 30;
+    }
+
+    .button span {
+      text-align: center;
+      left: 50px;
+      font-size: 35px;
+      line-height: 70px;
+      margin: 0 auto;
+      transition: all 0.3s ease-in-out;
+      background: -webkit-linear-gradient(#e6e6e6, #a8a8c0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="#" target="_blank">
+      <div class="button">
+        <span>Moon</span>
+      </div>
+      <div class="moon"></div>
+      <div class="crater crater-1"></div>
+      <div class="crater crater-2"></div>
+      <div class="crater crater-3"></div>
+    </a>
+  </div>
+</body>
+</html>'
+>
+        </iframe>
+
+        <a href="../playground/?id=moon" class="get-code-btn" style="margin-top: 20px; align-self: center;">
+          <i class="bi bi-code"></i> Get Code
+        </a>
+
+      </div>
+    </div>
       <!-- paste -->
       <div class="card" data-title="buttons hover paste 3d click animation animated">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
