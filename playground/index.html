@@ -513,6 +513,64 @@
       transform: rotate(45deg);
     }
   `},
+      'keycap-button': {
+  html: `
+    <div class="keycap">Y</div>
+  `,
+  css: `
+    body {
+      background: #e0e0e0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+
+    .keycap {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(145deg, #ffffff, #dcdcdc);
+      border-radius: 12px;
+      box-shadow:
+        0 6px 10px rgba(0, 0, 0, 0.4),
+        inset 2px 2px 5px rgba(255, 255, 255, 0.8),
+        inset -2px -2px 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 40px;
+      font-weight: bold;
+      font-family: 'Segoe UI', sans-serif;
+      color: #333;
+      transform: perspective(300px) rotateX(6deg);
+      transition: all 0.2s ease;
+      border: 1px solid #ccc;
+      position: relative;
+    }
+
+    .keycap::before {
+      content: "";
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      right: 4px;
+      bottom: 4px;
+      border-radius: 8px;
+      box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.4),
+                  inset 4px 4px 10px rgba(0, 0, 0, 0.15);
+      z-index: 0;
+    }
+
+    .keycap:hover {
+      transform: perspective(300px) rotateX(2deg) translateY(2px);
+      box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.3),
+        inset 1px 1px 3px rgba(255, 255, 255, 0.8),
+        inset -1px -1px 3px rgba(0, 0, 0, 0.1);
+    }
+  `
+},
       'moon': {
         html: `
   <div class="container">
