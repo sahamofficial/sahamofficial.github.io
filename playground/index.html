@@ -309,6 +309,133 @@
       //   css:``
       // },
       // format
+      'sunmoon': {
+  html: `
+    <div class="theme-switch">
+      <input type="checkbox" id="themeCheckbox" class="theme-checkbox">
+      <label for="themeCheckbox" class="theme-toggle">
+        <span class="toggle-circle"></span>
+        <i class="fas fa-sun toggle-icon sun"></i>
+        <i class="fas fa-moon toggle-icon moon"></i>
+      </label>
+    </div>
+  `,
+  css: `
+    :root {
+      --light-bg: linear-gradient(135deg, #ffde7d 0%, #f8a055 100%);
+      --light-shadow: #d97e2a;
+      --dark-bg: linear-gradient(135deg, #3a416f 0%, #141a31 100%);
+      --dark-shadow: #0e1225;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      transition: background 0.5s ease;
+    }
+    .theme-switch {
+      position: relative;
+      width: 80px;
+      height: 40px;
+    }
+    .theme-checkbox {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .theme-toggle {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 50px;
+      background: var(--light-bg);
+      cursor: pointer;
+      transition: all 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+      box-shadow: 
+        0 5px 0 var(--light-shadow),
+        0 7px 15px rgba(0, 0, 0, 0.2);
+      transform: translateY(0);
+      overflow: hidden;
+    }
+    .toggle-circle {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: white;
+      border-radius: 50%;
+      transition: all 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+      left: 5px;
+      top: 5px;
+      box-shadow: 
+        inset 3px 3px 5px rgba(0, 0, 0, 0.1),
+        0 2px 5px rgba(0, 0, 0, 0.2);
+      z-index: 2;
+    }
+    .toggle-icon {
+      position: absolute;
+      font-size: 20px;
+      color: white;
+      filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
+      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      top: 10px;
+    }
+    .sun {
+      right: 15px;
+      opacity: 1;
+      transform: rotate(0deg);
+    }
+    .moon {
+      left: 50px;
+      opacity: 0;
+      transform: rotate(-90deg);
+    }
+    .theme-switch:hover .theme-toggle {
+      transform: translateY(-2px);
+      box-shadow: 
+        0 7px 0 var(--light-shadow),
+        0 10px 20px rgba(0, 0, 0, 0.25);
+    }
+    .theme-checkbox:active + .theme-toggle {
+      transform: translateY(3px);
+      box-shadow: 
+        0 2px 0 var(--light-shadow),
+        0 3px 6px rgba(0, 0, 0, 0.2);
+      transition: all 0.1s ease;
+    }
+    .theme-checkbox:checked + .theme-toggle {
+      background: var(--dark-bg);
+      box-shadow: 
+        0 5px 0 var(--dark-shadow),
+        0 7px 15px rgba(0, 0, 0, 0.3);
+    }
+    .theme-checkbox:checked + .theme-toggle .toggle-circle {
+      left: 45px;
+      background: #1a2038;
+      box-shadow: 
+        inset -3px -3px 5px rgba(255, 255, 255, 0.05),
+        0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+    .theme-checkbox:checked + .theme-toggle .sun {
+      left: -20px;
+      opacity: 0;
+      transform: rotate(90deg);
+    }
+    .theme-checkbox:checked + .theme-toggle .moon {
+      left: 15px;
+      opacity: 1;
+      transform: rotate(0deg);
+    }
+    .theme-checkbox:checked:hover + .theme-toggle {
+      box-shadow: 
+        0 7px 0 var(--dark-shadow),
+        0 10px 20px rgba(0, 0, 0, 0.35);
+    }
+  `
+},
       'signup': {
   html: `
     <button class="signup-btn-3d">
