@@ -31,6 +31,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script> <!-- HTML -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9760151312817997"
     crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
@@ -104,7 +105,8 @@
     }
 
     #htmlEditor,
-    #cssEditor {
+    #cssEditor,
+    #jsEditor {
       width: 100%;
       height: 100%;
       font-family: 'Fira Code', monospace;
@@ -280,6 +282,13 @@
       </div>
       <div id="cssEditor"></div>
     </div>
+    <div class="editor-pane">
+      <div class="editor-header">
+        <span><i class="devicon-javascript-plain colored"></i> JS</span>
+        <button class="copy-btn" onclick="copyJs()">Copy</button>
+      </div>
+      <div id="jsEditor"></div>
+    </div>
 
     <div class="preview-container">
       <div class="preview-header">
@@ -290,14 +299,13 @@
   </div>
 
   <div class="controls">
-    <!-- <button class="btn" onclick="updatePreview()"><i class="bi bi-arrow-repeat"></i> Refresh</button> -->
     <button class="btn" onclick="copyAllCode()"><i class="bi bi-clipboard"></i> Copy All Code</button>
   </div>
 
   <div class="toast" id="toast"></div>
 
   <script>
-    let htmlEditor, cssEditor;
+    let htmlEditor, cssEditor, jsEditor;
 
     const preview = document.getElementById('preview');
     const toast = document.getElementById('toast');
@@ -310,7 +318,7 @@
       // },
       // format
       'sunmoon': {
-  html: `
+        html: `
     <div class="theme-switch">
       <input type="checkbox" id="themeCheckbox" class="theme-checkbox">
       <label for="themeCheckbox" class="theme-toggle">
@@ -320,7 +328,7 @@
       </label>
     </div>
   `,
-  css: `
+        css: `
     :root {
       --light-bg: linear-gradient(135deg, #ffde7d 0%, #f8a055 100%);
       --light-shadow: #d97e2a;
@@ -435,14 +443,14 @@
         0 10px 20px rgba(0, 0, 0, 0.35);
     }
   `
-},
+      },
       'signup': {
-  html: `
+        html: `
     <button class="signup-btn-3d">
       <i class="fas fa-user-plus"></i> Sign Up
     </button>
   `,
-  css: `
+        css: `
     .signup-btn-3d {
       position: relative;
       display: inline-flex;
@@ -507,14 +515,14 @@
       pointer-events: none;
     }
   `
-},
+      },
       'login': {
-  html: `
+        html: `
     <button class="btn-3d">
       <i class="fas fa-sign-in-alt"></i> Login
     </button>
   `,
-  css: `
+        css: `
     .btn-3d {
       position: relative;
       display: inline-flex;
@@ -585,7 +593,7 @@
       pointer-events: none;
     }
   `
-},
+      },
       'cracked-button': {
         html: `
     <div class="cracked-glass-btn">
@@ -4405,86 +4413,93 @@ button:active::after {
       },
     };
 
+    function getQueryParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    }
+
     function showToast(message) {
       toast.textContent = message;
-      toast.classList.add('show');
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 3000);
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2000);
     }
 
-    function getQueryParam(name) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(name);
-    }
-
-    function updatePreview() {
-      const preview = document.getElementById('preview');
-      const html = htmlEditor.getValue();
-      const css = cssEditor.getValue();
-
-      preview.srcdoc = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <style>
-        body {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          min-height: 100vh;
-          margin: 0;
-          flex-direction: column;
-        }
-        ${css}
-      </style>
-    </head>
-    <body>
-      ${html.replace(/<body[^>]*>|<\/body>/g, '')}
-    </body>
-    </html>
-  `;
-    }
     function copyHtml() {
       navigator.clipboard.writeText(htmlEditor.getValue())
-        .then(() => showToast('HTML copied to clipboard!'))
-        .catch(err => console.error('Failed to copy HTML: ', err));
+        .then(() => showToast('HTML copied to clipboard!'));
     }
 
     function copyCss() {
       navigator.clipboard.writeText(cssEditor.getValue())
-        .then(() => showToast('CSS copied to clipboard!'))
-        .catch(err => console.error('Failed to copy CSS: ', err));
+        .then(() => showToast('CSS copied to clipboard!'));
+    }
+
+    function copyJs() {
+      navigator.clipboard.writeText(jsEditor.getValue())
+        .then(() => showToast('JS copied to clipboard!'));
     }
 
     function copyAllCode() {
-      const code = `<style>${cssEditor.getValue()}</style>\n${htmlEditor.getValue()}`;
+      const code = `<style>${cssEditor.getValue()}</style>\n${htmlEditor.getValue()}\n<script>${jsEditor.getValue()}<\/script>`;
       navigator.clipboard.writeText(code)
-        .then(() => showToast('All code copied to clipboard!'))
-        .catch(err => console.error('Failed to copy: ', err));
+        .then(() => showToast('All code copied to clipboard!'));
+    }
+
+    function updatePreview() {
+      const html = htmlEditor.getValue();
+      const css = `<style>${cssEditor.getValue()}</style>`;
+      const js = `<script>${jsEditor.getValue()}<\/script>`;
+      const combined = `${css}\n${html}\n${js}`;
+      const previewDoc = preview.contentDocument || preview.contentWindow.document;
+      previewDoc.open();
+      previewDoc.write(combined);
+      previewDoc.close();
     }
 
     window.onload = function () {
       htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
         mode: "text/html",
         lineNumbers: true,
-        theme: "dracula"
+        theme: "dracula",
+        lineWrapping: true,
+        viewportMargin: Infinity,
+        extraKeys: {
+          "Tab": cm => cm.replaceSelection("    ", "end")
+        }
       });
 
       cssEditor = CodeMirror(document.getElementById("cssEditor"), {
         mode: "css",
         lineNumbers: true,
-        theme: "dracula"
+        theme: "dracula",
+        lineWrapping: true,
+        viewportMargin: Infinity,
+        extraKeys: {
+          "Tab": cm => cm.replaceSelection("    ", "end")
+        }
+      });
+
+      jsEditor = CodeMirror(document.getElementById("jsEditor"), {
+        mode: "javascript",
+        lineNumbers: true,
+        theme: "dracula",
+        lineWrapping: true,
+        viewportMargin: Infinity,
+        extraKeys: {
+          "Tab": cm => cm.replaceSelection("    ", "end")
+        }
       });
 
       const id = getQueryParam('id');
       if (codeSnippets[id]) {
-        htmlEditor.setValue(codeSnippets[id].html);
-        cssEditor.setValue(codeSnippets[id].css);
+        htmlEditor.setValue(codeSnippets[id].html || '');
+        cssEditor.setValue(codeSnippets[id].css || '');
+        jsEditor.setValue(codeSnippets[id].js || '');
       }
 
       htmlEditor.on("change", updatePreview);
       cssEditor.on("change", updatePreview);
+      jsEditor.on("change", updatePreview);
 
       updatePreview();
     };
@@ -4500,50 +4515,7 @@ button:active::after {
     </div>
 
   </div>
-  <script>
 
-    window.onload = function () {
-      htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
-        mode: "text/html",
-        lineNumbers: true,
-        theme: "dracula",
-        lineWrapping: true,
-        viewportMargin: Infinity, // Better scrolling
-        extraKeys: {
-          "Tab": function (cm) {
-            cm.replaceSelection("    ", "end"); // Insert 4 spaces on Tab
-          }
-        }
-      });
-
-      cssEditor = CodeMirror(document.getElementById("cssEditor"), {
-        mode: "css",
-        lineNumbers: true,
-        theme: "dracula",
-        lineWrapping: true,
-        viewportMargin: Infinity, // Better scrolling
-        extraKeys: {
-          "Tab": function (cm) {
-            cm.replaceSelection("    ", "end"); // Insert 4 spaces on Tab
-          }
-        }
-      });
-
-      // Load snippet if ID is provided
-      const id = getQueryParam('id');
-      if (codeSnippets[id]) {
-        htmlEditor.setValue(codeSnippets[id].html);
-        cssEditor.setValue(codeSnippets[id].css);
-      }
-
-      // Update preview on editor changes
-      htmlEditor.on("change", updatePreview);
-      cssEditor.on("change", updatePreview);
-
-      // Initial preview update
-      updatePreview();
-    };
-  </script><!-- Vendor JS Files -->
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/vendor/php-email-form/validate.js"></script>
   <script src="../assets/vendor/aos/aos.js"></script>
