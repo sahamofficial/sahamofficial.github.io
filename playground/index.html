@@ -4445,17 +4445,24 @@ button:active::after {
         .then(() => showToast('All code copied to clipboard!'));
     }
 
-function updatePreview() {
-  const html = htmlEditor.getValue();
-  const css = `<style>${cssEditor.getValue()}</style>`;
-  const js = `<script>${jsEditor.getValue().replace(/<\/script>/g, '<\\/script>')}<\/script>`;
+    function updatePreview() {
+      const html = htmlEditor.getValue();
+      const css = `<style>${cssEditor.getValue()}</style>`;
+      const jsCode = jsEditor.getValue().replace(/<\/script>/g, '<\\/script>');
 
-  const combined = `${html}\n${css}\n${js}`;
+      const js = `
+    <script>
+      try {
+        ${jsCode}
+      } catch (err) {
+        document.body.innerHTML += '<pre style="color: red; font-family: monospace;">' + err + '</pre>';
+      }
+    <\/script>
+  `;
 
-  const preview = document.getElementById('preview'); // or however you're selecting your iframe
-  preview.srcdoc = combined;
-}
-
+      const preview = document.getElementById('preview');
+      preview.srcdoc = `${html}\n${css}\n${js}`;
+    }
 
     window.onload = function () {
       htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
