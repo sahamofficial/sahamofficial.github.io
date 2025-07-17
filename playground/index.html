@@ -309,6 +309,84 @@
       //   css:``
       // },
       // format
+      'login': {
+  html: `
+    <button class="btn-3d">
+      <i class="fas fa-sign-in-alt"></i> Login
+    </button>
+  `,
+  css: `
+    .btn-3d {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
+      color: white;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 
+          0 6px 0 #5d6ee3,
+          0 8px 10px rgba(0, 0, 0, 0.2);
+      transform: translateY(0);
+      overflow: hidden;
+    }
+
+    .btn-3d:hover {
+      background: linear-gradient(135deg, #5d7df4, #9866d8);
+      transform: translateY(-2px);
+      box-shadow: 
+          0 8px 0 #5d6ee3,
+          0 12px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-3d:active {
+      transform: translateY(4px);
+      box-shadow: 
+          0 2px 0 #5d6ee3,
+          0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: all 0.1s ease;
+    }
+
+    .btn-3d::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .btn-3d:hover::before {
+      left: 100%;
+    }
+
+    .btn-3d i {
+      margin-right: 10px;
+      font-size: 18px;
+    }
+
+    .btn-3d::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 50% 20%, rgba(255,255,255,0.1) 0%, transparent 70%);
+      border-radius: 10px;
+      pointer-events: none;
+    }
+  `
+},
       'cracked-button': {
         html: `
     <div class="cracked-glass-btn">
