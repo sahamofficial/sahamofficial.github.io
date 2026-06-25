@@ -12,8 +12,20 @@ import * as THREE from 'three';
   "use strict";
 
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var ACCENT = 0xc0603a;   // theme clay accent
-  var BG     = 0xece9e3;   // theme background — fog fades far edges into it
+
+  // Colours follow the active theme: read the CSS custom properties so the sphere
+  // recolours when the user toggles themes (see the "themechange" listener below).
+  function cssColor(name, fallback) {
+    var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    try { return new THREE.Color(v || fallback); } catch (e) { return new THREE.Color(fallback); }
+  }
+  function readThemeColors() {
+    return {
+      accent: cssColor('--accent', '#c0603a'),   // accent / wireframe
+      bg: cssColor('--bg', '#ece9e3')             // bg — fog fades far edges into it
+    };
+  }
+  var theme = readThemeColors();
 
   // canvas sits behind content (see .bg-3d-canvas in soft-light.css)
   var canvas = document.createElement('canvas');
@@ -31,7 +43,7 @@ import * as THREE from 'three';
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
   var scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(BG, 4.5, 9.5);   // far side of the sphere melts into the bg
+  scene.fog = new THREE.Fog(theme.bg, 4.5, 9.5);   // far side of the sphere melts into the bg
 
   var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
   camera.position.set(0, 0, 6);
@@ -40,12 +52,12 @@ import * as THREE from 'three';
   var geo = new THREE.IcosahedronGeometry(2.0, 1);   // detail 1 = geodesic look
 
   var faces = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
-    color: ACCENT, roughness: 0.85, metalness: 0.0,
+    color: theme.accent, roughness: 0.85, metalness: 0.0,
     flatShading: true, transparent: true, opacity: 0.08, depthWrite: false
   }));
   var edges = new THREE.LineSegments(
     new THREE.WireframeGeometry(geo),
-    new THREE.LineBasicMaterial({ color: ACCENT, transparent: true, opacity: 0.20 })
+    new THREE.LineBasicMaterial({ color: theme.accent, transparent: true, opacity: 0.20 })
   );
 
   var group = new THREE.Group();
@@ -87,6 +99,16 @@ import * as THREE from 'three';
 
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) stop(); else start();
+  });
+
+  // Recolour the sphere + fog when the theme switches; render a frame so the
+  // change shows even while the loop is idle (paused tab / reduced motion).
+  window.addEventListener('themechange', function () {
+    var t = readThemeColors();
+    faces.material.color.copy(t.accent);
+    edges.material.color.copy(t.accent);
+    scene.fog.color.copy(t.bg);
+    renderer.render(scene, camera);
   });
 
   if (reduceMotion) renderer.render(scene, camera);   // one static frame

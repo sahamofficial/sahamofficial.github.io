@@ -354,7 +354,19 @@ window.addEventListener('load', () => {
   if (!finePointer || reduceMotion) return;
 
   var MAX = 240;                                   // hard cap on live particles
-  var COLORS = ['192,96,58', '216,138,100', '164,76,43'];   // warm clay palette
+
+  // Palette follows the active theme via CSS vars --trail-1/2/3, falling back to
+  // the warm clay default. Re-read on "themechange" so the comet matches the theme.
+  var FALLBACK = ['192,96,58', '216,138,100', '164,76,43'];   // warm clay
+  function readColors() {
+    var cs = getComputedStyle(document.documentElement), out = [];
+    for (var i = 1; i <= 3; i++) {
+      out.push((cs.getPropertyValue('--trail-' + i).trim()) || FALLBACK[i - 1]);
+    }
+    return out;
+  }
+  var COLORS = readColors();
+  window.addEventListener('themechange', function () { COLORS = readColors(); });
 
   var canvas, ctx, dpr = Math.min(window.devicePixelRatio || 1, 2);
   var W = 0, H = 0, parts = [], lastX = null, lastY = null, running = false;

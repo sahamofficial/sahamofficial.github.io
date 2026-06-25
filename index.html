@@ -63,8 +63,14 @@
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
 
+  <!-- Apply the saved theme before first paint (no flash of the wrong theme) -->
+  <script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+
   <!-- Soft Light Theme (off-white + realistic cursor-reactive shadows) -->
   <link href="assets/css/soft-light.css" rel="stylesheet">
+
+  <!-- Terminal / Code-IDE Theme (dark) + theme-toggle button — see assets/js/theme-toggle.js -->
+  <link href="assets/css/theme-terminal.css" rel="stylesheet">
 
   <!-- Three.js (ESM) for the spinning wireframe background — see assets/js/hero-3d.js -->
   <script type="importmap">
@@ -651,18 +657,18 @@
           <div class="col-lg-5">
 
             <div class="info-wrap">
-              <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="200">
+              <!--<div class="info-item d-flex" data-aos="fade-up" data-aos-delay="200">
                 <i class="bi bi-geo-alt flex-shrink-0"></i>
                 <div>
                   <h3>Address</h3>
                   <p>22/29A Sara Lane, Puttalam, Sri Lanka</p>
                 </div>
-              </div><!-- End Info Item -->
+              </div><-- End Info Item -->
               <a href="https://wa.me/0778502300" target="_blank">
                 <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
                   <i class="bi bi-telephone flex-shrink-0"></i>
                   <div>
-                    <h3>WhatsaApp Us</h3>
+                    <h3>WhatsaApp Me</h3>
                     <p>+94 77 850 2300</p>
                   </div>
                 </div><!-- End Info Item -->
@@ -672,15 +678,15 @@
                 <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
                   <i class="bi bi-envelope flex-shrink-0"></i>
                   <div>
-                    <h3>Email Us</h3>
+                    <h3>Email Me</h3>
                     <p>sahamaliofficial@gmail.com</p>
                   </div>
                 </div><!-- End Info Item -->
               </a>
-              <iframe
+              <!-- <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3950.6403264495257!2d79.82994067441574!3d8.035967803743283!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3afd15c36ebacc9d%3A0xe6f6bd25d9275ec6!2s2RPM%2B92J%2C%20Puttalam!5e0!3m2!1sen!2slk!4v1739940453389!5m2!1sen!2slk"
                 width="600" height="450" style="border: 3px solid #cecece; border-radius: 15px;" allowfullscreen=""
-                loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
             </div>
           </div>
 
@@ -749,6 +755,9 @@
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <!-- Theme switcher (Soft Light <-> Terminal) -->
+  <script src="assets/js/theme-toggle.js" defer></script>
 
   <!-- Spinning wireframe geo-sphere background (Three.js / WebGL) -->
   <script type="module" src="assets/js/hero-3d.js"></script>

@@ -1,0 +1,392 @@
+/* =============================================================
+   TERMINAL / CODE-IDE  —  the SECOND design (not a recolor).
+
+   A genuinely different design language on the SAME HTML: the page
+   is re-composed to look like a code editor / terminal —
+     · header  -> editor title bar (traffic-light dots + file tabs)
+     · hero    -> a terminal window with a command prompt
+     · cards   -> code panels with a filename title bar
+     · type    -> monospace everywhere, lowercased, code punctuation
+     · palette -> phosphor green on near-black + faint scanlines
+   Built the same way soft-light.css reflows the template via CSS:
+   loaded AFTER soft-light.css, every rule scoped under
+   html[data-theme="dark"] so the Soft Light design is untouched when
+   the theme is off. (The switcher still toggles data-theme dark/light.)
+   ============================================================= */
+
+/* =============================================================
+   A. THEME-TOGGLE BUTTON  (base — applies in both designs)
+   ============================================================= */
+.site-theme-toggle {
+  order: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin: 0 0 0 6px;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--surface, #f4f2ec);
+  border: 1px solid var(--line-soft, rgba(45, 40, 30, 0.10));
+  color: var(--text, #3b372f);
+  font-size: 15px;
+  line-height: 0;
+  cursor: pointer;
+  transition: color 0.25s ease, background-color 0.25s ease,
+              border-color 0.25s ease, box-shadow 0.25s ease, transform 0.22s ease;
+}
+.site-theme-toggle:hover { color: var(--accent, #c0603a); transform: translateY(-2px); }
+.site-theme-toggle:focus-visible { outline: 2px solid var(--accent, #a44c2b); outline-offset: 2px; }
+.site-theme-toggle i { line-height: 0; }
+
+/* =============================================================
+   B. TERMINAL DESIGN  (html[data-theme="dark"])
+   ============================================================= */
+
+/* ---- B0. Tokens -------------------------------------------------- */
+html[data-theme="dark"] {
+  --mono: ui-monospace, "JetBrains Mono", "Fira Code", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+
+  --bg: #0a0f0c;             /* near-black, faint green */
+  --surface: #0e1411;        /* panels */
+  --surface-hi: #13201a;
+  --line: rgba(62, 224, 122, 0.22);
+  --line-soft: rgba(62, 224, 122, 0.10);
+
+  --text: #a7c4b0;           /* soft green-grey body */
+  --muted: #6f8c78;
+  --head: #e6ffe9;           /* bright */
+  --ink: #0e1411;
+  --accent: #3ee07a;         /* phosphor green */
+  --accent-soft: #9cff66;    /* lime highlight */
+
+  /* iPortfolio bridge tokens */
+  --background-color: var(--bg);
+  --default-color: var(--text);
+  --heading-color: var(--head);
+  --accent-color: var(--accent);
+  --surface-color: var(--surface);
+  --contrast-color: #05140b; /* dark ink ON the green accent */
+
+  /* cursor light-glow -> green */
+  --sh: 62, 224, 122;
+  --edge-hi: inset 0 0 0 1px rgba(62, 224, 122, 0.10);
+
+  /* cursor-trail palette (read by main.js) */
+  --trail-1: 62, 224, 122;
+  --trail-2: 120, 255, 160;
+  --trail-3: 40, 160, 90;
+
+  /* everything monospace */
+  --default-font: var(--mono);
+  --heading-font: var(--mono);
+  --nav-font: var(--mono);
+
+  color-scheme: dark;
+}
+
+/* literal "Sora"/"Space Grotesk" spots from soft-light -> mono */
+html[data-theme="dark"] .hero h2,
+html[data-theme="dark"] .header .logo h1.sitename,
+html[data-theme="dark"] .page-title h1,
+html[data-theme="dark"] .footer .sitename,
+html[data-theme="dark"] .btn-chrome,
+html[data-theme="dark"] .btn-ghost,
+html[data-theme="dark"] .hero-eyebrow,
+html[data-theme="dark"] .navmenu a { font-family: var(--mono); }
+
+/* ---- B1. Base + background (dark + faint CRT scanlines) ---------- */
+html[data-theme="dark"] body { background-color: var(--bg) !important; }
+html[data-theme="dark"] body::after {
+  background:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0) 0 2px, rgba(0, 30, 12, 0.16) 2px 3px),
+    radial-gradient(60rem 40rem at 50% -10%, rgba(62, 224, 122, 0.06), transparent 60%),
+    linear-gradient(180deg, #0a0f0c, #070a08);
+}
+
+html[data-theme="dark"] ::selection { background: var(--accent); color: #05140b; }
+html[data-theme="dark"] ::-webkit-scrollbar-track { background: #0a0f0c; }
+html[data-theme="dark"] ::-webkit-scrollbar-thumb { background: #1d2a22; border: 3px solid #0a0f0c; }
+html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: #2c4636; }
+
+html[data-theme="dark"] a { color: var(--accent); }
+html[data-theme="dark"] a:hover { color: #9cffc0; }
+
+html[data-theme="dark"] .shadow-lit-text {
+  text-shadow: calc(var(--sx) * 1px) calc(var(--sy) * 1px) var(--sblur) rgba(var(--sh), var(--salpha));
+}
+
+html[data-theme="dark"] .navmenu a:focus-visible,
+html[data-theme="dark"] .header .social-links a:focus-visible,
+html[data-theme="dark"] .header .header-toggle:focus-visible,
+html[data-theme="dark"] .site-theme-toggle:focus-visible,
+html[data-theme="dark"] .btn-chrome:focus-visible,
+html[data-theme="dark"] .btn-ghost:focus-visible,
+html[data-theme="dark"] .scroll-top:focus-visible,
+html[data-theme="dark"] .services .service-item .title a:focus-visible,
+html[data-theme="dark"] .portfolio .portfolio-info a:focus-visible,
+html[data-theme="dark"] .footer .social-links a:focus-visible { outline-color: var(--accent); }
+
+/* =============================================================
+   B2. HEADER  ->  editor title bar  (dots + file tabs)
+   ============================================================= */
+html[data-theme="dark"] .header {
+  background: rgba(10, 15, 12, 0.94) !important;
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 1px 0 rgba(62, 224, 122, 0.08) inset, 0 1px 14px rgba(0, 0, 0, 0.6);
+}
+/* traffic-light window controls (one element, three dots via box-shadow) */
+html[data-theme="dark"] .header::before {
+  content: '';
+  order: -1; flex: 0 0 auto; align-self: center;
+  width: 11px; height: 11px; border-radius: 50%;
+  background: #ff5f56;
+  box-shadow: 18px 0 0 #ffbd2e, 36px 0 0 #27c93f;
+  margin: 0 44px 0 4px;
+}
+html[data-theme="dark"] .header .profile-img { display: none; }
+html[data-theme="dark"] .header .logo { margin: 0 18px 0 0 !important; }
+html[data-theme="dark"] .header .logo h1.sitename {
+  font-family: var(--mono); font-size: 14px; font-weight: 500; color: var(--muted);
+}
+html[data-theme="dark"] .header .logo h1.sitename::after {
+  content: ' — portfolio'; color: rgba(167, 196, 176, 0.45);
+}
+html[data-theme="dark"] .navmenu { margin-right: auto; }
+
+/* nav items -> editor file tabs */
+html[data-theme="dark"] .navmenu ul { gap: 0; }
+html[data-theme="dark"] .navmenu a,
+html[data-theme="dark"] .navmenu a:focus {
+  font-family: var(--mono); text-transform: lowercase;
+  background: transparent; border: 1px solid transparent; border-radius: 0;
+  border-right: 1px solid var(--line-soft);
+  color: var(--muted); padding: 8px 15px; font-size: 13px; font-weight: 500;
+}
+html[data-theme="dark"] .navmenu a::after { content: '.tsx'; color: rgba(167, 196, 176, 0.40); }
+html[data-theme="dark"] .navmenu a[href="#about"]::after { content: '.ts'; }
+html[data-theme="dark"] .navmenu a[href="#resume"]::after { content: '.md'; }
+html[data-theme="dark"] .navmenu a[href="#portfolio"]::after { content: '/'; }
+html[data-theme="dark"] .navmenu a[href="#services"]::after { content: '.json'; }
+html[data-theme="dark"] .navmenu a[href="#contact"]::after { content: '.sh'; }
+html[data-theme="dark"] .navmenu a:hover { color: var(--head); background: rgba(62, 224, 122, 0.06); transform: none; }
+html[data-theme="dark"] .navmenu .active,
+html[data-theme="dark"] .navmenu .active:focus {
+  color: var(--accent) !important; background: rgba(62, 224, 122, 0.10);
+  border-color: transparent; border-bottom: 2px solid var(--accent); box-shadow: none;
+}
+
+/* right cluster: square icon buttons */
+html[data-theme="dark"] .header .social-links a,
+html[data-theme="dark"] .site-theme-toggle,
+html[data-theme="dark"] .header .header-toggle {
+  background: transparent; border: 1px solid var(--line); border-radius: 5px; color: var(--muted);
+}
+html[data-theme="dark"] .header .social-links a:hover,
+html[data-theme="dark"] .site-theme-toggle:hover { color: var(--accent); border-color: var(--accent); transform: none; box-shadow: 0 0 14px rgba(62, 224, 122, 0.22); }
+html[data-theme="dark"] .header .header-toggle { color: var(--accent); }
+html[data-theme="dark"] .header .header-toggle:hover { background: var(--accent); color: #05140b; }
+
+@media (max-width: 991.98px) {
+  html[data-theme="dark"] .navmenu { background: rgba(10, 15, 12, 0.98) !important; border-bottom: 1px solid var(--line); }
+  html[data-theme="dark"] .navmenu a { border-right: none; border-bottom: 1px solid var(--line-soft); }
+}
+
+/* =============================================================
+   B3. HERO  ->  terminal window with a command prompt
+   ============================================================= */
+html[data-theme="dark"] .hero { background: transparent !important; }
+html[data-theme="dark"] .hero .container {
+  position: relative;
+  max-width: 760px; margin: 0 auto;
+  text-align: left;
+  background: rgba(14, 20, 17, 0.90);
+  border: 1px solid var(--line); border-radius: 10px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4), 0 24px 60px rgba(0, 0, 0, 0.55), 0 0 50px rgba(62, 224, 122, 0.06);
+  padding: 58px 30px 32px;
+  overflow: hidden;
+}
+/* window title bar + its traffic dots */
+html[data-theme="dark"] .hero .container::before {
+  content: 'saham@portfolio: ~/intro.sh';
+  position: absolute; top: 0; left: 0; right: 0; height: 40px;
+  background: #0c120f; border-bottom: 1px solid var(--line);
+  color: var(--muted); font: 12.5px/40px var(--mono); text-align: center;
+}
+html[data-theme="dark"] .hero .container::after {
+  content: ''; position: absolute; top: 15px; left: 18px;
+  width: 11px; height: 11px; border-radius: 50%;
+  background: #ff5f56; box-shadow: 18px 0 0 #ffbd2e, 36px 0 0 #27c93f;
+}
+html[data-theme="dark"] .hero-eyebrow {
+  font-family: var(--mono); text-transform: lowercase; letter-spacing: 0;
+  color: var(--text); font-size: 14px; font-weight: 400; margin: 0 0 4px; text-indent: 0;
+}
+html[data-theme="dark"] .hero-eyebrow::before { content: 'saham@portfolio:~$ '; color: var(--accent); }
+html[data-theme="dark"] .hero h2 {
+  font-family: var(--mono); font-size: clamp(38px, 7vw, 70px); font-weight: 700;
+  letter-spacing: -0.01em; color: var(--head); margin: 8px 0 0;
+}
+html[data-theme="dark"] .hero .hero-role,
+html[data-theme="dark"] .hero p { font-family: var(--mono); color: var(--muted); }
+html[data-theme="dark"] .hero .hero-role::before { content: '// '; color: rgba(62, 224, 122, 0.55); }
+html[data-theme="dark"] .hero .hero-role .typed { color: var(--accent); font-weight: 500; }
+html[data-theme="dark"] .typed-cursor { color: var(--accent); }
+
+/* neutralise the hanging-pendulum chrome; render command-style buttons */
+html[data-theme="dark"] .hero-actions { padding-bottom: 0; gap: 14px; align-items: center; }
+html[data-theme="dark"] .hang { padding: 0 !important; display: inline-flex; }
+html[data-theme="dark"] .hang__shadow,
+html[data-theme="dark"] .hang__pivot,
+html[data-theme="dark"] .pendulum__chain { display: none !important; }
+html[data-theme="dark"] .pendulum { transform: none !important; display: inline-flex; }
+html[data-theme="dark"] .btn-chrome,
+html[data-theme="dark"] .btn-ghost {
+  font-family: var(--mono); font-weight: 500; border-radius: 5px; padding: 12px 20px;
+  background: transparent; border: 1px solid var(--line);
+}
+html[data-theme="dark"] .btn-chrome { color: var(--accent); border-color: var(--accent); box-shadow: 0 0 18px rgba(62, 224, 122, 0.18); }
+html[data-theme="dark"] .btn-chrome::before { content: '> '; }
+html[data-theme="dark"] .btn-chrome:hover { color: #05140b; background: var(--accent); box-shadow: 0 0 26px rgba(62, 224, 122, 0.4); }
+html[data-theme="dark"] .btn-ghost { color: var(--muted); }
+html[data-theme="dark"] .btn-ghost::before { content: '$ '; color: var(--accent); }
+html[data-theme="dark"] .btn-ghost:hover { color: var(--accent); border-color: var(--accent); }
+
+/* =============================================================
+   B4. SECTION TITLES  ->  code comments / markdown headings
+   ============================================================= */
+html[data-theme="dark"] .section-title { text-align: left; }
+html[data-theme="dark"] .section-title h2 { font-family: var(--mono); color: var(--head); text-transform: none; }
+html[data-theme="dark"] .section-title h2::before { content: '# '; color: var(--accent); }
+html[data-theme="dark"] .section-title h2:after { left: 0; transform: none; width: 120px; background: var(--accent); }
+html[data-theme="dark"] .section-title p { color: var(--muted); font-family: var(--mono); }
+html[data-theme="dark"] .section-title p::before { content: '// '; color: rgba(62, 224, 122, 0.5); }
+
+/* =============================================================
+   B5. CARDS  ->  code panels with a filename title bar
+   ============================================================= */
+html[data-theme="dark"] .about .content,
+html[data-theme="dark"] .services .service-item,
+html[data-theme="dark"] .stats .stats-item,
+html[data-theme="dark"] .contact .info-wrap,
+html[data-theme="dark"] .contact .php-email-form,
+html[data-theme="dark"] .resume .resume-item,
+html[data-theme="dark"] .portfolio-details .portfolio-info,
+html[data-theme="dark"] .service-details .services-list {
+  position: relative;
+  background: var(--surface) !important;
+  border: 1px solid var(--line); border-radius: 8px;
+  padding-top: 46px;
+  font-family: var(--mono);
+}
+html[data-theme="dark"] .about .content::before,
+html[data-theme="dark"] .services .service-item::before,
+html[data-theme="dark"] .stats .stats-item::before,
+html[data-theme="dark"] .contact .info-wrap::before,
+html[data-theme="dark"] .contact .php-email-form::before,
+html[data-theme="dark"] .resume .resume-item::before,
+html[data-theme="dark"] .portfolio-details .portfolio-info::before,
+html[data-theme="dark"] .service-details .services-list::before {
+  position: absolute; top: 0; left: 0; right: 0; height: 34px;
+  background: #0c120f; border-bottom: 1px solid var(--line); border-radius: 8px 8px 0 0;
+  color: var(--muted); font: 12px/34px var(--mono); padding-left: 14px;
+  content: 'file.txt';
+}
+html[data-theme="dark"] .about .content::before { content: 'about.ts'; }
+html[data-theme="dark"] .services .service-item::before { content: 'service.ts'; }
+html[data-theme="dark"] .stats .stats-item::before { content: 'stat.log'; }
+html[data-theme="dark"] .contact .info-wrap::before { content: 'contact.sh'; }
+html[data-theme="dark"] .contact .php-email-form::before { content: 'message.txt'; }
+html[data-theme="dark"] .resume .resume-item::before { content: 'entry.md'; }
+html[data-theme="dark"] .portfolio-details .portfolio-info::before { content: 'project.md'; }
+html[data-theme="dark"] .service-details .services-list::before { content: 'services.txt'; }
+
+/* About */
+html[data-theme="dark"] .about .content h2 { color: var(--head); font-family: var(--mono); }
+html[data-theme="dark"] .about .content ul i { color: var(--accent); }
+html[data-theme="dark"] .about .content ul strong { color: var(--head); }
+
+/* Stats */
+html[data-theme="dark"] .stats .stats-item i { color: var(--accent); }
+html[data-theme="dark"] .stats .stats-item .purecounter { color: var(--head); font-family: var(--mono); }
+html[data-theme="dark"] .stats .stats-item p { color: var(--muted); }
+
+/* Skills -> bordered tokens */
+html[data-theme="dark"] .skills-tags .resume-title { font-family: var(--mono); color: var(--accent); }
+html[data-theme="dark"] .skills-tags .resume-title::before { content: '## '; color: var(--muted); }
+html[data-theme="dark"] .skills-tags .badge {
+  background: transparent; border: 1px solid var(--line); border-radius: 4px;
+  color: var(--text); font-family: var(--mono); box-shadow: none;
+}
+html[data-theme="dark"] .skills-tags .badge::before { content: '#'; color: var(--accent); }
+html[data-theme="dark"] .skills .progress-bar-wrap { background: #0b110e; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5); }
+html[data-theme="dark"] .skills .progress-bar { background: linear-gradient(90deg, var(--accent), var(--accent-soft)) !important; }
+
+/* Resume */
+html[data-theme="dark"] .resume .resume-title { font-family: var(--mono); color: var(--accent); }
+html[data-theme="dark"] .resume .resume-title::before { content: '## '; color: var(--muted); }
+html[data-theme="dark"] .resume .resume-item h4 { color: var(--head); font-family: var(--mono); }
+html[data-theme="dark"] .resume .resume-item h5 { background: rgba(62, 224, 122, 0.12); color: var(--accent); border-radius: 4px; font-family: var(--mono); }
+
+/* Portfolio -> filter flags + framed thumbs */
+html[data-theme="dark"] .portfolio .portfolio-filters { text-align: left; }
+html[data-theme="dark"] .portfolio .portfolio-filters li { font-family: var(--mono); color: var(--muted); text-transform: lowercase; }
+html[data-theme="dark"] .portfolio .portfolio-filters li::before { content: '--'; color: rgba(62, 224, 122, 0.5); }
+html[data-theme="dark"] .portfolio .portfolio-filters li.filter-active,
+html[data-theme="dark"] .portfolio .portfolio-filters li:hover { color: var(--accent); }
+html[data-theme="dark"] .portfolio .portfolio-content { border: 1px solid var(--line); border-radius: 8px; }
+html[data-theme="dark"] .portfolio .portfolio-content .portfolio-info { background: rgba(7, 12, 9, 0.9); }
+html[data-theme="dark"] .portfolio .portfolio-content .portfolio-info h4 { background: var(--accent); color: #05140b; font-family: var(--mono); }
+html[data-theme="dark"] .portfolio .portfolio-content .portfolio-info p { color: var(--text); font-family: var(--mono); }
+
+/* Services */
+html[data-theme="dark"] .services .service-item .icon { background: transparent; border: 1px solid var(--accent); border-radius: 6px; box-shadow: none; }
+html[data-theme="dark"] .services .service-item .icon i { color: var(--accent); }
+html[data-theme="dark"] .services .service-item:hover .icon { background: var(--accent); border-color: var(--accent); }
+html[data-theme="dark"] .services .service-item:hover .icon i { color: #05140b; }
+html[data-theme="dark"] .services .service-item .title a { color: var(--head); font-family: var(--mono); }
+html[data-theme="dark"] .services .service-item:hover .title a { color: var(--accent); }
+html[data-theme="dark"] .services .service-item .description { color: var(--muted); }
+
+/* Contact */
+html[data-theme="dark"] .contact .info-item h3 { color: var(--head); font-family: var(--mono); }
+html[data-theme="dark"] .contact .info-item p { color: var(--muted) !important; font-family: var(--mono); }
+html[data-theme="dark"] .contact .info-item i { background: transparent; border: 1px solid var(--accent); color: var(--accent); border-radius: 6px; box-shadow: none; }
+html[data-theme="dark"] .contact .info-item:hover i { background: var(--accent); color: #05140b; }
+html[data-theme="dark"] .contact .php-email-form input[type=text],
+html[data-theme="dark"] .contact .php-email-form input[type=email],
+html[data-theme="dark"] .contact .php-email-form textarea {
+  background: #0b110e !important; border: 1px solid var(--line) !important; border-radius: 5px !important;
+  color: var(--head) !important; font-family: var(--mono);
+}
+html[data-theme="dark"] .contact .php-email-form input:focus,
+html[data-theme="dark"] .contact .php-email-form textarea:focus {
+  border-color: var(--accent) !important; box-shadow: 0 0 0 3px rgba(62, 224, 122, 0.18) !important;
+}
+html[data-theme="dark"] .contact .php-email-form button[type=submit] { background: var(--accent); color: #05140b; font-family: var(--mono); border-radius: 5px; }
+html[data-theme="dark"] .contact .php-email-form button[type=submit]:hover { background: var(--accent-soft); box-shadow: 0 0 22px rgba(62, 224, 122, 0.4); }
+
+/* =============================================================
+   B6. FOOTER / UTILITIES
+   ============================================================= */
+html[data-theme="dark"] .footer { background: rgba(8, 12, 9, 0.92) !important; border-top: 1px solid var(--line); color: var(--muted); font-family: var(--mono); }
+html[data-theme="dark"] .footer .sitename { font-family: var(--mono); color: var(--accent); }
+html[data-theme="dark"] .footer .social-links a { background: transparent; border: 1px solid var(--line); border-radius: 5px; color: var(--text); }
+html[data-theme="dark"] .footer .social-links a:hover { color: var(--accent); border-color: var(--accent); transform: none; }
+
+html[data-theme="dark"] .scroll-top { background: var(--accent) !important; border-radius: 5px; }
+html[data-theme="dark"] .scroll-top i { color: #05140b; }
+html[data-theme="dark"] .scroll-top:hover { background: var(--accent-soft) !important; }
+
+html[data-theme="dark"] #preloader .three-body { --uib-color: #3ee07a; }
+
+html[data-theme="dark"] .page-title h1 { font-family: var(--mono); color: var(--head); }
+html[data-theme="dark"] .page-title .breadcrumbs ol li a { color: var(--accent); }
+
+/* ---- B7. Cursor effects (ripple) -> green ------------------------ */
+html[data-theme="dark"] .ripple__ring { border-color: rgba(62, 224, 122, 0.5); box-shadow: 0 0 6px rgba(62, 224, 122, 0.3), inset 0 0 5px rgba(120, 255, 160, 0.4); }
+html[data-theme="dark"] .ripple__ring--2 { border-color: rgba(120, 255, 160, 0.4); }
+html[data-theme="dark"] .ripple__ring--3 { border-color: rgba(62, 224, 122, 0.25); }
+html[data-theme="dark"] .ripple__drop { background: radial-gradient(closest-side, rgba(62, 224, 122, 0.35), transparent 72%); }
+html[data-theme="dark"] .ripple__jet { background: radial-gradient(circle at 38% 32%, rgba(220, 255, 230, 0.95), rgba(62, 224, 122, 0.85) 45%, rgba(40, 160, 90, 0.7)); box-shadow: 0 2px 6px rgba(62, 224, 122, 0.4); }

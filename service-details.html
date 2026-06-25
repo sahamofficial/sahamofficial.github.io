@@ -28,7 +28,13 @@
   <link href="assets/css/main.css" rel="stylesheet">
 
   <!-- Soft Light Theme (off-white + realistic cursor-reactive shadows) -->
+  <!-- Apply the saved theme before first paint (no flash of the wrong theme) -->
+  <script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+
   <link href="assets/css/soft-light.css" rel="stylesheet">
+
+  <!-- Terminal / Code-IDE Theme (dark) + theme-toggle button — see assets/js/theme-toggle.js -->
+  <link href="assets/css/theme-terminal.css" rel="stylesheet">
 
   <!-- =======================================================
   * Template Name: iPortfolio
@@ -179,6 +185,9 @@
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <!-- Theme switcher (Soft Light <-> Terminal) -->
+  <script src="assets/js/theme-toggle.js" defer></script>
 
 </body>
 
