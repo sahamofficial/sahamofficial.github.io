@@ -64,13 +64,16 @@
   <link href="assets/css/main.css" rel="stylesheet">
 
   <!-- Apply the saved theme before first paint (no flash of the wrong theme) -->
-  <script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+  <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 
   <!-- Soft Light Theme (off-white + realistic cursor-reactive shadows) -->
   <link href="assets/css/soft-light.css" rel="stylesheet">
 
   <!-- Terminal / Code-IDE Theme (dark) + theme-toggle button — see assets/js/theme-toggle.js -->
   <link href="assets/css/theme-terminal.css" rel="stylesheet">
+
+  <!-- Bento Grid Theme (dark, grid layout) -->
+  <link href="assets/css/theme-bento.css" rel="stylesheet">
 
   <!-- Three.js (ESM) for the spinning wireframe background — see assets/js/hero-3d.js -->
   <script type="importmap">
@@ -759,8 +762,11 @@
   <!-- Theme switcher (Soft Light <-> Terminal) -->
   <script src="assets/js/theme-toggle.js" defer></script>
 
-  <!-- Spinning wireframe geo-sphere background (Three.js / WebGL) -->
+  <!-- Theme-aware 3D background — sphere (dark) / gem (light) / boxes (bento), one shared canvas -->
   <script type="module" src="assets/js/hero-3d.js"></script>
+
+  <!-- Bento dashboard pointer-tilt (active only while data-theme="bento") -->
+  <script src="assets/js/bento-tilt.js" defer></script>
 
 </body>
 

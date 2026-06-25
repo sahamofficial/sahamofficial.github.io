@@ -1,16 +1,15 @@
 /**
- * Theme switcher (Soft Light  <->  Terminal / Code-IDE).
+ * Theme switcher — cycles three designs:
+ *   Soft Light  ->  Terminal / Code-IDE  ->  Bento Grid  ->  (repeat)
  *
- * The active theme is the `data-theme` attribute on <html> ("light" | "dark").
- * An inline snippet in each page's <head> sets it from localStorage BEFORE first
- * paint (no flash of the wrong theme). This script:
- *   - injects the toggle button into the header (one source of truth for all pages),
- *   - flips + persists the choice on click,
- *   - swaps the sun/moon icon and the a11y labels,
- *   - dispatches a window "themechange" event so the canvas effects (hero-3d.js,
- *     cursor trail in main.js) can recolor live.
- *
- * Graceful: if localStorage is unavailable the toggle still works for the session.
+ * The active design is the `data-theme` attribute on <html>
+ * ("light" | "dark" | "bento"). An inline snippet in each page's <head>
+ * restores it from localStorage BEFORE first paint (no flash). This script:
+ *   - injects the toggle button into the header (one source of truth),
+ *   - cycles + persists the choice on click,
+ *   - shows the NEXT design's icon (so the button previews what a click does),
+ *   - dispatches a window "themechange" event so the canvas effects
+ *     (hero-3d.js, cursor trail in main.js) recolor live.
  */
 (function () {
   "use strict";
@@ -18,28 +17,35 @@
   var STORAGE_KEY = "theme";
   var root = document.documentElement;
 
-  function current() {
-    return root.getAttribute("data-theme") === "dark" ? "dark" : "light";
+  // order defines the cycle; `icon` is a Bootstrap-Icons class
+  var THEMES = [
+    { value: "light", icon: "bi-brightness-high-fill", label: "Soft Light" },
+    { value: "dark",  icon: "bi-terminal-fill",        label: "Terminal" },
+    { value: "bento", icon: "bi-grid-1x2-fill",        label: "Bento Grid" }
+  ];
+
+  function indexOfValue(value) {
+    for (var i = 0; i < THEMES.length; i++) if (THEMES[i].value === value) return i;
+    return 0; // default -> Soft Light
   }
+  function currentIndex() { return indexOfValue(root.getAttribute("data-theme")); }
 
   function store(theme) {
     try { localStorage.setItem(STORAGE_KEY, theme); } catch (e) { /* ignore */ }
   }
 
-  // Reflect the current theme onto a button: the icon previews the NEXT theme.
-  function paintButton(btn, theme) {
-    var dark = theme === "dark";
+  // the button shows the NEXT design (what clicking switches to)
+  function paintButton(btn) {
+    var next = THEMES[(currentIndex() + 1) % THEMES.length];
     var icon = btn.querySelector("i");
-    if (icon) icon.className = "bi " + (dark ? "bi-sun-fill" : "bi-moon-stars");
-    var label = dark ? "Switch to light theme" : "Switch to dark theme";
+    if (icon) icon.className = "bi " + next.icon;
+    var label = "Switch to " + next.label + " theme";
     btn.setAttribute("aria-label", label);
     btn.setAttribute("title", label);
-    btn.setAttribute("aria-pressed", dark ? "true" : "false");
   }
 
   function apply(theme) {
-    if (theme === "dark") root.setAttribute("data-theme", "dark");
-    else root.setAttribute("data-theme", "light");
+    root.setAttribute("data-theme", theme);
     store(theme);
     window.dispatchEvent(new CustomEvent("themechange", { detail: { theme: theme } }));
   }
@@ -52,16 +58,14 @@
     btn.type = "button";
     btn.className = "site-theme-toggle";
     btn.appendChild(document.createElement("i"));
-    paintButton(btn, current());
+    paintButton(btn);
 
     btn.addEventListener("click", function () {
-      var next = current() === "dark" ? "light" : "dark";
-      apply(next);
-      paintButton(btn, next);
+      var next = THEMES[(currentIndex() + 1) % THEMES.length];
+      apply(next.value);
+      paintButton(btn);
     });
 
-    // place it just after the social cluster (CSS `order` keeps it left of the
-    // mobile hamburger and visible when the social links are hidden)
     var social = header.querySelector(".social-links");
     if (social && social.parentNode === header) social.insertAdjacentElement("afterend", btn);
     else header.appendChild(btn);

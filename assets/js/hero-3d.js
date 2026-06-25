@@ -1,6 +1,13 @@
 // =============================================================
-// Slowly spinning, lit wireframe geodesic sphere on a fixed full-page canvas
-// behind all content. Warm clay tone + soft depth fog to match soft-light.css.
+// Theme-aware 3D background on a single fixed full-page canvas behind
+// all content. ONE WebGL context, ONE render loop; the visible object
+// swaps with the active theme (see assets/js/theme-toggle.js):
+//
+//   · dark   (Terminal)   -> spinning geodesic SPHERE  (phosphor green)
+//   · light  (Soft Light) -> tumbling icosahedron GEM  (warm clay)
+//   · bento  (Bento Grid) -> drifting wireframe BOXES   (violet)
+//
+// Each object recolours itself from the active theme's --accent / --bg.
 //   - prefers-reduced-motion: renders one static frame, no animation loop
 //   - tab hidden: pauses the loop (saves GPU / battery)
 //   - no WebGL / Three.js fails to load: removes itself, page is unaffected
@@ -13,19 +20,10 @@ import * as THREE from 'three';
 
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Colours follow the active theme: read the CSS custom properties so the sphere
-  // recolours when the user toggles themes (see the "themechange" listener below).
   function cssColor(name, fallback) {
     var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
     try { return new THREE.Color(v || fallback); } catch (e) { return new THREE.Color(fallback); }
   }
-  function readThemeColors() {
-    return {
-      accent: cssColor('--accent', '#c0603a'),   // accent / wireframe
-      bg: cssColor('--bg', '#ece9e3')             // bg — fog fades far edges into it
-    };
-  }
-  var theme = readThemeColors();
 
   // canvas sits behind content (see .bg-3d-canvas in soft-light.css)
   var canvas = document.createElement('canvas');
@@ -43,48 +41,169 @@ import * as THREE from 'three';
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
   var scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(theme.bg, 4.5, 9.5);   // far side of the sphere melts into the bg
+  scene.fog = new THREE.Fog(0x000000, 5, 12);
 
   var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
   camera.position.set(0, 0, 6);
 
-  // geodesic sphere: faint lit facets + crisp warm triangle wireframe
-  var geo = new THREE.IcosahedronGeometry(2.0, 1);   // detail 1 = geodesic look
-
-  var faces = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
-    color: theme.accent, roughness: 0.85, metalness: 0.0,
-    flatShading: true, transparent: true, opacity: 0.08, depthWrite: false
-  }));
-  var edges = new THREE.LineSegments(
-    new THREE.WireframeGeometry(geo),
-    new THREE.LineBasicMaterial({ color: theme.accent, transparent: true, opacity: 0.20 })
-  );
-
-  var group = new THREE.Group();
-  group.add(faces);
-  group.add(edges);
-  group.rotation.set(0.5, 0.2, 0);   // pleasant starting tilt
-  scene.add(group);
-
-  // warm key + cool fill so the facets shimmer subtly as it turns
+  // warm key + cool fill so the lit facets (sphere / gem) shimmer as they turn
   var key = new THREE.DirectionalLight(0xfff1e6, 1.5);  key.position.set(3, 4, 5);
   var fill = new THREE.DirectionalLight(0xbfd0ff, 0.6); fill.position.set(-4, -2, 2);
   scene.add(key, fill, new THREE.AmbientLight(0xffffff, 0.4));
 
+  // ---- objects (built once; only the active theme's object is visible) -------
+
+  // dark: faint lit facets + crisp triangle wireframe, slow geodesic spin
+  function makeSphere() {
+    var g = new THREE.IcosahedronGeometry(2.0, 1);
+    var fm = new THREE.MeshStandardMaterial({ roughness: 0.85, metalness: 0.0, flatShading: true, transparent: true, opacity: 0.08, depthWrite: false });
+    var em = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.20 });
+    var group = new THREE.Group();
+    group.add(new THREE.Mesh(g, fm));
+    group.add(new THREE.LineSegments(new THREE.WireframeGeometry(g), em));
+    group.rotation.set(0.5, 0.2, 0);
+    return {
+      group: group,
+      recolor: function (p) { fm.color.copy(p.accent); em.color.copy(p.accent); },
+      animate: function () { group.rotation.y += 0.0016; group.rotation.x += 0.0006; }
+    };
+  }
+
+  // light: sharp-faceted gem that tumbles on two axes and gently bobs
+  function makeGem() {
+    var g = new THREE.IcosahedronGeometry(1.7, 0);   // detail 0 = crisp gem facets
+    var fm = new THREE.MeshStandardMaterial({ roughness: 0.4, metalness: 0.1, flatShading: true, transparent: true, opacity: 0.12, depthWrite: false });
+    var em = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.30 });
+    var group = new THREE.Group();
+    group.add(new THREE.Mesh(g, fm));
+    group.add(new THREE.LineSegments(new THREE.WireframeGeometry(g), em));
+    return {
+      group: group,
+      recolor: function (p) { fm.color.copy(p.accent); em.color.copy(p.accent); },
+      animate: function (now) {
+        var t = (now || 0) * 0.001;
+        group.rotation.x += 0.0030;
+        group.rotation.y += 0.0022;
+        group.position.y = Math.sin(t * 0.6) * 0.18;
+      }
+    };
+  }
+
+  // bento: a scattered cloud of wireframe cubes drifting in 3D
+  function makeBoxes() {
+    var group = new THREE.Group();
+    var items = [];
+    for (var i = 0; i < 16; i++) {
+      var s = 0.6 + Math.random() * 1.8;
+      var g = new THREE.BoxGeometry(s, s, s);
+      var fm = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.06, depthWrite: false });
+      var em = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.32 });
+      var box = new THREE.Group();
+      box.add(new THREE.Mesh(g, fm));
+      box.add(new THREE.LineSegments(new THREE.EdgesGeometry(g), em));
+      box.position.set(
+        (Math.random() - 0.5) * 16,
+        (Math.random() - 0.5) * 10,
+        (Math.random() - 0.5) * 8 - 2
+      );
+      box.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+      box.userData = { spin: (Math.random() - 0.5) * 0.004, float: 0.2 + Math.random() * 0.5, phase: Math.random() * Math.PI * 2 };
+      items.push({ box: box, em: em, fm: fm, ci: i % 3 });
+      group.add(box);
+    }
+    return {
+      group: group,
+      parallax: true,
+      recolor: function (p) {
+        var pal = [p.accent, p.accentSoft, p.blue];
+        items.forEach(function (it) { it.em.color.copy(pal[it.ci]); it.fm.color.copy(pal[it.ci]); });
+      },
+      animate: function (now) {
+        var t = (now || 0) * 0.001;
+        group.rotation.y += 0.0008;
+        group.rotation.x = Math.sin(t * 0.1) * 0.06;
+        items.forEach(function (it) {
+          it.box.rotation.x += it.box.userData.spin;
+          it.box.rotation.y += it.box.userData.spin * 0.7;
+          it.box.position.y += Math.sin(t * 0.4 + it.box.userData.phase) * 0.0015 * it.box.userData.float;
+        });
+      }
+    };
+  }
+
+  var sphere = makeSphere();
+  var gem = makeGem();
+  var boxes = makeBoxes();
+  scene.add(sphere.group, gem.group, boxes.group);
+
+  // theme -> object + camera/fog framing
+  var CONFIG = {
+    dark:  { obj: sphere, fov: 45, camZ: 6,  fogNear: 4.5, fogFar: 9.5 },
+    light: { obj: gem,    fov: 45, camZ: 6,  fogNear: 4.5, fogFar: 11 },
+    bento: { obj: boxes,  fov: 50, camZ: 11, fogNear: 6,   fogFar: 18 }
+  };
+
+  function themeName() {
+    var t = document.documentElement.getAttribute('data-theme');
+    return CONFIG[t] ? t : 'light';   // absent/unknown -> default Soft Light
+  }
+
+  var current = CONFIG.light;
+  var parallaxOn = false;
+
+  function applyTheme() {
+    current = CONFIG[themeName()];
+    sphere.group.visible = (current.obj === sphere);
+    gem.group.visible = (current.obj === gem);
+    boxes.group.visible = (current.obj === boxes);
+
+    current.obj.recolor({
+      accent: cssColor('--accent', '#9b8cff'),
+      accentSoft: cssColor('--accent-soft', '#f0a6d6'),
+      blue: new THREE.Color('#78a0ff')
+    });
+
+    scene.fog.color.copy(cssColor('--bg', '#0b0e17'));
+    scene.fog.near = current.fogNear;
+    scene.fog.far = current.fogFar;
+
+    camera.fov = current.fov;
+    camera.position.set(0, 0, current.camZ);
+    camera.lookAt(0, 0, 0);
+    camera.updateProjectionMatrix();
+
+    parallaxOn = !!current.obj.parallax;
+  }
+
+  // pointer parallax target (used only by the bento boxes)
+  var px = 0, py = 0, tx = 0, ty = 0;
+  window.addEventListener('pointermove', function (e) {
+    tx = (e.clientX / window.innerWidth) - 0.5;
+    ty = (e.clientY / window.innerHeight) - 0.5;
+  });
+
   function resize() {
     var w = window.innerWidth, h = window.innerHeight;
-    renderer.setSize(w, h, false);   // false: CSS controls display size, buffer = w*h*dpr
+    renderer.setSize(w, h, false);   // false: CSS controls display size
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
   }
   resize();
   window.addEventListener('resize', resize);
 
+  function render() { renderer.render(scene, camera); }
+
   var running = false, rafId = 0;
-  function tick() {
-    group.rotation.y += 0.0016;
-    group.rotation.x += 0.0006;
-    renderer.render(scene, camera);
+  function tick(now) {
+    current.obj.animate(now);
+    if (parallaxOn) {
+      px += (tx - px) * 0.04;
+      py += (ty - py) * 0.04;
+      camera.position.x = px * 2.2;
+      camera.position.y = -py * 1.4;
+      camera.lookAt(0, 0, 0);
+    }
+    render();
     rafId = requestAnimationFrame(tick);
   }
   function start() {
@@ -101,16 +220,16 @@ import * as THREE from 'three';
     if (document.hidden) stop(); else start();
   });
 
-  // Recolour the sphere + fog when the theme switches; render a frame so the
-  // change shows even while the loop is idle (paused tab / reduced motion).
+  // swap object + palette when the user switches themes; render a frame so the
+  // change shows even while the loop is idle (paused tab / reduced motion)
   window.addEventListener('themechange', function () {
-    var t = readThemeColors();
-    faces.material.color.copy(t.accent);
-    edges.material.color.copy(t.accent);
-    scene.fog.color.copy(t.bg);
-    renderer.render(scene, camera);
+    applyTheme();
+    render();
+    start();
   });
 
-  if (reduceMotion) renderer.render(scene, camera);   // one static frame
+  // initial state
+  applyTheme();
+  if (reduceMotion) render();
   else start();
 })();

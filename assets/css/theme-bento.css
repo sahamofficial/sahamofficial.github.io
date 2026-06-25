@@ -1,0 +1,340 @@
+/* =============================================================
+   BENTO GRID  —  the THIRD design (biggest layout change).
+
+   Same HTML, re-composed into a modular dashboard:
+     · nav    -> a floating centred PILL
+     · <main> -> a CSS GRID; each <section> becomes a tile of a
+                 different size, placed with grid-template-areas
+     · cards  -> the section IS the tile; inner cards go flat
+     · palette-> deep slate + periwinkle-violet accent (keeps the
+                 Sora / Space Grotesk fonts, unlike Terminal)
+
+   Loaded after soft-light.css + theme-terminal.css; every rule is
+   scoped under html[data-theme="bento"], so the other two designs
+   are untouched. The page-grid is further scoped to .index-page so
+   sub-pages keep a normal flow (just the palette + tile cards).
+   ============================================================= */
+
+/* ---- Tokens ------------------------------------------------------ */
+html[data-theme="bento"] {
+  --bg: #0b0e17;
+  --surface: #151a28;
+  --surface-hi: #1d2436;
+  --line: rgba(150, 160, 205, 0.16);
+  --line-soft: rgba(150, 160, 205, 0.09);
+
+  --text: #c7cee0;
+  --muted: #8b93ad;
+  --head: #f4f6ff;
+  --ink: #1d2436;
+  --accent: #9b8cff;         /* periwinkle violet */
+  --accent-soft: #f0a6d6;    /* soft pink */
+
+  --background-color: var(--bg);
+  --default-color: var(--text);
+  --heading-color: var(--head);
+  --accent-color: var(--accent);
+  --surface-color: var(--surface);
+  --contrast-color: #0b0e17;
+
+  --sh: 155, 140, 255;       /* violet cursor glow */
+  --edge-hi: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --trail-1: 155, 140, 255;
+  --trail-2: 240, 166, 214;
+  --trail-3: 120, 160, 255;
+
+  color-scheme: dark;
+}
+
+/* ---- Base ------------------------------------------------------- */
+html[data-theme="bento"] body { background-color: var(--bg) !important; overflow-x: hidden; }  /* guard: clamp any horizontal overflow in this dashboard layout */
+html[data-theme="bento"] body::after {
+  background:
+    radial-gradient(50rem 36rem at 12% -6%, rgba(155, 140, 255, 0.12), transparent 60%),
+    radial-gradient(46rem 40rem at 92% 8%, rgba(240, 166, 214, 0.08), transparent 60%),
+    linear-gradient(180deg, #0c1018, #090c13);
+}
+/* The shared 3D background canvas (.bg-3d-canvas, assets/js/hero-3d.js) is visible
+   in every theme; the JS swaps which object it draws — in bento, the violet boxes. */
+
+html[data-theme="bento"] ::selection { background: var(--accent); color: #0b0e17; }
+html[data-theme="bento"] ::-webkit-scrollbar-track { background: #0b0e17; }
+html[data-theme="bento"] ::-webkit-scrollbar-thumb { background: #283150; border: 3px solid #0b0e17; }
+html[data-theme="bento"] ::-webkit-scrollbar-thumb:hover { background: #3a4570; }
+html[data-theme="bento"] a { color: #bcb0ff; }
+html[data-theme="bento"] a:hover { color: #d8d0ff; }
+
+html[data-theme="bento"] .shadow-lit-text {
+  text-shadow: calc(var(--sx) * 1px) calc(var(--sy) * 1px) var(--sblur) rgba(var(--sh), var(--salpha));
+}
+html[data-theme="bento"] .navmenu a:focus-visible,
+html[data-theme="bento"] .header .social-links a:focus-visible,
+html[data-theme="bento"] .site-theme-toggle:focus-visible,
+html[data-theme="bento"] .btn-chrome:focus-visible,
+html[data-theme="bento"] .btn-ghost:focus-visible,
+html[data-theme="bento"] .scroll-top:focus-visible { outline-color: var(--accent); }
+
+/* =============================================================
+   NAV  ->  floating centred pill
+   ============================================================= */
+html[data-theme="bento"] .header {
+  inset: 14px auto auto 50% !important;
+  transform: translateX(-50%);
+  width: max-content !important;
+  max-width: calc(100% - 24px);
+  height: auto;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px !important;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: rgba(21, 26, 38, 0.82) !important;
+  -webkit-backdrop-filter: saturate(140%) blur(16px);
+          backdrop-filter: saturate(140%) blur(16px);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.45);
+  overflow: visible;
+}
+html[data-theme="bento"] .header .profile-img,
+html[data-theme="bento"] .header .social-links { display: none; }
+html[data-theme="bento"] .header .logo { margin: 0 6px 0 8px !important; }
+html[data-theme="bento"] .header .logo h1.sitename { font-size: 15px; color: var(--head); }
+
+html[data-theme="bento"] .navmenu { margin: 0; }
+html[data-theme="bento"] .navmenu ul { gap: 2px; }
+html[data-theme="bento"] .navmenu a,
+html[data-theme="bento"] .navmenu a:focus {
+  border-radius: 999px; border: 1px solid transparent;
+  background: transparent; color: var(--muted);
+  padding: 8px 14px; font-size: 14px; font-weight: 500;
+}
+html[data-theme="bento"] .navmenu a:hover { color: var(--head); background: rgba(255, 255, 255, 0.05); transform: none; }
+html[data-theme="bento"] .navmenu .active,
+html[data-theme="bento"] .navmenu .active:focus {
+  color: #0b0e17 !important; background: var(--accent); border-color: var(--accent);
+  box-shadow: 0 6px 18px rgba(155, 140, 255, 0.35);
+}
+
+html[data-theme="bento"] .site-theme-toggle,
+html[data-theme="bento"] .header .header-toggle {
+  background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line); color: var(--text);
+  border-radius: 50%;
+}
+html[data-theme="bento"] .site-theme-toggle:hover { color: var(--accent); border-color: var(--accent); box-shadow: 0 0 16px rgba(155, 140, 255, 0.3); }
+html[data-theme="bento"] .header .header-toggle:hover { background: var(--accent); color: #0b0e17; }
+
+@media (max-width: 991.98px) {
+  html[data-theme="bento"] .navmenu {
+    position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+    width: min(90vw, 320px);
+    background: rgba(21, 26, 38, 0.98) !important;
+    -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+    border: 1px solid var(--line); border-radius: 16px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+    padding: 0; max-height: 0; overflow: hidden; opacity: 0;
+    transition: max-height 0.35s ease, opacity 0.25s ease;
+  }
+  html[data-theme="bento"] #header.header-show .navmenu { max-height: 80vh; opacity: 1; overflow: auto; }
+  html[data-theme="bento"] .navmenu ul { flex-direction: column; align-items: stretch; padding: 12px; gap: 4px; }
+  html[data-theme="bento"] .navmenu a { padding: 13px 14px; }
+}
+
+/* =============================================================
+   <main>  ->  bento grid  (index page only)
+   ============================================================= */
+html[data-theme="bento"] main { padding-top: 84px; }
+
+/* This dashboard shows every tile at once, so the scroll-reveal (AOS) must not
+   leave above-the-fold tiles stuck at opacity:0 (they never get scrolled into
+   view). Force all animated content visible in this design. */
+html[data-theme="bento"] [data-aos] { opacity: 1 !important; transform: none !important; }
+
+html[data-theme="bento"] .index-page main {
+  display: grid;
+  gap: 16px;
+  max-width: 1180px;
+  margin: 0 auto !important;   /* beat soft-light.css `.header ~ main { margin-left:0 !important }`, which otherwise pins the grid left and leaves the right side empty */
+  padding: 88px 16px 28px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-areas:
+    "hero  hero  hero  hero  stats stats"
+    "about about about skills skills skills"
+    "resume resume resume resume resume resume"
+    "portfolio portfolio portfolio portfolio portfolio portfolio"
+    "services services services contact contact contact";
+}
+html[data-theme="bento"] .index-page #hero { grid-area: hero; }
+html[data-theme="bento"] .index-page #about { grid-area: about; }
+html[data-theme="bento"] .index-page #stats { grid-area: stats; }
+html[data-theme="bento"] .index-page #skills { grid-area: skills; }
+html[data-theme="bento"] .index-page #resume { grid-area: resume; }
+html[data-theme="bento"] .index-page #portfolio { grid-area: portfolio; }
+html[data-theme="bento"] .index-page #services { grid-area: services; }
+html[data-theme="bento"] .index-page #contact { grid-area: contact; }
+
+@media (max-width: 991.98px) {
+  html[data-theme="bento"] .index-page main {
+    grid-template-columns: 1fr;
+    grid-template-areas: "hero" "about" "stats" "skills" "resume" "portfolio" "services" "contact";
+    padding-top: 84px;
+  }
+}
+
+/* ---- every section becomes a tile --------------------------------- */
+html[data-theme="bento"] .index-page main > section {
+  background: var(--surface) !important;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: clamp(20px, 2.6vw, 30px) !important;
+  margin: 0;
+  min-width: 0;                       /* let grid tracks shrink below content size (no blowout) */
+  overflow: hidden;
+  scroll-margin-top: 100px;
+  /* pointer-tilt support — driven by assets/js/bento-tilt.js */
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease;
+  will-change: transform;
+}
+/* content fills the tile (kill Bootstrap container centring + section gaps) */
+html[data-theme="bento"] .index-page main > section .container { max-width: 100%; padding-left: 0; padding-right: 0; }
+html[data-theme="bento"] .index-page .section-title { text-align: left; padding-bottom: 16px; margin: 0; }
+html[data-theme="bento"] .index-page .section-title h2 { font-size: clamp(22px, 2.4vw, 28px); padding-bottom: 12px; }
+html[data-theme="bento"] .index-page .section-title h2:after { left: 0; transform: none; width: 54px; }
+html[data-theme="bento"] .index-page .section-title p { font-size: 14px; }
+
+/* inner cards go flat — the section tile is the only box */
+html[data-theme="bento"] .index-page .about .content,
+html[data-theme="bento"] .index-page .stats .stats-item,
+html[data-theme="bento"] .index-page .services .service-item,
+html[data-theme="bento"] .index-page .resume .resume-item,
+html[data-theme="bento"] .index-page .contact .info-wrap,
+html[data-theme="bento"] .index-page .contact .php-email-form {
+  background: transparent !important;
+  border: none;
+  border-radius: 0;
+  box-shadow: none !important;
+  padding: 0;
+}
+
+/* =============================================================
+   HERO tile
+   ============================================================= */
+html[data-theme="bento"] .index-page #hero.hero {
+  min-height: 0;
+  display: flex; align-items: center;
+  background: var(--surface) !important;
+}
+html[data-theme="bento"] #hero .container { text-align: left; }
+html[data-theme="bento"] .hero-eyebrow { color: var(--accent); }
+html[data-theme="bento"] .hero h2 { font-size: clamp(34px, 4vw, 56px); }
+html[data-theme="bento"] .hero .hero-role, html[data-theme="bento"] .hero p { color: var(--muted); }
+html[data-theme="bento"] .hero .hero-role .typed { color: var(--head); }
+html[data-theme="bento"] .typed-cursor { color: var(--accent); }
+
+/* command-free buttons (drop the hanging-pendulum chrome) */
+html[data-theme="bento"] .hero-actions { padding-bottom: 0; gap: 12px; align-items: center; }
+html[data-theme="bento"] .hang { padding: 0 !important; display: inline-flex; }
+html[data-theme="bento"] .hang__shadow,
+html[data-theme="bento"] .hang__pivot,
+html[data-theme="bento"] .pendulum__chain { display: none !important; }
+html[data-theme="bento"] .pendulum { transform: none !important; display: inline-flex; }
+html[data-theme="bento"] .btn-chrome { color: #0b0e17; background: var(--accent); box-shadow: 0 8px 22px rgba(155, 140, 255, 0.35); }
+html[data-theme="bento"] .btn-chrome:hover { color: #0b0e17; background: #b3a6ff; }
+html[data-theme="bento"] .btn-ghost { color: var(--head); background: rgba(255, 255, 255, 0.04); border-color: var(--line); }
+html[data-theme="bento"] .btn-ghost:hover { color: var(--accent); border-color: var(--accent); }
+
+/* =============================================================
+   Per-section content fit
+   ============================================================= */
+/* About: single full-width column */
+html[data-theme="bento"] .index-page .about .col-lg-8 { flex: 0 0 100%; max-width: 100%; }
+html[data-theme="bento"] .about .content h2 { color: var(--head); font-size: 20px; }
+html[data-theme="bento"] .about .content ul i { color: var(--accent); }
+html[data-theme="bento"] .about .content ul strong { color: var(--head); }
+
+/* Stats: 2 x 2 inside the tile */
+html[data-theme="bento"] .index-page .stats .col-lg-3 { flex: 0 0 50%; max-width: 50%; }
+html[data-theme="bento"] .stats .stats-item { padding: 10px 6px; }
+html[data-theme="bento"] .stats .stats-item i { color: var(--accent); }
+html[data-theme="bento"] .stats .stats-item .purecounter { color: var(--head); }
+html[data-theme="bento"] .stats .stats-item p { color: var(--muted); }
+
+/* Skills chips */
+html[data-theme="bento"] .skills-tags .resume-title { color: var(--head); }
+html[data-theme="bento"] .skills-tags .badge {
+  background: rgba(255, 255, 255, 0.04); border: 1px solid var(--line);
+  color: var(--text); box-shadow: none;
+}
+
+/* Resume */
+html[data-theme="bento"] .resume .resume-title { color: var(--head); }
+html[data-theme="bento"] .resume .resume-item { border-left: 2px solid var(--accent); padding-left: 22px; }
+html[data-theme="bento"] .resume .resume-item h4 { color: var(--head); }
+html[data-theme="bento"] .resume .resume-item h5 { background: rgba(155, 140, 255, 0.14); color: #cabfff; border-radius: 6px; }
+html[data-theme="bento"] .resume .resume-item::before { background: var(--surface-hi); border: 2px solid var(--accent); }
+
+/* Portfolio */
+html[data-theme="bento"] .portfolio .portfolio-filters { text-align: left; }
+html[data-theme="bento"] .portfolio .portfolio-filters li.filter-active,
+html[data-theme="bento"] .portfolio .portfolio-filters li:hover { color: var(--accent); }
+html[data-theme="bento"] .portfolio .portfolio-content { border-radius: 14px; }
+html[data-theme="bento"] .portfolio .portfolio-content .portfolio-info { background: rgba(8, 11, 20, 0.86); }
+html[data-theme="bento"] .portfolio .portfolio-content .portfolio-info h4 { background: var(--accent); color: #0b0e17; }
+
+/* Services */
+html[data-theme="bento"] .services .service-item { padding: 14px 0 !important; border-bottom: 1px solid var(--line-soft); }
+html[data-theme="bento"] .services .service-item .icon { background: rgba(155, 140, 255, 0.14); border: 1px solid var(--line); }
+html[data-theme="bento"] .services .service-item .icon i { color: var(--accent); }
+html[data-theme="bento"] .services .service-item:hover .icon { background: var(--accent); border-color: var(--accent); }
+html[data-theme="bento"] .services .service-item:hover .icon i { color: #0b0e17; }
+html[data-theme="bento"] .services .service-item .title a { color: var(--head); }
+html[data-theme="bento"] .services .service-item:hover .title a { color: var(--accent); }
+html[data-theme="bento"] .services .service-item .description { color: var(--muted); }
+
+/* Contact */
+html[data-theme="bento"] .contact .info-item h3 { color: var(--head); }
+html[data-theme="bento"] .contact .info-item p { color: var(--muted) !important; }
+html[data-theme="bento"] .contact .info-item i { background: rgba(155, 140, 255, 0.14); color: var(--accent); border: 1px solid var(--line); }
+html[data-theme="bento"] .contact .info-item:hover i { background: var(--accent); color: #0b0e17; }
+html[data-theme="bento"] .contact .php-email-form input[type=text],
+html[data-theme="bento"] .contact .php-email-form input[type=email],
+html[data-theme="bento"] .contact .php-email-form textarea {
+  background: rgba(255, 255, 255, 0.03) !important; border: 1px solid var(--line) !important;
+  color: var(--head) !important; border-radius: 10px !important;
+}
+html[data-theme="bento"] .contact .php-email-form input:focus,
+html[data-theme="bento"] .contact .php-email-form textarea:focus {
+  border-color: var(--accent) !important; box-shadow: 0 0 0 3px rgba(155, 140, 255, 0.18) !important;
+}
+html[data-theme="bento"] .contact .php-email-form button[type=submit] { background: var(--accent); color: #0b0e17; }
+html[data-theme="bento"] .contact .php-email-form button[type=submit]:hover { background: #b3a6ff; }
+
+/* =============================================================
+   Footer / utilities  (apply on all pages in this theme)
+   ============================================================= */
+html[data-theme="bento"] .footer { background: rgba(9, 12, 19, 0.85) !important; border-top: 1px solid var(--line); color: var(--muted); }
+html[data-theme="bento"] .footer .sitename { color: var(--accent); }
+html[data-theme="bento"] .footer .social-links a { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--line); color: var(--text); }
+html[data-theme="bento"] .footer .social-links a:hover { color: var(--accent); border-color: var(--accent); }
+
+html[data-theme="bento"] .scroll-top { background: var(--accent) !important; }
+html[data-theme="bento"] .scroll-top i { color: #0b0e17; }
+html[data-theme="bento"] .scroll-top:hover { background: #b3a6ff !important; }
+
+html[data-theme="bento"] #preloader .three-body { --uib-color: #9b8cff; }
+
+/* sub-pages (non index): give cards the tile look, keep normal flow */
+html[data-theme="bento"] .portfolio-details .portfolio-info,
+html[data-theme="bento"] .service-details .services-list {
+  background: var(--surface) !important; border: 1px solid var(--line); border-radius: 16px;
+}
+html[data-theme="bento"] .page-title h1 { color: var(--head); }
+html[data-theme="bento"] .page-title .breadcrumbs ol li a { color: var(--accent); }
+
+/* ---- Ripple -> violet ------------------------------------------- */
+html[data-theme="bento"] .ripple__ring { border-color: rgba(155, 140, 255, 0.5); box-shadow: 0 0 6px rgba(155, 140, 255, 0.3), inset 0 0 5px rgba(240, 166, 214, 0.4); }
+html[data-theme="bento"] .ripple__ring--2 { border-color: rgba(240, 166, 214, 0.4); }
+html[data-theme="bento"] .ripple__ring--3 { border-color: rgba(155, 140, 255, 0.25); }
+html[data-theme="bento"] .ripple__drop { background: radial-gradient(closest-side, rgba(155, 140, 255, 0.35), transparent 72%); }
+html[data-theme="bento"] .ripple__jet { background: radial-gradient(circle at 38% 32%, rgba(255, 255, 255, 0.95), rgba(155, 140, 255, 0.85) 45%, rgba(240, 166, 214, 0.7)); box-shadow: 0 2px 6px rgba(155, 140, 255, 0.4); }

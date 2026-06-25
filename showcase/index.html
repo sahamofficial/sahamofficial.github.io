@@ -19,13 +19,16 @@
   <link href="../assets/css/main.css" rel="stylesheet">
 
   <!-- Apply the saved theme before first paint (no flash of the wrong theme) -->
-  <script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+  <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 
   <!-- Soft Light Theme (off-white + realistic cursor-reactive shadows) -->
   <link href="../assets/css/soft-light.css" rel="stylesheet">
 
   <!-- Terminal / Code-IDE Theme (dark) — see ../assets/js/theme-toggle.js -->
   <link href="../assets/css/theme-terminal.css" rel="stylesheet">
+
+  <!-- Bento Grid Theme (dark, grid layout) -->
+  <link href="../assets/css/theme-bento.css" rel="stylesheet">
   <meta charset="UTF-8">
 
   <title>UI Elements Gallery</title>
