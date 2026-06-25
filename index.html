@@ -50,7 +50,7 @@
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
     rel="stylesheet">
 
   <!-- Vendor CSS Files -->
@@ -63,6 +63,18 @@
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
 
+  <!-- Soft Light Theme (off-white + realistic cursor-reactive shadows) -->
+  <link href="assets/css/soft-light.css" rel="stylesheet">
+
+  <!-- Three.js (ESM) for the spinning wireframe background — see assets/js/hero-3d.js -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+      }
+    }
+  </script>
+
   <script type="text/javascript">
     (function (c, l, a, r, i, t, y) {
       c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
@@ -70,6 +82,10 @@
       y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
     })(window, document, "clarity", "script", "qbnxz702a2");
   </script>
+
+  <!-- Google AdSense — library loaded once for the whole page -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9255277878724714"
+    crossorigin="anonymous"></script>
 </head>
 
 <body class="index-page">
@@ -101,13 +117,11 @@
         <li><a href="#hero" class="active"><i class="bi bi-house navicon"></i>Home</a></li>
         <li><a href="#about"><i class="bi bi-person navicon"></i> About</a></li>
         <li><a href="#resume"><i class="bi bi-file-earmark-text navicon"></i> Resume</a></li>
-        <li>
-          <a href="showcase/" class="active" style="color: #ffc107;
-  font-weight: bold;
-  text-decoration: none;">
+        <!-- <li>
+          <a href="showcase/" class="nav-featured" style="color: var(--lc-accent-2); font-weight: 600;">
             <i class="bi bi-code-slash navicon"></i>My Creations
           </a>
-        </li>
+        </li> -->
         <li><a href="#portfolio"><i class="bi bi-images navicon"></i> Portfolio</a></li>
         <li><a href="#services"><i class="bi bi-hdd-stack navicon"></i> Services</a></li>
         <li><a href="#contact"><i class="bi bi-envelope navicon"></i> Contact</a></li>
@@ -124,22 +138,32 @@
       <!--       <img src="assets/img/hero-bg.jpg" alt="" data-aos="fade-in" class=""> -->
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <p class="hero-eyebrow">Full-Stack Web Developer</p>
         <h2>Saham Ali</h2>
-        <p>I'm A<span class="typed" data-typed-items="Designer, Developer, Freelancer">Designer</span><span
-            class="typed-cursor typed-cursor--blink" aria-hidden="true"></span><span
+        <p class="hero-role">I'm a <span class="typed"
+            data-typed-items="Full-Stack Developer, Laravel &amp; PHP Developer, Front-End Developer, Freelancer">Full-Stack Developer</span><span
             class="typed-cursor typed-cursor--blink" aria-hidden="true"></span></p>
+        <div class="hero-actions">
+          <span class="hang">
+            <span class="hang__shadow" aria-hidden="true"></span>
+            <span class="hang__pivot" aria-hidden="true"></span>
+            <span class="pendulum">
+              <span class="pendulum__chain" aria-hidden="true"><i></i><i></i><i></i></span>
+              <a href="#portfolio" class="btn-chrome">View Work</a>
+            </span>
+          </span>
+          <span class="hang">
+            <span class="hang__shadow" aria-hidden="true"></span>
+            <span class="hang__pivot" aria-hidden="true"></span>
+            <span class="pendulum">
+              <span class="pendulum__chain" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+              <a href="#contact" class="btn-ghost">Get in Touch</a>
+            </span>
+          </span>
+        </div>
       </div>
 
     </section><!-- /Hero Section -->
-
-    <!-- Ad 01 -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9760151312817997"
-      crossorigin="anonymous"></script>
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9760151312817997" data-ad-slot="5245853163"
-      data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
 
     <!-- About Section -->
     <section id="about" class="about section">
@@ -148,7 +172,7 @@
       <div class="container section-title" data-aos="fade-up">
         <h2>About Me</h2>
         <p>I'm a skilled web developer with experience in JavaScript, and expertise in frameworks like React,
-          Node.js, and laravel. I'm a quick learner and collaborate closely with clients to create efficient, scalable,
+          Node.js, and Laravel. I'm a quick learner and collaborate closely with clients to create efficient, scalable,
           and user-friendly solutions that solve real-world problems. Let's work together to bring your ideas to life!
         </p>
       </div><!-- End Section Title -->
@@ -160,12 +184,11 @@
             <img src="assets/img/IMG-ME.jpg" class="img-fluid" alt="">
           </div> -->
           <div class="col-lg-8 content">
-            <h2>UI/UX Designer & Web Developer</h2>
+            <h2>Full-Stack Web Developer</h2>
             <p class="fst-italic py-3">
-              Passionate about crafting intuitive user experiences and building responsive, modern websites. Skilled in
-              blending creativity with technology to deliver seamless digital solutions that engage and inspire users.
-            </p>
-
+              I build responsive, modern web applications end to end — from clean front-ends in JavaScript and React to
+              robust back-ends in Laravel, PHP, and Python. I work closely with clients to ship scalable, user-friendly
+              solutions that solve real-world problems.
             </p>
             <div class="row">
               <div class="col-lg-6">
@@ -202,15 +225,6 @@
 
     </section><!-- /About Section -->
 
-    <!-- Ad 02 -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9760151312817997"
-      crossorigin="anonymous"></script>
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9760151312817997" data-ad-slot="1446264791"
-      data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-
     <!-- Stats Section -->
     <section id="stats" class="stats section">
 
@@ -220,45 +234,37 @@
 
           <div class="col-lg-3 col-md-6">
             <div class="stats-item">
-              <i class="bi bi-emoji-smile"></i>
-              <span data-purecounter-start="0" data-purecounter-end="2" data-purecounter-duration="1"
+              <i class="bi bi-translate"></i>
+              <span data-purecounter-start="0" data-purecounter-end="3" data-purecounter-duration="1"
                 class="purecounter"></span>
-              <p><strong>Happy Clients</strong>
-                <!-- <span>consequuntur quae</span> -->
-              </p>
+              <p><strong>Languages I Build In</strong></p>
             </div>
           </div><!-- End Stats Item -->
 
           <div class="col-lg-3 col-md-6">
             <div class="stats-item">
-              <i class="bi bi-journal-richtext"></i>
-              <span data-purecounter-start="0" data-purecounter-end="2" data-purecounter-duration="1"
+              <i class="bi bi-stack"></i>
+              <span data-purecounter-start="0" data-purecounter-end="4" data-purecounter-duration="1"
                 class="purecounter"></span>
-              <p><strong>Projects</strong>
-                <!-- <span>adipisci atque cum quia aut</span> -->
-              </p>
+              <p><strong>Frameworks Used</strong></p>
             </div>
           </div><!-- End Stats Item -->
 
           <div class="col-lg-3 col-md-6">
             <div class="stats-item">
               <i class="bi bi-headset"></i>
-              <span data-purecounter-start="0" data-purecounter-end="8" data-purecounter-duration="1"
+              <span data-purecounter-start="0" data-purecounter-end="24" data-purecounter-duration="1"
                 class="purecounter"></span>
-              <p><strong>Hours Of Support</strong>
-                <!-- <span>aut commodi quaerat</span> -->
-              </p>
+              <p><strong>Hrs Response Time</strong></p>
             </div>
           </div><!-- End Stats Item -->
 
           <div class="col-lg-3 col-md-6">
             <div class="stats-item">
-              <i class="bi bi-people"></i>
-              <span data-purecounter-start="0" data-purecounter-end="1" data-purecounter-duration="1"
+              <i class="bi bi-cup-hot"></i>
+              <span data-purecounter-start="0" data-purecounter-end="100" data-purecounter-duration="2"
                 class="purecounter"></span>
-              <p><strong>Hard Workers</strong>
-                <!-- <span>rerum asperiores dolor</span> -->
-              </p>
+              <p><strong>% Commitment</strong></p>
             </div>
           </div><!-- End Stats Item -->
 
@@ -267,15 +273,6 @@
       </div>
 
     </section><!-- /Stats Section -->
-
-    <!-- Ad 03 -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9760151312817997"
-      crossorigin="anonymous"></script>
-    <ins class="adsbygoogle" style="display:block" data-ad-format="autorelaxed" data-ad-client="ca-pub-9760151312817997"
-      data-ad-slot="3981727551"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
 
     <!-- Skills Section -->
     <section id="skills" class="skills section light-background">
@@ -299,62 +296,32 @@
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-        <div class="row skills-content skills-animation">
+        <div class="row gy-4 skills-tags">
 
-          <div class="col-lg-6">
-
-            <div class="progress">
-              <span class="skill"><span>HTML</span> <i class="val">100%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                </div>
-              </div>
-            </div><!-- End Skills Item -->
-
-            <div class="progress">
-              <span class="skill"><span>CSS</span> <i class="val">90%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
-                </div>
-              </div>
-            </div><!-- End Skills Item -->
-
-            <div class="progress">
-              <span class="skill"><span>JavaScript</span> <i class="val">75%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-                </div>
-              </div>
-            </div><!-- End Skills Item -->
-
+          <div class="col-lg-4 col-md-6">
+            <h4 class="resume-title">Backend</h4>
+            <span class="badge rounded-pill">PHP</span>
+            <span class="badge rounded-pill">Laravel</span>
+            <span class="badge rounded-pill">Node.js</span>
+            <span class="badge rounded-pill">MySQL</span>
+            <span class="badge rounded-pill">Python</span>
           </div>
 
-          <div class="col-lg-6">
+          <div class="col-lg-4 col-md-6">
+            <h4 class="resume-title">Frontend</h4>
+            <span class="badge rounded-pill">HTML</span>
+            <span class="badge rounded-pill">CSS</span>
+            <span class="badge rounded-pill">JavaScript</span>
+            <span class="badge rounded-pill">React</span>
+            <span class="badge rounded-pill">Tailwind CSS</span>
+          </div>
 
-            <div class="progress">
-              <span class="skill"><span>PHP</span> <i class="val">80%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
-                </div>
-              </div>
-            </div><!-- End Skills Item -->
-
-            <div class="progress">
-              <span class="skill"><span>WordPress/CMS</span> <i class="val">90%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
-                </div>
-              </div>
-            </div><!-- End Skills Item -->
-
-            <div class="progress">
-              <span class="skill"><span>Photoshop</span> <i class="val">55%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100">
-                </div>
-              </div>
-            </div><!-- End Skills Item -->
-
+          <div class="col-lg-4 col-md-6">
+            <h4 class="resume-title">Tools &amp; Design</h4>
+            <span class="badge rounded-pill">Git</span>
+            <span class="badge rounded-pill">WordPress</span>
+            <span class="badge rounded-pill">Figma</span>
+            <span class="badge rounded-pill">Photoshop</span>
           </div>
 
         </div>
@@ -362,15 +329,6 @@
       </div>
 
     </section><!-- /Skills Section -->
-
-    <!-- Ad 04 -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9760151312817997"
-      crossorigin="anonymous"></script>
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9760151312817997" data-ad-slot="1143569977"
-      data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
 
     <!-- Resume Section -->
     <section id="resume" class="resume section">
@@ -391,30 +349,54 @@
         <div class="row">
 
           <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-            <h3 class="resume-title">Sumary</h3>
+            <h3 class="resume-title">Summary</h3>
 
             <div class="resume-item pb-0">
               <h4>Saham Ali</h4>
-              <p><em>Innovative and deadline-driven Web Designer with 3+ years of experience designing and developing
-                  user-centered digital/print marketing material from initial concept to final, polished
-                  deliverable.</em></p>
+              <p><em>Detail-oriented full-stack web developer focused on building responsive, user-centered web
+                  applications — from clean UI and front-end through to scalable back-end logic.</em></p>
               <ul>
                 <li>Puttalam, Sri Lanka</li>
                 <li>(94) 77-850-2300</li>
                 <li>sahamaliofficial@gmail.com</li>
               </ul>
-            </div><!-- Edn Resume Item -->
+            </div><!-- End Resume Item -->
 
             <h3 class="resume-title">Education</h3>
             <div class="resume-item">
-              <h4>Web &amp; Graphic Design</h4>
-              <h5>2022 - present</h5>
+              <h4>Diploma / Course Name — PLACEHOLDER (replace with your qualification)</h4>
+              <h5>20XX - 20XX</h5>
+              <p><em>Institution name, Puttalam, Sri Lanka</em></p>
+              <p>
+                PLACEHOLDER: briefly describe what you studied and the key skills you gained.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+            <h3 class="resume-title">Professional Experience</h3>
+            <div class="resume-item">
+              <h4>Web &amp; Graphic Designer — PLACEHOLDER (confirm your exact title)</h4>
+              <h5>2022 - Present</h5>
               <p><em>Imara Software Solutions, Puttalam, Sri Lanka</em></p>
               <p>
                 Designed and developed modern, responsive websites and engaging graphics for various client projects.
                 Collaborated with developers and marketing teams to create visually appealing user interfaces and
                 maintain brand consistency.
               </p>
+              <ul>
+                <li>PLACEHOLDER: quantify impact (e.g. delivered N client sites, cut page load time by Y%).</li>
+                <li>PLACEHOLDER: name a key project and the stack you used (Laravel, React, MySQL…).</li>
+              </ul>
+            </div>
+
+            <div class="resume-item">
+              <h4>Freelance Web Developer</h4>
+              <h5>PLACEHOLDER — year range</h5>
+              <p><em>Self-employed, Remote</em></p>
+              <ul>
+                <li>PLACEHOLDER: a freelance project, the client need, and how you solved it.</li>
+              </ul>
             </div>
           </div>
 
@@ -423,15 +405,6 @@
       </div>
 
     </section><!-- /Resume Section -->
-
-    <!-- Ad 05 -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9760151312817997"
-      crossorigin="anonymous"></script>
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9760151312817997" data-ad-slot="3226844192"
-      data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
 
     <!-- Portfolio Section -->
     <section id="portfolio" class="portfolio section light-background">
@@ -449,20 +422,120 @@
 
       <div class="container">
 
-      </div>
+        <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+
+          <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
+            <li data-filter="*" class="filter-active">All</li>
+            <li data-filter=".filter-web">Web</li>
+            <li data-filter=".filter-fullstack">Full-Stack</li>
+            <li data-filter=".filter-uiux">UI/UX</li>
+            <li data-filter=".filter-other">Other</li>
+          </ul><!-- End Portfolio Filters -->
+
+          <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+
+            <!-- PLACEHOLDER CARD — duplicate & edit: change the filter-* class, image (assets/img/portfolio/…), title, text, tags and links. -->
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-web">
+              <div class="portfolio-content h-100">
+                <img src="assets/img/services.jpg" class="img-fluid" alt="Replace with a screenshot of your project">
+                <div class="portfolio-info">
+                  <h4>Project One — replace me</h4>
+                  <p>One line: what you built and the stack you used.</p>
+                  <span class="badge rounded-pill">HTML</span>
+                  <span class="badge rounded-pill">CSS</span>
+                  <a href="assets/img/services.jpg" title="Project One — replace me"
+                    data-gallery="portfolio-gallery-web" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="#" title="Live site / GitHub" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                </div>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-fullstack">
+              <div class="portfolio-content h-100">
+                <img src="assets/img/services.jpg" class="img-fluid" alt="Replace with a screenshot of your project">
+                <div class="portfolio-info">
+                  <h4>Project Two — replace me</h4>
+                  <p>One line: what you built and the stack you used.</p>
+                  <span class="badge rounded-pill">Laravel</span>
+                  <span class="badge rounded-pill">MySQL</span>
+                  <a href="assets/img/services.jpg" title="Project Two — replace me"
+                    data-gallery="portfolio-gallery-fullstack" class="glightbox preview-link"><i
+                      class="bi bi-zoom-in"></i></a>
+                  <a href="#" title="Live site / GitHub" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                </div>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-uiux">
+              <div class="portfolio-content h-100">
+                <img src="assets/img/services.jpg" class="img-fluid" alt="Replace with a screenshot of your project">
+                <div class="portfolio-info">
+                  <h4>Project Three — replace me</h4>
+                  <p>One line: the design problem and your solution.</p>
+                  <span class="badge rounded-pill">Figma</span>
+                  <span class="badge rounded-pill">UI/UX</span>
+                  <a href="assets/img/services.jpg" title="Project Three — replace me"
+                    data-gallery="portfolio-gallery-uiux" class="glightbox preview-link"><i
+                      class="bi bi-zoom-in"></i></a>
+                  <a href="#" title="Live site / case study" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                </div>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-web">
+              <div class="portfolio-content h-100">
+                <img src="assets/img/services.jpg" class="img-fluid" alt="Replace with a screenshot of your project">
+                <div class="portfolio-info">
+                  <h4>Project Four — replace me</h4>
+                  <p>One line: what you built and the stack you used.</p>
+                  <span class="badge rounded-pill">JavaScript</span>
+                  <span class="badge rounded-pill">React</span>
+                  <a href="assets/img/services.jpg" title="Project Four — replace me"
+                    data-gallery="portfolio-gallery-web" class="glightbox preview-link"><i
+                      class="bi bi-zoom-in"></i></a>
+                  <a href="#" title="Live site / GitHub" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                </div>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-fullstack">
+              <div class="portfolio-content h-100">
+                <img src="assets/img/services.jpg" class="img-fluid" alt="Replace with a screenshot of your project">
+                <div class="portfolio-info">
+                  <h4>Project Five — replace me</h4>
+                  <p>One line: what you built and the stack you used.</p>
+                  <span class="badge rounded-pill">PHP</span>
+                  <span class="badge rounded-pill">Node.js</span>
+                  <a href="assets/img/services.jpg" title="Project Five — replace me"
+                    data-gallery="portfolio-gallery-fullstack" class="glightbox preview-link"><i
+                      class="bi bi-zoom-in"></i></a>
+                  <a href="#" title="Live site / GitHub" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                </div>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-other">
+              <div class="portfolio-content h-100">
+                <img src="assets/img/services.jpg" class="img-fluid" alt="Replace with a screenshot of your project">
+                <div class="portfolio-info">
+                  <h4>Project Six — replace me</h4>
+                  <p>One line: what this is and the tools you used.</p>
+                  <span class="badge rounded-pill">WordPress</span>
+                  <a href="assets/img/services.jpg" title="Project Six — replace me"
+                    data-gallery="portfolio-gallery-other" class="glightbox preview-link"><i
+                      class="bi bi-zoom-in"></i></a>
+                  <a href="#" title="Live site / GitHub" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                </div>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+          </div><!-- End Portfolio Container -->
+
+        </div><!-- End Isotope Layout -->
 
       </div>
 
     </section><!-- /Portfolio Section -->
-
-    <!-- Ad 06 -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9760151312817997"
-      crossorigin="anonymous"></script>
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9760151312817997" data-ad-slot="3044647848"
-      data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
 
     <!-- Services Section -->
     <section id="services" class="services section">
@@ -561,15 +634,6 @@
       </div>
     </section><!-- /Services Section -->
 
-    <!-- Ad 07 -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9760151312817997"
-      crossorigin="anonymous"></script>
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9760151312817997" data-ad-slot="5043306985"
-      data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-
     <section id="contact" class="contact section">
 
       <!-- Section Title -->
@@ -626,20 +690,20 @@
 
     </section><!-- /Contact Section -->
 
-    <!-- Ad 08 -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9760151312817997"
-      crossorigin="anonymous"></script>
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9760151312817997" data-ad-slot="9881518932"
-      data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-
   </main>
 
   <footer id="footer" class="footer position-relative light-background">
 
     <div class="container">
+      <div class="social-links">
+        <a href="https://x.com/_saham__" class="twitter" aria-label="X (Twitter)"><i class="bi bi-twitter-x"></i></a>
+        <a href="https://www.facebook.com/share/14xxnybjPg/" class="facebook" aria-label="Facebook"><i
+            class="bi bi-facebook"></i></a>
+        <a href="https://www.instagram.com/saham__official_?igsh=dmJsaDNjODJqYmR4" class="instagram"
+          aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+        <a href="https://join.skype.com/invite/xVkN9duK6J1E" class="skype" aria-label="Skype"><i
+            class="bi bi-skype"></i></a>
+      </div>
       <div class="copyright text-center ">
         <p>© <span>Copyright</span> <strong class="px-1 sitename">Saham</strong> <span>All Rights Reserved</span></p>
       </div>
@@ -651,10 +715,9 @@
 
   </footer>
 
-  <!-- Ad 9 -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9760151312817997"
-    crossorigin="anonymous"></script>
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9760151312817997" data-ad-slot="7997591627"
+  <!-- Single unobtrusive ad (after footer). Library is loaded once in <head>. -->
+  <!-- NOTE: verify data-ad-client and data-ad-slot match your live AdSense account. -->
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9255277878724714" data-ad-slot="7997591627"
     data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>
     (adsbygoogle = window.adsbygoogle || []).push({});
@@ -686,6 +749,9 @@
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <!-- Spinning wireframe geo-sphere background (Three.js / WebGL) -->
+  <script type="module" src="assets/js/hero-3d.js"></script>
 
 </body>
 

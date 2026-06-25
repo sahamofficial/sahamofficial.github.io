@@ -1,0 +1,613 @@
+/* =============================================================
+   SOFT LIGHT — off-white theme + top-navbar layout
+   Realistic layered shadows on items, and cursor-reactive
+   shadows (the cursor acts as a moving light source — see the
+   shadow-light effect in assets/js/main.js).
+   Loaded AFTER main.css.
+   Fonts (Sora + Space Grotesk) are loaded via <link> in each page's <head>.
+   ============================================================= */
+
+/* -------------------------------------------------------------
+   1. TOKENS
+   ------------------------------------------------------------- */
+:root {
+  --nav-h: 66px;
+
+  --bg: #ece9e3;             /* warm off-white */
+  --surface: #f4f2ec;        /* raised cards/chips */
+  --surface-hi: #fbfaf6;     /* brightest highlight */
+  --line: rgba(45, 40, 30, 0.10);
+  --line-soft: rgba(45, 40, 30, 0.06);
+
+  --text: #3b372f;
+  --muted: #6f6a5f;          /* WCAG AA (~5:1) on --bg / --surface */
+  --head: #221f1a;
+  --ink: #2a2723;            /* dark primary (buttons, active) */
+  --accent: #c0603a;         /* warm clay accent */
+  --accent-soft: #d68a64;
+
+  --sh: 56, 50, 40;          /* warm-grey shadow base (rgb) */
+
+  /* realistic, layered light-UI shadows */
+  --shadow-sm: 0 1px 2px rgba(var(--sh), 0.07), 0 2px 6px rgba(var(--sh), 0.06);
+  --shadow-md: 0 2px 4px rgba(var(--sh), 0.06), 0 10px 26px rgba(var(--sh), 0.11);
+  --shadow-lg: 0 6px 14px rgba(var(--sh), 0.07), 0 24px 50px rgba(var(--sh), 0.14);
+  --edge-hi: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+
+  /* override iPortfolio tokens */
+  --background-color: var(--bg);
+  --default-color: var(--text);
+  --heading-color: var(--head);
+  --accent-color: var(--accent);
+  --surface-color: var(--surface);
+  --contrast-color: #ffffff;
+  --heading-font: "Sora", "Raleway", sans-serif;
+  --nav-font: "Space Grotesk", "Poppins", sans-serif;
+  --default-font: "Space Grotesk", system-ui, sans-serif;
+}
+
+.light-background { --background-color: transparent; --surface-color: var(--surface); }
+.dark-background  { --background-color: transparent; --surface-color: var(--surface); }
+
+.section, section, .page-title,
+.about.section, .skills.section, .portfolio.section,
+.light-background.section {
+  background-color: transparent !important;
+  scroll-margin-top: calc(var(--nav-h) + 14px);
+}
+
+/* -------------------------------------------------------------
+   2. CURSOR-REACTIVE SHADOW PRIMITIVE
+   JS sets --sx/--sy (offset px), --sblur, --salpha per element so
+   the shadow falls AWAY from the cursor. Defaults below give a
+   normal soft drop shadow when JS/motion is unavailable.
+   ------------------------------------------------------------- */
+.shadow-lit {
+  --sx: 0; --sy: 7; --sblur: 24px; --salpha: 0.16;
+  box-shadow:
+    0 1px 2px rgba(var(--sh), 0.08),
+    calc(var(--sx) * 1px) calc(var(--sy) * 1px) var(--sblur) rgba(var(--sh), var(--salpha)),
+    var(--edge-hi);
+  transition: box-shadow 0.16s ease-out, transform 0.22s ease, background-color 0.25s ease, color 0.25s ease;
+}
+.shadow-lit-text {
+  --sx: 0; --sy: 8; --sblur: 26px; --salpha: 0.20;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6),
+    calc(var(--sx) * 1px) calc(var(--sy) * 1px) var(--sblur) rgba(var(--sh), var(--salpha));
+  transition: text-shadow 0.16s ease-out;
+}
+
+/* -------------------------------------------------------------
+   3. BASE + BACKGROUND
+   ------------------------------------------------------------- */
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--bg) !important;
+  color: var(--text);
+  font-family: var(--default-font);
+}
+/* soft warm light wash + faint paper vignette */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  background:
+    radial-gradient(70rem 40rem at 50% -12%, rgba(255, 252, 245, 0.9), transparent 60%),
+    radial-gradient(60rem 60rem at 88% 110%, rgba(192, 96, 58, 0.05), transparent 60%),
+    linear-gradient(180deg, #f1eee8, var(--bg));
+}
+body::before { content: none; }
+
+::selection { background: var(--accent); color: #fff; }
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: #e4e0d8; }
+::-webkit-scrollbar-thumb {
+  background: #c8c2b6; border-radius: 10px; border: 3px solid #e4e0d8;
+}
+::-webkit-scrollbar-thumb:hover { background: #b3ac9e; }
+
+/* -------------------------------------------------------------
+   4. TYPOGRAPHY
+   ------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 { color: var(--head); letter-spacing: -0.01em; }
+/* link text uses a darker clay (#a44c2b ~4.6:1) for AA; --accent stays for decorative use */
+a { color: #a44c2b; transition: 0.25s; }
+a:hover { color: #8a3f24; }
+
+/* Keyboard focus affordance for interactive elements (cursor-shadow elements have none by default) */
+.navmenu a:focus-visible, .header .social-links a:focus-visible, .header .header-toggle:focus-visible,
+.btn-chrome:focus-visible, .btn-ghost:focus-visible, .scroll-top:focus-visible,
+.services .service-item .title a:focus-visible, .portfolio .portfolio-info a:focus-visible,
+.footer .social-links a:focus-visible, .page-title .breadcrumbs ol li a:focus-visible {
+  outline: 2px solid #a44c2b;
+  outline-offset: 2px;
+}
+
+/* =============================================================
+   5. LAYOUT TRANSFORM — sidebar -> sticky TOP navbar
+   ============================================================= */
+.header {
+  position: fixed !important;
+  inset: 0 0 auto 0 !important;
+  width: 100% !important;
+  height: var(--nav-h);
+  flex-direction: row !important;
+  align-items: center;
+  gap: 14px;
+  padding: 0 clamp(16px, 4vw, 44px) !important;
+  overflow: visible;
+  background: rgba(244, 242, 236, 0.82) !important;
+  -webkit-backdrop-filter: saturate(120%) blur(14px);
+          backdrop-filter: saturate(120%) blur(14px);
+  border-right: none;
+  border-bottom: 1px solid var(--line-soft);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset, 0 6px 24px rgba(var(--sh), 0.10);
+  animation: none !important;
+  z-index: 1000;
+}
+
+.header ~ main,
+.header ~ #footer { margin-left: 0 !important; }
+main { padding-top: var(--nav-h); }
+
+/* avatar */
+.header .profile-img { order: 0; margin: 0; }
+.header .profile-img img {
+  width: 38px; height: 38px; margin: 0;
+  border: 2px solid #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+/* wordmark */
+.header .logo { order: 1; margin: 0 auto 0 0; justify-content: flex-start; }
+.header .logo h1.sitename {
+  font-family: "Sora", sans-serif;
+  font-size: 20px; font-weight: 700; letter-spacing: -0.01em;
+  margin: 0; color: var(--head);
+}
+
+/* nav — soft raised chips that react to the cursor light */
+.navmenu { order: 2; background: transparent !important; animation: none !important; box-shadow: none; overflow: visible; }
+.navmenu ul { display: flex; align-items: center; gap: 8px; padding: 0; margin: 0; }
+.navmenu li { list-style: none; }
+.navmenu a, .navmenu a:focus {
+  font-family: var(--nav-font);
+  width: auto; white-space: nowrap;
+  padding: 8px 15px; margin: 0;
+  font-size: 14px; font-weight: 500;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: 11px;
+  position: relative;
+}
+.navmenu a .navicon { display: none; }
+.navmenu a:hover { color: var(--head); transform: translateY(-2px); }
+.navmenu .active, .navmenu .active:focus {
+  color: #fff !important;
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+/* "My Creations" featured link (kept for when re-enabled) */
+.navmenu a.nav-featured { color: #fff !important; background: var(--accent); border-color: var(--accent); }
+.navmenu a.nav-featured:hover { background: #a44c2b; }
+
+/* social cluster */
+.header .social-links { order: 3; margin: 0 0 0 6px; display: flex; gap: 8px; }
+.header .social-links a {
+  width: 36px; height: 36px; font-size: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  color: var(--text);
+}
+.header .social-links a:hover { color: var(--accent); transform: translateY(-2px); }
+
+/* hamburger */
+.header .header-toggle {
+  order: 4; display: none;
+  position: static; width: 42px; height: 42px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--head);
+  box-shadow: var(--shadow-sm);
+}
+.header .header-toggle:hover { background: var(--ink); color: #fff; }
+
+@media (max-width: 991.98px) {
+  .header { left: 0 !important; }
+  .header .social-links { display: none; }
+  .header .header-toggle { display: flex; }
+  .navmenu {
+    position: absolute; top: var(--nav-h); left: 0; right: 0;
+    background: rgba(244, 242, 236, 0.98) !important;
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+    box-shadow: var(--shadow-lg);
+    max-height: 0; overflow: hidden; opacity: 0;
+    transition: max-height 0.35s ease, opacity 0.25s ease;
+  }
+  #header.header-show .navmenu { max-height: 80vh; opacity: 1; overflow: auto; }
+  .navmenu ul { flex-direction: column; align-items: stretch; padding: 14px; gap: 8px; }
+  .navmenu a { padding: 14px 14px; font-size: 16px; }
+}
+@media (min-width: 992px) {
+  .header .header-toggle { display: none !important; }
+  .navmenu { max-height: none !important; opacity: 1 !important; }
+}
+
+/* =============================================================
+   6. HERO
+   ============================================================= */
+.hero {
+  min-height: calc(100vh - var(--nav-h));
+  padding: 60px 0;
+  text-align: center;
+  background: radial-gradient(46rem 30rem at 50% 26%, rgba(255, 253, 247, 0.8), transparent 62%) !important;
+  animation: none !important;
+  overflow: hidden;
+}
+.hero::before { display: none; }
+.hero img { display: none; }
+.hero .container { z-index: 3; }
+
+.hero-eyebrow {
+  font-family: var(--nav-font);
+  text-transform: uppercase; letter-spacing: 0.4em;
+  font-size: 12.5px; font-weight: 600;
+  color: #a44c2b;
+  margin: 0 0 18px; text-indent: 0.4em;
+}
+@media (max-width: 575.98px) {
+  .hero-eyebrow { letter-spacing: 0.25em; font-size: 11px; }
+}
+.hero h2 {
+  font-family: "Sora", sans-serif;
+  font-size: clamp(44px, 8vw, 94px);
+  font-weight: 800; letter-spacing: -0.025em; line-height: 1.02;
+  margin: 0; color: var(--head);
+}
+.hero .hero-role, .hero p {
+  margin: 18px 0 0; font-size: clamp(18px, 2.4vw, 24px);
+  color: var(--muted); font-weight: 400;
+}
+.hero .hero-role .typed, .hero p span.typed { color: var(--head); font-weight: 600; }
+.hero p span { border-bottom: none; }
+.typed-cursor { color: var(--accent); }
+
+.hero-actions { margin-top: 36px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.btn-chrome, .btn-ghost {
+  font-family: var(--nav-font); font-weight: 600; font-size: 15px;
+  padding: 14px 30px; border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 8px;
+  cursor: pointer; border: 1px solid transparent;
+}
+.btn-chrome { color: #fff; background: var(--ink); }
+.btn-chrome:hover { color: #fff; background: #1c1a16; transform: translateY(-3px); }
+.btn-ghost { color: var(--head); background: var(--surface); border-color: var(--line); }
+.btn-ghost:hover { color: var(--accent); transform: translateY(-3px); }
+
+/* =============================================================
+   7. SECTION TITLES + CARD BASE
+   ============================================================= */
+.section-title h2 {
+  font-family: "Sora", sans-serif;
+  font-size: clamp(28px, 4vw, 40px); font-weight: 700;
+  text-transform: none; letter-spacing: -0.015em; color: var(--head);
+}
+.section-title h2:after {
+  width: 70px; height: 3px; left: 50%; transform: translateX(-50%); bottom: 0;
+  background: var(--accent); border-radius: 3px;
+}
+.section-title p { color: var(--muted); }
+
+/* raised card surfaces */
+.about .content,
+.resume .resume-item,
+.stats .stats-item,
+.services .service-item,
+.contact .info-wrap,
+.contact .php-email-form,
+.portfolio-details .portfolio-info,
+.service-details .services-list {
+  background: var(--surface) !important;
+  border: 1px solid var(--line-soft);
+  border-radius: 18px;
+}
+
+/* =============================================================
+   8. SECTION-SPECIFIC
+   ============================================================= */
+/* About */
+.about .content { padding: 36px; }
+.about .content h2 { color: var(--head); }
+.about .content ul i { color: var(--accent); }
+.about .content ul strong { color: var(--head); }
+
+/* Stats */
+.stats .stats-item { padding: 30px; border-radius: 18px; }
+.stats .stats-item:hover { transform: translateY(-4px); }
+.stats .stats-item i { color: var(--accent); }
+.stats .stats-item .purecounter { color: var(--head); }
+.stats .stats-item p { color: var(--muted); }
+
+/* Skills */
+.skills .progress .skill { color: var(--head); }
+.skills .progress .skill .val { color: var(--accent); }
+.skills .progress-bar-wrap {
+  background: #ddd8cd; border-radius: 8px; overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(var(--sh), 0.18);
+}
+.skills .progress-bar {
+  background: linear-gradient(90deg, var(--ink), #4a463d) !important;
+  border-radius: 8px;
+}
+/* Skill chips (replaces percentage bars) */
+.skills-tags .resume-title { margin-bottom: 16px; }
+.skills-tags .badge {
+  background: var(--surface);
+  color: var(--head);
+  border: 1px solid var(--line);
+  margin: 0 6px 8px 0;
+  padding: 8px 14px;
+  font-weight: 500;
+  font-size: 14px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Resume timeline */
+.resume .resume-item { padding: 24px 24px 24px 30px; margin-left: 6px; border-left: 3px solid var(--accent); }
+.resume .resume-title { color: var(--head); }
+.resume .resume-item h4 { color: var(--head); }
+.resume .resume-item h5 { background: rgba(192, 96, 58, 0.12); color: #a44c2b; border-radius: 6px; }
+.resume .resume-item::before {
+  background: var(--surface-hi); border: 3px solid var(--accent);
+  box-shadow: var(--shadow-sm); left: -8px;
+}
+
+/* Portfolio */
+.portfolio .portfolio-content { border-radius: 16px; overflow: hidden; }
+.portfolio .portfolio-content .portfolio-info { background: rgba(34, 31, 26, 0.82); }
+.portfolio .portfolio-content .portfolio-info h4 { background: var(--accent); color: #fff; }
+.portfolio .portfolio-filters li.filter-active,
+.portfolio .portfolio-filters li:hover { color: var(--accent); }
+
+/* Services */
+.services .service-item { padding: 30px; }
+.services .service-item:hover { transform: translateY(-5px); }
+.services .service-item .icon {
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  box-shadow: var(--shadow-sm);
+}
+.services .service-item .icon i { color: #fff; }
+.services .service-item:hover .icon { background: var(--accent); border-color: var(--accent); }
+.services .service-item .title a { color: var(--head); transition: 0.25s; }
+.services .service-item:hover .title a { color: var(--accent); }
+.services .service-item .description { color: var(--muted); }
+
+/* Contact */
+.contact .info-wrap { padding: 32px; }
+.contact .info-item h3 { color: var(--head); }
+.contact .info-item p { color: var(--muted) !important; }
+.contact .info-item i {
+  background: var(--surface-hi); color: var(--accent);
+  border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+}
+.contact .info-item:hover i { background: var(--accent); color: #fff; }
+.contact .info-wrap iframe { border: 1px solid var(--line) !important; border-radius: 14px !important; filter: none; }
+.contact .php-email-form input[type=text],
+.contact .php-email-form input[type=email],
+.contact .php-email-form textarea {
+  background: var(--surface-hi) !important;
+  border: 1px solid var(--line) !important; border-radius: 10px !important;
+  color: var(--head) !important;
+  box-shadow: inset 0 1px 3px rgba(var(--sh), 0.10);
+}
+.contact .php-email-form input:focus,
+.contact .php-email-form textarea:focus {
+  border-color: var(--accent) !important; box-shadow: 0 0 0 3px rgba(192, 96, 58, 0.15) !important;
+}
+.contact .php-email-form button[type=submit] {
+  background: var(--ink); color: #fff; font-weight: 600; border: 0;
+}
+.contact .php-email-form button[type=submit]:hover { background: var(--accent); transform: translateY(-2px); }
+
+/* Subpages */
+.page-title h1 { color: var(--head); font-family: "Sora", sans-serif; }
+.page-title .breadcrumbs ol li a { color: var(--accent); }
+.service-details .services-list a { color: var(--muted); border-left: 3px solid var(--line); }
+.service-details .services-list a.active,
+.service-details .services-list a:hover { color: var(--head); border-color: var(--accent); }
+.portfolio-details .portfolio-description p { color: var(--muted); }
+.portfolio-details .portfolio-info h3 { color: var(--head); border-bottom-color: var(--line); }
+
+/* =============================================================
+   9. FOOTER + UTILITIES
+   ============================================================= */
+.footer {
+  background: rgba(244, 242, 236, 0.7) !important;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+.footer .sitename { font-family: "Sora", sans-serif; font-weight: 700; color: var(--head); }
+
+/* Footer social cluster — surfaces the links on mobile, where the header hides them */
+.footer .social-links { display: none; justify-content: center; gap: 10px; margin-bottom: 16px; }
+.footer .social-links a {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: 10px;
+  background: var(--surface); border: 1px solid var(--line-soft);
+  color: var(--text); font-size: 15px;
+}
+.footer .social-links a:hover { color: var(--accent); transform: translateY(-2px); }
+@media (max-width: 991.98px) { .footer .social-links { display: flex; } }
+
+.scroll-top {
+  background: var(--ink) !important;
+}
+.scroll-top i { color: #fff; }
+.scroll-top:hover { background: var(--accent); }
+
+#preloader { background: var(--bg) !important; }
+
+/* AdSense: collapse empty slots so the layout has no blank gaps. */
+ins.adsbygoogle { display: block; margin: 8px auto; text-align: center; background: transparent; min-height: 0; }
+ins.adsbygoogle[data-ad-status="unfilled"],
+ins.adsbygoogle.ad-empty { display: none !important; }
+
+/* =============================================================
+   10. CURSOR TRAIL — a warm particle "comet" follows the pointer,
+   drawn on a full-screen canvas (created by JS). Sits above content
+   but is pointer-events:none. Fine-pointer, non-reduced-motion only.
+   ============================================================= */
+.cursor-canvas {
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* Spinning wireframe geo-sphere (Three.js, assets/js/hero-3d.js). Sits behind
+   all content — above the body::after gradient (z -3), below the page text. */
+.bg-3d-canvas {
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: -2;
+}
+
+/* Click ripple — expanding "water" rings + impact splash + rebound jet at the
+   click point. The .ripple wrapper carries an SVG turbulence filter (injected
+   by JS) so the rings ripple with organic, wavy edges, not perfect circles.
+   Rings ease-out (decelerate) like real surface waves and fade as they spread. */
+.ripple {
+  position: fixed; left: 0; top: 0;
+  width: 0; height: 0;
+  pointer-events: none;
+  z-index: 9997;
+  filter: url(#water-ripple);
+}
+.ripple__ring, .ripple__drop, .ripple__jet {
+  position: absolute; left: 0; top: 0;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  will-change: width, height, opacity, transform;
+}
+.ripple__ring {
+  width: 10px; height: 10px;
+  border: 1.5px solid rgba(192, 96, 58, 0.5);
+  /* lit crest on top, soft outer glow — gives the wave some dimension */
+  box-shadow: 0 0 6px rgba(192, 96, 58, 0.22), inset 0 0 5px rgba(255, 252, 246, 0.45);
+  animation: ripple-ring 1.5s cubic-bezier(0.1, 0.7, 0.2, 1) forwards;
+}
+.ripple__ring--2 {
+  border-color: rgba(164, 76, 43, 0.34);
+  animation-duration: 1.85s; animation-delay: 0.12s;
+}
+.ripple__ring--3 {
+  border-color: rgba(164, 76, 43, 0.2);
+  animation-duration: 2.2s; animation-delay: 0.24s;
+}
+.ripple__drop {
+  width: 8px; height: 8px;
+  background: radial-gradient(closest-side, rgba(216, 138, 100, 0.32), transparent 72%);
+  animation: ripple-drop 0.8s ease-out forwards;
+}
+/* rebound droplet — the little column of water that springs back up on impact */
+.ripple__jet {
+  width: 7px; height: 7px;
+  background: radial-gradient(circle at 38% 32%,
+    rgba(255, 252, 246, 0.9), rgba(216, 138, 100, 0.85) 45%, rgba(192, 96, 58, 0.7));
+  box-shadow: 0 2px 5px rgba(120, 60, 35, 0.3);
+  opacity: 0;
+  animation: ripple-jet 0.95s cubic-bezier(0.3, 0, 0.4, 1) 0.05s forwards;
+}
+@keyframes ripple-ring {
+  0%   { width: 10px; height: 10px; opacity: 0; }
+  12%  { opacity: 1; }
+  100% { width: 170px; height: 170px; opacity: 0; }
+}
+@keyframes ripple-drop {
+  0%   { width: 8px; height: 8px; opacity: 0.85; }
+  100% { width: 60px; height: 60px; opacity: 0; }
+}
+@keyframes ripple-jet {
+  0%   { transform: translate(-50%, -50%)  scale(0.5);  opacity: 0; }
+  18%  { opacity: 1; }
+  45%  { transform: translate(-50%, -180%) scale(1.05); opacity: 1; }  /* rise */
+  100% { transform: translate(-50%, -60%)  scale(0.6);  opacity: 0; }  /* fall back */
+}
+
+/* =============================================================
+   11. HANGING CTA — "Get in Touch" dangles from a chain pinned
+   beside "View Work"; hovering/tapping it sets it swinging
+   (damped pendulum driven by JS). Degrades to a static hanging
+   button with no JS / reduced motion.
+   ============================================================= */
+.hero-actions { align-items: flex-start; gap: 22px; position: relative; padding-bottom: 64px; }
+
+.hang { position: relative; display: inline-block; padding-bottom: 18px; }
+
+/* soft contact/cast shadow under each hanging button — JS shifts/fades it with the swing */
+.hang__shadow {
+  position: absolute;
+  left: 50%; bottom: 0;
+  width: 74%; height: 13px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(40, 35, 28, 0.32), rgba(40, 35, 28, 0) 74%);
+  filter: blur(2px);
+  opacity: 0.8;
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* the pin each button's pendulum swings on */
+.hang__pivot {
+  position: absolute; top: -1px; left: 50%; margin-left: -7px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--surface-hi);
+  border: 3px solid var(--ink);
+  box-shadow: var(--shadow-sm);
+  z-index: 3;
+}
+
+/* the swinging assembly (chain + button) rotates about the pin */
+.pendulum {
+  display: flex; flex-direction: column; align-items: center;
+  transform-origin: 50% 6px;
+  will-change: transform;
+}
+.pendulum__chain {
+  display: flex; flex-direction: column; align-items: center;
+  padding-top: 4px; margin-bottom: 3px; z-index: 2;
+}
+.pendulum__chain i {
+  width: 8px; height: 12px;
+  border: 2px solid var(--ink);
+  border-radius: 5px;
+  margin-top: -3px;            /* overlap links */
+}
+.pendulum__chain i:first-child { margin-top: 0; }
+.pendulum__chain i:nth-child(even) { transform: rotate(90deg); }   /* interlock */
+
+/* hanging buttons keep their look but drop the lift transform (the swing owns motion) */
+.hang .btn-chrome, .hang .btn-ghost { cursor: pointer; position: relative; z-index: 1; }
+.hang .btn-chrome:hover, .hang .btn-ghost:hover { transform: none; }
+.hang .btn-ghost:hover { color: var(--accent); }
+
+/* =============================================================
+   12. REDUCED MOTION  (keep static soft shadows, drop the chase)
+   ============================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; }
+  html { scroll-behavior: auto; }
+  .shadow-lit, .shadow-lit-text { transition: none !important; }
+}

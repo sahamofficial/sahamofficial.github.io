@@ -6,53 +6,90 @@
     crossorigin="anonymous"></script>
     <meta charset="UTF-8" />
     <title>Privacy Policy - Saham Official</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Space+Grotesk:wght@400;500&display=swap"
+        rel="stylesheet">
     <style>
+        :root {
+            --bg: #ece9e3;
+            --surface: #f4f2ec;
+            --accent: #c0603a;
+            --text: #3b372f;
+            --muted: #847f74;
+            --head: #221f1a;
+            --line: rgba(45, 40, 30, 0.12);
+            --sh: 56, 50, 40;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 800px;
+            font-family: 'Space Grotesk', 'Segoe UI', Tahoma, sans-serif;
+            line-height: 1.75;
+            color: var(--text);
+            max-width: 820px;
             margin: 0 auto;
-            padding: 20px;
-            background-color: #f9f9f9;
+            padding: 56px 24px 90px;
+            background-color: var(--bg);
+            position: relative;
+            min-height: 100vh;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+            background:
+                radial-gradient(60rem 38rem at 50% -12%, rgba(255, 252, 245, 0.9), transparent 60%),
+                radial-gradient(50rem 50rem at 90% 110%, rgba(192, 96, 58, 0.05), transparent 60%),
+                linear-gradient(180deg, #f1eee8, var(--bg));
+            pointer-events: none;
         }
 
         h1 {
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            letter-spacing: -0.015em;
+            color: var(--head);
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 16px;
+            margin-bottom: 26px;
         }
 
         h3 {
-            color: #2980b9;
-            margin-top: 25px;
-            margin-bottom: 10px;
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+            color: var(--head);
+            margin-top: 30px;
+            margin-bottom: 12px;
         }
 
         p {
             margin-bottom: 15px;
+            color: var(--muted);
         }
 
         a {
-            color: #3498db;
+            color: var(--accent);
             text-decoration: none;
+            transition: 0.25s;
         }
 
         a:hover {
+            color: #a44c2b;
             text-decoration: underline;
         }
 
         strong {
-            color: #2c3e50;
+            color: var(--head);
         }
 
         ul {
-            padding-left: 20px;
+            padding-left: 22px;
         }
 
         li {
             margin-bottom: 8px;
+            color: var(--muted);
         }
     </style>
 </head>
