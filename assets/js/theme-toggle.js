@@ -1,9 +1,9 @@
 /**
- * Theme switcher — cycles three designs:
- *   Soft Light  ->  Terminal / Code-IDE  ->  Bento Grid  ->  (repeat)
+ * Theme switcher — cycles four designs:
+ *   Soft Light  ->  Terminal / Code-IDE  ->  Bento Grid  ->  Aurora Glass  ->  (repeat)
  *
  * The active design is the `data-theme` attribute on <html>
- * ("light" | "dark" | "bento"). An inline snippet in each page's <head>
+ * ("light" | "dark" | "bento" | "glass"). An inline snippet in each page's <head>
  * restores it from localStorage BEFORE first paint (no flash). This script:
  *   - injects the toggle button into the header (one source of truth),
  *   - cycles + persists the choice on click,
@@ -21,7 +21,8 @@
   var THEMES = [
     { value: "light", icon: "bi-brightness-high-fill", label: "Soft Light" },
     { value: "dark",  icon: "bi-terminal-fill",        label: "Terminal" },
-    { value: "bento", icon: "bi-grid-1x2-fill",        label: "Bento Grid" }
+    { value: "bento", icon: "bi-grid-1x2-fill",        label: "Bento Grid" },
+    { value: "glass", icon: "bi-droplet-half",         label: "Aurora Glass" }
   ];
 
   function indexOfValue(value) {
@@ -73,4 +74,24 @@
 
   if (document.readyState !== "loading") build();
   else document.addEventListener("DOMContentLoaded", build);
+
+  // -------------------------------------------------------------
+  // Scroll-reactive dock (Smoke Glass design):
+  //   the nav floats at the bottom of the hero, then glides up to the
+  //   top once you scroll past ~60% of the first screen. We only toggle
+  //   a class on <html>; the CSS (scoped to [data-theme="glass"]) does
+  //   the actual transform + transition. Passive + rAF-throttled, and a
+  //   no-op in the other three themes (their CSS ignores .nav-scrolled).
+  // -------------------------------------------------------------
+  var ticking = false;
+  function syncNav() {
+    var y = window.scrollY || window.pageYOffset || 0;
+    root.classList.toggle("nav-scrolled", y > window.innerHeight * 0.6);
+    ticking = false;
+  }
+  window.addEventListener("scroll", function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(syncNav); }
+  }, { passive: true });
+  window.addEventListener("resize", syncNav, { passive: true });
+  syncNav();   // set initial state (e.g. when reloaded mid-page)
 })();

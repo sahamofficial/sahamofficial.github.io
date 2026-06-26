@@ -545,6 +545,8 @@ window.addEventListener('load', () => {
 
   var GRAV = 26;     // restoring strength (natural freq ~5 rad/s)
   var DAMP = 1.7;    // velocity damping (higher = settles sooner)
+  var SHADOW_TRACK = 0.42;   // how far the ground shadow drifts vs the bob (1 = 1:1, looks like it slides too far)
+  var SHADOW_MAX = 26;       // px — hard cap on the shadow's sideways drift
 
   // each hanging button swings independently with its own state
   Array.prototype.forEach.call(document.querySelectorAll('.pendulum'), function (pend) {
@@ -571,8 +573,11 @@ window.addEventListener('load', () => {
       if (!shadow) return;
       var rise = 1 - Math.cos(angle);
       // CSS rotate() moves the bob (below the pivot) by -L*sin(angle) in x, so the
-      // shadow must shift the same way to stay under it — not the opposite way.
-      var shift = -L * Math.sin(angle);
+      // shadow shifts the same way to stay under it — but only a fraction of that
+      // (a grounded contact shadow barely drifts; tracking the bob 1:1 slides too far),
+      // then clamped so a hard swing can't fling it out from under the button.
+      var shift = -L * Math.sin(angle) * SHADOW_TRACK;
+      shift = Math.max(-SHADOW_MAX, Math.min(SHADOW_MAX, shift));
       var scale = 1 + rise * 1.8;
       var op = 0.8 * Math.max(0, 1 - rise * 3.0);
       shadow.style.transform = 'translateX(calc(-50% + ' + shift.toFixed(1) + 'px)) scale(' + scale.toFixed(3) + ')';

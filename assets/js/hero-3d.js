@@ -3,9 +3,10 @@
 // all content. ONE WebGL context, ONE render loop; the visible object
 // swaps with the active theme (see assets/js/theme-toggle.js):
 //
-//   · dark   (Terminal)   -> spinning geodesic SPHERE  (phosphor green)
-//   · light  (Soft Light) -> tumbling icosahedron GEM  (warm clay)
-//   · bento  (Bento Grid) -> drifting wireframe BOXES   (violet)
+//   · dark   (Terminal)    -> spinning geodesic SPHERE  (phosphor green)
+//   · light  (Soft Light)  -> tumbling icosahedron GEM  (warm clay)
+//   · bento  (Bento Grid)  -> drifting wireframe BOXES   (violet)
+//   · glass  (Aurora Glass) -> drifting translucent BUBBLES (aurora hues)
 //
 // Each object recolours itself from the active theme's --accent / --bg.
 //   - prefers-reduced-motion: renders one static frame, no animation loop
@@ -131,16 +132,57 @@ import * as THREE from 'three';
     };
   }
 
+  // glass: a cloud of soft translucent bubbles that drift and glow (additive)
+  function makeBubbles() {
+    var group = new THREE.Group();
+    var items = [];
+    for (var i = 0; i < 14; i++) {
+      var r = 0.45 + Math.random() * 1.25;
+      var g = new THREE.SphereGeometry(r, 24, 16);
+      var fm = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.10, depthWrite: false, blending: THREE.AdditiveBlending });
+      var em = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.18 });
+      var bubble = new THREE.Group();
+      bubble.add(new THREE.Mesh(g, fm));
+      bubble.add(new THREE.LineSegments(new THREE.WireframeGeometry(g), em));
+      bubble.position.set(
+        (Math.random() - 0.5) * 15,
+        (Math.random() - 0.5) * 9,
+        (Math.random() - 0.5) * 7 - 2
+      );
+      bubble.userData = { float: 0.3 + Math.random() * 0.6, phase: Math.random() * Math.PI * 2, drift: (Math.random() - 0.5) * 0.0006 };
+      items.push({ bubble: bubble, em: em, fm: fm, ci: i % 3 });
+      group.add(bubble);
+    }
+    return {
+      group: group,
+      parallax: true,
+      recolor: function (p) {
+        var pal = [p.accent, p.accentSoft, p.blue];
+        items.forEach(function (it) { it.em.color.copy(pal[it.ci]); it.fm.color.copy(pal[it.ci]); });
+      },
+      animate: function (now) {
+        var t = (now || 0) * 0.001;
+        group.rotation.y += 0.0004;
+        items.forEach(function (it) {
+          it.bubble.position.y += Math.sin(t * 0.4 + it.bubble.userData.phase) * 0.0016 * it.bubble.userData.float;
+          it.bubble.position.x += it.bubble.userData.drift;
+        });
+      }
+    };
+  }
+
   var sphere = makeSphere();
   var gem = makeGem();
   var boxes = makeBoxes();
-  scene.add(sphere.group, gem.group, boxes.group);
+  var bubbles = makeBubbles();
+  scene.add(sphere.group, gem.group, boxes.group, bubbles.group);
 
   // theme -> object + camera/fog framing
   var CONFIG = {
-    dark:  { obj: sphere, fov: 45, camZ: 6,  fogNear: 4.5, fogFar: 9.5 },
-    light: { obj: gem,    fov: 45, camZ: 6,  fogNear: 4.5, fogFar: 11 },
-    bento: { obj: boxes,  fov: 50, camZ: 11, fogNear: 6,   fogFar: 18 }
+    dark:  { obj: sphere,  fov: 45, camZ: 6,  fogNear: 4.5, fogFar: 9.5 },
+    light: { obj: gem,     fov: 45, camZ: 6,  fogNear: 4.5, fogFar: 11 },
+    bento: { obj: boxes,   fov: 50, camZ: 11, fogNear: 6,   fogFar: 18 },
+    glass: { obj: bubbles, fov: 50, camZ: 10, fogNear: 6,   fogFar: 18 }
   };
 
   function themeName() {
@@ -156,6 +198,7 @@ import * as THREE from 'three';
     sphere.group.visible = (current.obj === sphere);
     gem.group.visible = (current.obj === gem);
     boxes.group.visible = (current.obj === boxes);
+    bubbles.group.visible = (current.obj === bubbles);
 
     current.obj.recolor({
       accent: cssColor('--accent', '#9b8cff'),
