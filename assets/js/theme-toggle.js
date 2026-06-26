@@ -1,9 +1,9 @@
 /**
- * Theme switcher — cycles four designs:
- *   Soft Light  ->  Terminal / Code-IDE  ->  Bento Grid  ->  Aurora Glass  ->  (repeat)
+ * Theme switcher — cycles five designs:
+ *   Soft Light -> Terminal -> Bento Grid -> Smoke Glass -> Aurum -> (repeat)
  *
  * The active design is the `data-theme` attribute on <html>
- * ("light" | "dark" | "bento" | "glass"). An inline snippet in each page's <head>
+ * ("light" | "dark" | "bento" | "glass" | "aurum"). An inline snippet in each page's <head>
  * restores it from localStorage BEFORE first paint (no flash). This script:
  *   - injects the toggle button into the header (one source of truth),
  *   - cycles + persists the choice on click,
@@ -22,7 +22,8 @@
     { value: "light", icon: "bi-brightness-high-fill", label: "Soft Light" },
     { value: "dark",  icon: "bi-terminal-fill",        label: "Terminal" },
     { value: "bento", icon: "bi-grid-1x2-fill",        label: "Bento Grid" },
-    { value: "glass", icon: "bi-droplet-half",         label: "Aurora Glass" }
+    { value: "glass", icon: "bi-droplet-half",         label: "Smoke Glass" },
+    { value: "aurum", icon: "bi-gem",                  label: "Aurum" }
   ];
 
   function indexOfValue(value) {

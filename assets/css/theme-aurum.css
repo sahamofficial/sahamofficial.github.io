@@ -1,0 +1,291 @@
+/* =============================================================
+   AURUM  —  the FIFTH design (premium dark + amber).
+
+   A restrained, product-grade look (the opposite of the previous
+   Synthwave attempt — no neon, no glow, no animated background):
+     · LAYOUT  -> a SLIM sticky top bar (name left, minimal text nav
+                  + a single CTA right) over a NARROW, CENTRED content
+                  column with generous whitespace.
+     · COLOUR  -> one refined accent, warm AMBER/GOLD, on near-black.
+     · CARDS   -> SOLID elevated surfaces, hairline borders, soft
+                  shadows (NOT the frosted glass of Smoke Glass).
+     · TYPE    -> the page's own Sora / Space Grotesk (clean, no import).
+     · 3D      -> one subtle slow amber wireframe (assets/js/hero-3d.js).
+
+   Loaded LAST. Every rule is scoped under html[data-theme="aurum"],
+   so the other four designs are untouched.
+   ============================================================= */
+
+/* ---- Tokens ------------------------------------------------------ */
+html[data-theme="aurum"] {
+  --bg: #0c0c0e;                          /* near-black */
+  --surface: #161619;                     /* solid elevated card */
+  --surface-hi: #1d1d21;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-soft: rgba(255, 255, 255, 0.05);
+
+  --text: #c9c7c2;                        /* warm light grey */
+  --muted: #8a8881;
+  --head: #f5f3ee;                        /* warm near-white */
+  --ink: #0c0c0e;
+  --accent: #e3b341;                      /* amber / gold */
+  --accent-2: #f0c869;                    /* lighter amber (hover) */
+  --accent-soft: #b48a3c;                 /* deep amber (read by hero-3d) */
+
+  /* iPortfolio bridge tokens (consumed by main.css) */
+  --background-color: var(--bg);
+  --default-color: var(--text);
+  --heading-color: var(--head);
+  --accent-color: var(--accent);
+  --surface-color: var(--surface);
+  --contrast-color: #0c0c0e;              /* dark text on the amber fill */
+
+  /* cursor effects (main.js trail + click ripple read these) */
+  --sh: 227, 179, 65;
+  --trail-1: 227, 179, 65;
+  --trail-2: 240, 200, 105;
+  --trail-3: 180, 140, 60;
+
+  color-scheme: dark;
+}
+
+/* =============================================================
+   BACKGROUND  ->  near-black with one very subtle, STATIC warm wash
+   (no animation — premium and quiet). Overrides Soft Light's wash.
+   ============================================================= */
+html[data-theme="aurum"] body { background-color: var(--bg) !important; overflow-x: hidden; }
+html[data-theme="aurum"] body::before { content: none; }
+html[data-theme="aurum"] body::after {
+  content: "";
+  position: fixed; inset: 0; z-index: -3; pointer-events: none;
+  background:
+    radial-gradient(60rem 40rem at 50% -8%, rgba(227, 179, 65, 0.07), transparent 60%),
+    radial-gradient(70rem 70rem at 90% 110%, rgba(0, 0, 0, 0.5), transparent 60%),
+    linear-gradient(180deg, #101013, var(--bg));
+}
+
+/* selection / scrollbar / links */
+html[data-theme="aurum"] ::selection { background: var(--accent); color: var(--contrast-color); }
+html[data-theme="aurum"] ::-webkit-scrollbar-track { background: #0a0a0c; }
+html[data-theme="aurum"] ::-webkit-scrollbar-thumb { background: #2a2a2e; border: 3px solid #0a0a0c; }
+html[data-theme="aurum"] ::-webkit-scrollbar-thumb:hover { background: #3a3a40; }
+html[data-theme="aurum"] a { color: var(--accent); }
+html[data-theme="aurum"] a:hover { color: var(--accent-2); }
+html[data-theme="aurum"] #preloader { background: var(--bg) !important; }
+html[data-theme="aurum"] #preloader .three-body { --uib-color: var(--accent); }
+
+html[data-theme="aurum"] .shadow-lit-text {
+  text-shadow: calc(var(--sx) * 1px) calc(var(--sy) * 1px) var(--sblur) rgba(var(--sh), var(--salpha));
+}
+html[data-theme="aurum"] .navmenu a:focus-visible,
+html[data-theme="aurum"] .header .social-links a:focus-visible,
+html[data-theme="aurum"] .site-theme-toggle:focus-visible,
+html[data-theme="aurum"] .btn-chrome:focus-visible,
+html[data-theme="aurum"] .btn-ghost:focus-visible,
+html[data-theme="aurum"] .services .service-item .title a:focus-visible,
+html[data-theme="aurum"] .scroll-top:focus-visible { outline-color: var(--accent); }
+
+/* =============================================================
+   NAV  ->  slim sticky top bar (restyle Soft Light's top bar)
+   ============================================================= */
+html[data-theme="aurum"] .header {
+  height: 62px !important;
+  padding: 0 clamp(16px, 4vw, 40px) !important;
+  background: rgba(12, 12, 14, 0.72) !important;
+  -webkit-backdrop-filter: saturate(120%) blur(12px);
+          backdrop-filter: saturate(120%) blur(12px);
+  border-bottom: 1px solid var(--line);
+  box-shadow: none;
+}
+html[data-theme="aurum"] .header .profile-img { display: none; }
+html[data-theme="aurum"] .header .logo h1.sitename { color: var(--head); font-size: 18px; letter-spacing: 0.01em; }
+
+/* minimal text nav with a thin amber underline on hover / active */
+html[data-theme="aurum"] .navmenu ul { gap: 4px; }
+html[data-theme="aurum"] .navmenu a,
+html[data-theme="aurum"] .navmenu a:focus {
+  position: relative;
+  background: transparent !important; border: 0 !important;
+  border-radius: 0; padding: 8px 12px;
+  color: var(--muted); font-size: 14px; font-weight: 500;
+  transition: color 0.2s ease;
+}
+html[data-theme="aurum"] .navmenu a .navicon { display: none; }
+html[data-theme="aurum"] .navmenu a::after {
+  content: ""; position: absolute; left: 12px; right: 12px; bottom: 4px; height: 2px;
+  background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.22s ease;
+}
+html[data-theme="aurum"] .navmenu a:hover { color: var(--head); transform: none; }
+html[data-theme="aurum"] .navmenu a:hover::after { transform: scaleX(1); }
+html[data-theme="aurum"] .navmenu .active,
+html[data-theme="aurum"] .navmenu .active:focus { color: var(--head) !important; background: transparent !important; }
+html[data-theme="aurum"] .navmenu .active::after { transform: scaleX(1); }
+
+/* social cluster + theme toggle: quiet on the right */
+html[data-theme="aurum"] .header .social-links a {
+  width: 34px; height: 34px; font-size: 14px;
+  background: transparent; border: 0; color: var(--muted);
+}
+html[data-theme="aurum"] .header .social-links a:hover { color: var(--accent); transform: none; }
+html[data-theme="aurum"] .site-theme-toggle,
+html[data-theme="aurum"] .header .header-toggle {
+  background: transparent; border: 1px solid var(--line); color: var(--text); border-radius: 8px;
+}
+html[data-theme="aurum"] .site-theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+html[data-theme="aurum"] .header .header-toggle:hover { color: var(--accent); border-color: var(--accent); background: transparent; }
+
+/* mobile: reuse Soft Light's dropdown, recoloured dark/amber */
+@media (max-width: 991.98px) {
+  html[data-theme="aurum"] .navmenu {
+    background: rgba(14, 14, 17, 0.98) !important;
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  html[data-theme="aurum"] .navmenu a::after { left: 14px; right: auto; width: 18px; }
+}
+
+/* =============================================================
+   LAYOUT  ->  narrow, centred content column
+   ============================================================= */
+html[data-theme="aurum"] .header ~ main { margin: 0 auto !important; }
+html[data-theme="aurum"] main { max-width: 820px; padding: 96px 22px 64px; }
+html[data-theme="aurum"] .index-page main > section .container { max-width: 100%; }
+html[data-theme="aurum"] .section { padding: 56px 0; }
+
+/* =============================================================
+   HERO  ->  clean centred poster, no glow
+   ============================================================= */
+html[data-theme="aurum"] .hero { min-height: calc(100vh - 62px); background: transparent !important; padding: 40px 0; }
+html[data-theme="aurum"] .hero-eyebrow { color: var(--accent); }
+html[data-theme="aurum"] .hero h2 { color: var(--head); }
+html[data-theme="aurum"] .hero .hero-role, html[data-theme="aurum"] .hero p { color: var(--muted); }
+html[data-theme="aurum"] .hero .hero-role .typed, html[data-theme="aurum"] .hero p span.typed { color: var(--accent); }
+html[data-theme="aurum"] .typed-cursor { color: var(--accent); }
+
+/* buttons — solid amber + quiet ghost (drop the hanging-pendulum chrome) */
+html[data-theme="aurum"] .hang { padding: 0 !important; display: inline-flex; }
+html[data-theme="aurum"] .hang__shadow,
+html[data-theme="aurum"] .hang__pivot,
+html[data-theme="aurum"] .pendulum__chain { display: none !important; }
+html[data-theme="aurum"] .pendulum { transform: none !important; display: inline-flex; }
+html[data-theme="aurum"] .btn-chrome { color: var(--contrast-color); background: var(--accent); box-shadow: none; }
+html[data-theme="aurum"] .btn-chrome:hover { color: var(--contrast-color); background: var(--accent-2); transform: translateY(-2px); }
+html[data-theme="aurum"] .btn-ghost { color: var(--head); background: transparent; border-color: var(--line); }
+html[data-theme="aurum"] .btn-ghost:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
+
+/* =============================================================
+   SECTION TITLES + SOLID CRISP CARDS
+   ============================================================= */
+html[data-theme="aurum"] .section-title h2 { color: var(--head); }
+html[data-theme="aurum"] .section-title h2:after { background: var(--accent); }
+html[data-theme="aurum"] .section-title p { color: var(--muted); }
+
+html[data-theme="aurum"] .about .content,
+html[data-theme="aurum"] .resume .resume-item,
+html[data-theme="aurum"] .stats .stats-item,
+html[data-theme="aurum"] .services .service-item,
+html[data-theme="aurum"] .contact .info-wrap,
+html[data-theme="aurum"] .contact .php-email-form,
+html[data-theme="aurum"] .portfolio-details .portfolio-info,
+html[data-theme="aurum"] .service-details .services-list {
+  background: var(--surface) !important;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+html[data-theme="aurum"] .stats .stats-item:hover,
+html[data-theme="aurum"] .services .service-item:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+/* About */
+html[data-theme="aurum"] .about .content h2 { color: var(--head); }
+html[data-theme="aurum"] .about .content ul i { color: var(--accent); }
+html[data-theme="aurum"] .about .content ul strong { color: var(--head); }
+
+/* Stats */
+html[data-theme="aurum"] .stats .stats-item i { color: var(--accent); }
+html[data-theme="aurum"] .stats .stats-item .purecounter { color: var(--head); }
+html[data-theme="aurum"] .stats .stats-item p { color: var(--muted); }
+
+/* Skills */
+html[data-theme="aurum"] .skills-tags .resume-title { color: var(--head); }
+html[data-theme="aurum"] .skills-tags .badge {
+  background: var(--surface-hi); border: 1px solid var(--line); color: var(--text); box-shadow: none;
+}
+html[data-theme="aurum"] .skills .progress .skill { color: var(--head); }
+html[data-theme="aurum"] .skills .progress .skill .val { color: var(--accent); }
+html[data-theme="aurum"] .skills .progress-bar-wrap { background: var(--surface-hi); box-shadow: none; }
+html[data-theme="aurum"] .skills .progress-bar { background: linear-gradient(90deg, var(--accent), var(--accent-2)) !important; }
+
+/* Resume timeline */
+html[data-theme="aurum"] .resume .resume-title { color: var(--head); }
+html[data-theme="aurum"] .resume .resume-item { border-left: 2px solid var(--accent); }
+html[data-theme="aurum"] .resume .resume-item h4 { color: var(--head); }
+html[data-theme="aurum"] .resume .resume-item h5 { background: rgba(227, 179, 65, 0.14); color: var(--accent-2); }
+html[data-theme="aurum"] .resume .resume-item::before { background: var(--surface-hi); border: 2px solid var(--accent); }
+
+/* Portfolio */
+html[data-theme="aurum"] .portfolio .portfolio-filters li.filter-active,
+html[data-theme="aurum"] .portfolio .portfolio-filters li:hover { color: var(--accent); }
+html[data-theme="aurum"] .portfolio .portfolio-content { border-radius: 12px; }
+html[data-theme="aurum"] .portfolio .portfolio-content .portfolio-info { background: rgba(10, 10, 12, 0.86); }
+html[data-theme="aurum"] .portfolio .portfolio-content .portfolio-info h4 { background: var(--accent); color: var(--contrast-color); }
+
+/* Services */
+html[data-theme="aurum"] .services .service-item .icon { background: rgba(227, 179, 65, 0.12); border: 1px solid var(--line); }
+html[data-theme="aurum"] .services .service-item .icon i { color: var(--accent); }
+html[data-theme="aurum"] .services .service-item:hover .icon { background: var(--accent); border-color: var(--accent); }
+html[data-theme="aurum"] .services .service-item:hover .icon i { color: var(--contrast-color); }
+html[data-theme="aurum"] .services .service-item .title a { color: var(--head); }
+html[data-theme="aurum"] .services .service-item:hover .title a { color: var(--accent); }
+html[data-theme="aurum"] .services .service-item .description { color: var(--muted); }
+
+/* Contact */
+html[data-theme="aurum"] .contact .info-item h3 { color: var(--head); }
+html[data-theme="aurum"] .contact .info-item p { color: var(--muted) !important; }
+html[data-theme="aurum"] .contact .info-item i { background: rgba(227, 179, 65, 0.12); color: var(--accent); border: 1px solid var(--line); }
+html[data-theme="aurum"] .contact .info-item:hover i { background: var(--accent); color: var(--contrast-color); }
+html[data-theme="aurum"] .contact .info-wrap iframe { border: 1px solid var(--line) !important; }
+html[data-theme="aurum"] .contact .php-email-form input[type=text],
+html[data-theme="aurum"] .contact .php-email-form input[type=email],
+html[data-theme="aurum"] .contact .php-email-form textarea {
+  background: #0e0e11 !important; border: 1px solid var(--line) !important;
+  color: var(--head) !important; border-radius: 8px !important; box-shadow: none;
+}
+html[data-theme="aurum"] .contact .php-email-form input:focus,
+html[data-theme="aurum"] .contact .php-email-form textarea:focus {
+  border-color: var(--accent) !important; box-shadow: 0 0 0 3px rgba(227, 179, 65, 0.16) !important;
+}
+html[data-theme="aurum"] .contact .php-email-form button[type=submit] { background: var(--accent); color: var(--contrast-color); }
+html[data-theme="aurum"] .contact .php-email-form button[type=submit]:hover { background: var(--accent-2); }
+
+/* Sub-pages */
+html[data-theme="aurum"] .page-title h1 { color: var(--head); }
+html[data-theme="aurum"] .page-title .breadcrumbs ol li a { color: var(--accent); }
+html[data-theme="aurum"] .service-details .services-list a { color: var(--muted); border-left-color: var(--line); }
+html[data-theme="aurum"] .service-details .services-list a.active,
+html[data-theme="aurum"] .service-details .services-list a:hover { color: var(--head); border-color: var(--accent); }
+html[data-theme="aurum"] .portfolio-details .portfolio-description p { color: var(--muted); }
+html[data-theme="aurum"] .portfolio-details .portfolio-info h3 { color: var(--head); border-bottom-color: var(--line); }
+
+/* =============================================================
+   FOOTER + UTILITIES
+   ============================================================= */
+html[data-theme="aurum"] .footer {
+  background: #0a0a0c !important; border-top: 1px solid var(--line); color: var(--muted);
+}
+html[data-theme="aurum"] .footer .sitename { color: var(--head); }
+html[data-theme="aurum"] .footer .social-links a { background: var(--surface); border: 1px solid var(--line); color: var(--text); }
+html[data-theme="aurum"] .footer .social-links a:hover { color: var(--accent); border-color: var(--accent); }
+
+html[data-theme="aurum"] .scroll-top { background: var(--accent) !important; }
+html[data-theme="aurum"] .scroll-top i { color: var(--contrast-color); }
+html[data-theme="aurum"] .scroll-top:hover { background: var(--accent-2) !important; }
+
+/* =============================================================
+   Click ripple  ->  amber (kept subtle)
+   ============================================================= */
+html[data-theme="aurum"] .ripple__ring { border-color: rgba(227, 179, 65, 0.5); box-shadow: 0 0 6px rgba(227, 179, 65, 0.25), inset 0 0 5px rgba(240, 200, 105, 0.35); }
+html[data-theme="aurum"] .ripple__ring--2 { border-color: rgba(240, 200, 105, 0.4); }
+html[data-theme="aurum"] .ripple__ring--3 { border-color: rgba(180, 140, 60, 0.28); }
+html[data-theme="aurum"] .ripple__drop { background: radial-gradient(closest-side, rgba(227, 179, 65, 0.32), transparent 72%); }
+html[data-theme="aurum"] .ripple__jet { background: radial-gradient(circle at 38% 32%, #fff, rgba(227, 179, 65, 0.85) 45%, rgba(180, 140, 60, 0.7)); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); }

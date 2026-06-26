@@ -6,7 +6,8 @@
 //   · dark   (Terminal)    -> spinning geodesic SPHERE  (phosphor green)
 //   · light  (Soft Light)  -> tumbling icosahedron GEM  (warm clay)
 //   · bento  (Bento Grid)  -> drifting wireframe BOXES   (violet)
-//   · glass  (Aurora Glass) -> drifting translucent BUBBLES (aurora hues)
+//   · glass  (Smoke Glass) -> drifting translucent BUBBLES (steel)
+//   · aurum  (Aurum)       -> one slow amber wireframe TORUS KNOT
 //
 // Each object recolours itself from the active theme's --accent / --bg.
 //   - prefers-reduced-motion: renders one static frame, no animation loop
@@ -171,18 +172,36 @@ import * as THREE from 'three';
     };
   }
 
+  // aurum: a single large, slow, fine amber wireframe torus knot — quiet + premium
+  function makeAurum() {
+    var g = new THREE.TorusKnotGeometry(1.7, 0.34, 140, 18);
+    var fm = new THREE.MeshStandardMaterial({ roughness: 0.5, metalness: 0.3, flatShading: true, transparent: true, opacity: 0.05, depthWrite: false });
+    var em = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.16 });
+    var group = new THREE.Group();
+    group.add(new THREE.Mesh(g, fm));
+    group.add(new THREE.LineSegments(new THREE.WireframeGeometry(g), em));
+    group.rotation.set(0.4, 0.2, 0);
+    return {
+      group: group,
+      recolor: function (p) { fm.color.copy(p.accent); em.color.copy(p.accent); },
+      animate: function () { group.rotation.y += 0.0012; group.rotation.x += 0.0004; }
+    };
+  }
+
   var sphere = makeSphere();
   var gem = makeGem();
   var boxes = makeBoxes();
   var bubbles = makeBubbles();
-  scene.add(sphere.group, gem.group, boxes.group, bubbles.group);
+  var aurum = makeAurum();
+  scene.add(sphere.group, gem.group, boxes.group, bubbles.group, aurum.group);
 
   // theme -> object + camera/fog framing
   var CONFIG = {
     dark:  { obj: sphere,  fov: 45, camZ: 6,  fogNear: 4.5, fogFar: 9.5 },
     light: { obj: gem,     fov: 45, camZ: 6,  fogNear: 4.5, fogFar: 11 },
     bento: { obj: boxes,   fov: 50, camZ: 11, fogNear: 6,   fogFar: 18 },
-    glass: { obj: bubbles, fov: 50, camZ: 10, fogNear: 6,   fogFar: 18 }
+    glass: { obj: bubbles, fov: 50, camZ: 10, fogNear: 6,   fogFar: 18 },
+    aurum: { obj: aurum,   fov: 48, camZ: 8,  fogNear: 5,   fogFar: 13 }
   };
 
   function themeName() {
@@ -199,6 +218,7 @@ import * as THREE from 'three';
     gem.group.visible = (current.obj === gem);
     boxes.group.visible = (current.obj === boxes);
     bubbles.group.visible = (current.obj === bubbles);
+    aurum.group.visible = (current.obj === aurum);
 
     current.obj.recolor({
       accent: cssColor('--accent', '#9b8cff'),
