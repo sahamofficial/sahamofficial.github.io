@@ -1,0 +1,21 @@
+# Cloudflare Worker — AI backend for the portfolio chat assistant.
+#
+# This Worker is the ONLY piece that talks to Workers AI. The browser never
+# holds a Cloudflare token: the `[ai]` binding below is attached at deploy time,
+# and the Worker calls the model with env.AI.run(...). The static site (on
+# GitHub Pages) just POSTs to this Worker's public URL.
+#
+# One-time setup:  see worker/README.md
+name = "saham-portfolio-ai"
+main = "src/index.js"
+compatibility_date = "2026-07-01"
+
+# Uncomment and set if `wrangler` can't infer your account (multiple accounts):
+# account_id = "<your-cloudflare-account-id>"
+
+# Workers AI binding — exposes env.AI (no API key needed in code).
+[ai]
+binding = "AI"
+
+# Keep the free *.workers.dev URL enabled so the site can reach it.
+workers_dev = true
