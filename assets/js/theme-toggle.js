@@ -1,9 +1,9 @@
 /**
- * Theme switcher — cycles six designs:
- *   Soft Light -> Terminal -> Bento Grid -> Smoke Glass -> Aurum -> Neomorphism -> (repeat)
+ * Theme switcher — cycles seven designs:
+ *   Soft Light -> Terminal -> Bento Grid -> Smoke Glass -> Aurum -> Neomorphism -> Claymorphism -> (repeat)
  *
  * The active design is the `data-theme` attribute on <html>
- * ("light" | "dark" | "bento" | "glass" | "aurum" | "neo"). An inline snippet in each page's <head>
+ * ("light" | "dark" | "bento" | "glass" | "aurum" | "neo" | "clay"). An inline snippet in each page's <head>
  * restores it from localStorage BEFORE first paint (no flash). This script:
  *   - injects the toggle button into the header (one source of truth),
  *   - cycles + persists the choice on click,
@@ -24,7 +24,8 @@
     { value: "bento", icon: "bi-grid-1x2-fill",        label: "Bento Grid" },
     { value: "glass", icon: "bi-droplet-half",         label: "Smoke Glass" },
     { value: "aurum", icon: "bi-gem",                  label: "Aurum" },
-    { value: "neo",   icon: "bi-circle-square",        label: "Neomorphism" }
+    { value: "neo",   icon: "bi-circle-square",        label: "Neomorphism" },
+    { value: "clay",  icon: "bi-balloon-fill",         label: "Claymorphism" }
   ];
 
   function indexOfValue(value) {

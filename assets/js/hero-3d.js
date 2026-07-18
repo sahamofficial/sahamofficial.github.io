@@ -9,6 +9,7 @@
 //   · glass  (Smoke Glass) -> drifting translucent BUBBLES (steel)
 //   · aurum  (Aurum)       -> one slow amber wireframe TORUS KNOT
 //   · neo    (Neomorphism) -> a soft indigo BLOB that breathes (morphs)
+//   · clay   (Claymorphism)-> a matte teal puffy BALL that squishes (bounces)
 //
 // Each object recolours itself from the active theme's --accent / --bg.
 //   - prefers-reduced-motion: renders one static frame, no animation loop
@@ -234,13 +235,39 @@ import * as THREE from 'three';
     };
   }
 
+  // clay: a soft MATTE puffy ball that *squishes* — a slow squash-and-stretch bounce
+  // (scale down on Y while bulging X/Z, then back) keeps its volume roughly constant, so
+  // it reads as a lump of clay being gently pressed. Unlike neo's translucent morphing
+  // wireframe, this is a near-opaque smooth solid with only a whisper of wire skin.
+  function makeClay() {
+    var g = new THREE.IcosahedronGeometry(1.8, 4);   // detail 4: smooth, no facets
+    var fm = new THREE.MeshStandardMaterial({ roughness: 0.9, metalness: 0.0, flatShading: false, transparent: true, opacity: 0.14, depthWrite: false });
+    var wm = new THREE.MeshBasicMaterial({ wireframe: true, transparent: true, opacity: 0.12 });
+    var group = new THREE.Group();
+    group.add(new THREE.Mesh(g, fm));
+    group.add(new THREE.Mesh(g, wm));                 // same geometry -> wire hugs the fill
+    group.rotation.set(0.3, 0.2, 0);
+    return {
+      group: group,
+      recolor: function (p) { fm.color.copy(p.accent); wm.color.copy(p.accent); },
+      animate: function (now) {
+        var t = (now || 0) * 0.001;
+        var s = Math.sin(t * 1.1) * 0.10;             // squash amount
+        group.scale.set(1 + s * 0.5, 1 - s, 1 + s * 0.5);   // bulge X/Z as Y flattens
+        group.rotation.y += 0.0011;
+        group.rotation.x += 0.0004;
+      }
+    };
+  }
+
   var sphere = makeSphere();
   var gem = makeGem();
   var boxes = makeBoxes();
   var bubbles = makeBubbles();
   var aurum = makeAurum();
   var neo = makeNeo();
-  scene.add(sphere.group, gem.group, boxes.group, bubbles.group, aurum.group, neo.group);
+  var clay = makeClay();
+  scene.add(sphere.group, gem.group, boxes.group, bubbles.group, aurum.group, neo.group, clay.group);
 
   // theme -> object + camera/fog framing
   var CONFIG = {
@@ -249,7 +276,8 @@ import * as THREE from 'three';
     bento: { obj: boxes,   fov: 50, camZ: 11, fogNear: 6,   fogFar: 18 },
     glass: { obj: bubbles, fov: 50, camZ: 10, fogNear: 6,   fogFar: 18 },
     aurum: { obj: aurum,   fov: 48, camZ: 8,  fogNear: 5,   fogFar: 13 },
-    neo:   { obj: neo,     fov: 45, camZ: 6,  fogNear: 4.5, fogFar: 11 }
+    neo:   { obj: neo,     fov: 45, camZ: 6,  fogNear: 4.5, fogFar: 11 },
+    clay:  { obj: clay,    fov: 45, camZ: 6,  fogNear: 4.5, fogFar: 11 }
   };
 
   function themeName() {
@@ -268,6 +296,7 @@ import * as THREE from 'three';
     bubbles.group.visible = (current.obj === bubbles);
     aurum.group.visible = (current.obj === aurum);
     neo.group.visible = (current.obj === neo);
+    clay.group.visible = (current.obj === clay);
 
     current.obj.recolor({
       accent: cssColor('--accent', '#9b8cff'),
