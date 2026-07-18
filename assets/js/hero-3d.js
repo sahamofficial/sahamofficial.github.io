@@ -10,6 +10,7 @@
 //   · aurum  (Aurum)       -> one slow amber wireframe TORUS KNOT
 //   · neo    (Neomorphism) -> a soft indigo BLOB that breathes (morphs)
 //   · clay   (Claymorphism)-> a matte teal puffy BALL that squishes (bounces)
+//   · maximal(Maximalism)  -> a bold faceted CRYSTAL that tumbles + pulses (mustard)
 //
 // Each object recolours itself from the active theme's --accent / --bg.
 //   - prefers-reduced-motion: renders one static frame, no animation loop
@@ -260,6 +261,33 @@ import * as THREE from 'three';
     };
   }
 
+  // maximal: a bold faceted CRYSTAL — crisp dodecahedron facets under a graphic
+  // wireframe skin — that tumbles energetically on all three axes, pulses in scale
+  // and bobs. Louder and faster than the quiet morphism objects, to match the
+  // maximalist "more is more" energy. Two-tone: mustard fill, pale-mustard wire.
+  function makeMaximal() {
+    var g = new THREE.DodecahedronGeometry(1.8, 0);   // detail 0 = crisp retro facets
+    var fm = new THREE.MeshStandardMaterial({ roughness: 0.55, metalness: 0.15, flatShading: true, transparent: true, opacity: 0.12, depthWrite: false });
+    var em = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.34 });
+    var group = new THREE.Group();
+    group.add(new THREE.Mesh(g, fm));
+    group.add(new THREE.LineSegments(new THREE.WireframeGeometry(g), em));
+    group.rotation.set(0.4, 0.2, 0);
+    return {
+      group: group,
+      recolor: function (p) { fm.color.copy(p.accent); em.color.copy(p.accentSoft); },
+      animate: function (now) {
+        var t = (now || 0) * 0.001;
+        group.rotation.x += 0.0034;
+        group.rotation.y += 0.0026;
+        group.rotation.z += 0.0010;
+        var s = 1 + Math.sin(t * 1.4) * 0.06;         // bold scale pulse
+        group.scale.set(s, s, s);
+        group.position.y = Math.sin(t * 0.7) * 0.16;
+      }
+    };
+  }
+
   var sphere = makeSphere();
   var gem = makeGem();
   var boxes = makeBoxes();
@@ -267,7 +295,8 @@ import * as THREE from 'three';
   var aurum = makeAurum();
   var neo = makeNeo();
   var clay = makeClay();
-  scene.add(sphere.group, gem.group, boxes.group, bubbles.group, aurum.group, neo.group, clay.group);
+  var maximal = makeMaximal();
+  scene.add(sphere.group, gem.group, boxes.group, bubbles.group, aurum.group, neo.group, clay.group, maximal.group);
 
   // theme -> object + camera/fog framing
   var CONFIG = {
@@ -277,7 +306,8 @@ import * as THREE from 'three';
     glass: { obj: bubbles, fov: 50, camZ: 10, fogNear: 6,   fogFar: 18 },
     aurum: { obj: aurum,   fov: 48, camZ: 8,  fogNear: 5,   fogFar: 13 },
     neo:   { obj: neo,     fov: 45, camZ: 6,  fogNear: 4.5, fogFar: 11 },
-    clay:  { obj: clay,    fov: 45, camZ: 6,  fogNear: 4.5, fogFar: 11 }
+    clay:  { obj: clay,    fov: 45, camZ: 6,  fogNear: 4.5, fogFar: 11 },
+    maximal: { obj: maximal, fov: 46, camZ: 6.5, fogNear: 4.5, fogFar: 12 }
   };
 
   function themeName() {
@@ -297,6 +327,7 @@ import * as THREE from 'three';
     aurum.group.visible = (current.obj === aurum);
     neo.group.visible = (current.obj === neo);
     clay.group.visible = (current.obj === clay);
+    maximal.group.visible = (current.obj === maximal);
 
     current.obj.recolor({
       accent: cssColor('--accent', '#9b8cff'),

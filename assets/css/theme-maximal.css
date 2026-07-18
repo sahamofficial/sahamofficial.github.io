@@ -1,0 +1,378 @@
+/* =============================================================
+   MAXIMALISM  —  the EIGHTH design ("more is more").
+
+   A loud retro-eclectic look on a warm cream page: every surface
+   is a paper card outlined in a THICK espresso ink line and dropped
+   onto a HARD offset shadow (no blur) — the "sticker / poster" feel.
+   Clashing accents rotate across the UI so nothing is quiet:
+   MUSTARD, RUST (terracotta), TEAL and PLUM take turns.
+
+     · LAYOUT  -> reuses Soft Light's sticky top-bar layout.
+     · COLOUR  -> warm cream #f4ecd8 + a four-way mustard/rust/teal/plum clash.
+     · SURFACES-> 2.5px ink borders, medium radii, HARD offset shadows
+                  (no soft blur, no frosted glass). Buttons "press" by
+                  sliding into their shadow.
+     · TYPE    -> UNBOUNDED (round, bulging display) on headings / nav /
+                  hero / wordmark; SPACE GROTESK (readable) on body.
+                  Both loaded via <link> in each page's <head>.
+     · 3D      -> one bold faceted crystal that tumbles + pulses
+                  (assets/js/hero-3d.js).
+
+   Loaded LAST. Every rule is scoped under html[data-theme="maximal"],
+   so the other seven designs are untouched.
+   ============================================================= */
+
+/* ---- Tokens ------------------------------------------------------ */
+html[data-theme="maximal"] {
+  --bg: #f4ecd8;               /* warm cream backdrop */
+  --surface: #fdf8ec;          /* paper card */
+  --surface-hi: #fffdf5;       /* lighter paper (inputs) */
+  --line: #2b2118;             /* the ink outline colour */
+  --line-soft: rgba(43, 33, 24, 0.18);
+
+  --text: #4a3c2c;
+  --muted: #7a6a52;            /* ~4.6:1 on --bg */
+  --head: #2b2118;
+  --ink: #2b2118;              /* espresso — text + every outline + hard shadow */
+
+  /* the four-way accent clash */
+  --accent: #e0a12b;           /* mustard (primary) */
+  --accent-2: #d2603a;         /* rust / terracotta */
+  --accent-3: #2a9d8f;         /* teal */
+  --accent-4: #7a3b69;         /* plum / aubergine */
+  --accent-soft: #f0c04e;      /* pale mustard (read by hero-3d) */
+  --accent-link: #b34a26;      /* darker rust — AA link text on cream */
+
+  /* signature hard-edged "sticker" shadows (no blur) */
+  --r: 16px;
+  --shadow-hard: 6px 6px 0 var(--ink);
+  --shadow-hard-sm: 4px 4px 0 var(--ink);
+  --shadow-hard-lg: 8px 8px 0 var(--ink);
+
+  /* iPortfolio bridge tokens (consumed by main.css) */
+  --background-color: var(--bg);
+  --default-color: var(--text);
+  --heading-color: var(--head);
+  --accent-color: var(--accent);
+  --surface-color: var(--surface);
+  --contrast-color: #ffffff;
+
+  /* fonts — bulging display face on headings/nav, readable face on body */
+  --heading-font: "Unbounded", "Space Grotesk", sans-serif;
+  --nav-font: "Unbounded", "Space Grotesk", sans-serif;
+  --default-font: "Space Grotesk", system-ui, sans-serif;
+
+  /* cursor effects (main.js trail + click ripple read these) */
+  --sh: 43, 33, 24;
+  --trail-1: 224, 161, 43;     /* mustard */
+  --trail-2: 210, 96, 58;      /* rust */
+  --trail-3: 42, 157, 143;     /* teal */
+
+  color-scheme: light;
+}
+
+/* =============================================================
+   BACKGROUND  ->  cream page with a busy-but-soft retro wash
+   (dot grid + diagonal stripes) — surfaces carry the hard depth
+   ============================================================= */
+html[data-theme="maximal"] body { background-color: var(--bg) !important; overflow-x: hidden; }
+html[data-theme="maximal"] body::before { content: none; }
+html[data-theme="maximal"] body::after {
+  content: "";
+  position: fixed; inset: 0; z-index: -3; pointer-events: none;
+  background:
+    radial-gradient(circle, rgba(122, 59, 105, 0.06) 0 2px, transparent 2.5px) 0 0 / 30px 30px,
+    repeating-linear-gradient(45deg, rgba(210, 96, 58, 0.045) 0 14px, transparent 14px 30px),
+    radial-gradient(60rem 42rem at 88% 110%, rgba(42, 157, 143, 0.06), transparent 60%),
+    linear-gradient(180deg, #f8f1de, var(--bg));
+}
+
+/* selection / scrollbar / links */
+html[data-theme="maximal"] ::selection { background: var(--accent); color: var(--ink); }
+html[data-theme="maximal"] ::-webkit-scrollbar-track { background: #e7dcc2; }
+html[data-theme="maximal"] ::-webkit-scrollbar-thumb { background: var(--accent); border: 3px solid #e7dcc2; border-radius: 10px; }
+html[data-theme="maximal"] ::-webkit-scrollbar-thumb:hover { background: var(--accent-2); }
+html[data-theme="maximal"] a { color: var(--accent-link); }
+html[data-theme="maximal"] a:hover { color: var(--accent-2); }
+html[data-theme="maximal"] #preloader { background: var(--bg) !important; }
+html[data-theme="maximal"] #preloader .three-body { --uib-color: var(--accent); }
+
+html[data-theme="maximal"] .shadow-lit-text { text-shadow: 3px 3px 0 rgba(43, 33, 24, 0.20); }
+
+html[data-theme="maximal"] .navmenu a:focus-visible,
+html[data-theme="maximal"] .header .social-links a:focus-visible,
+html[data-theme="maximal"] .site-theme-toggle:focus-visible,
+html[data-theme="maximal"] .header .header-toggle:focus-visible,
+html[data-theme="maximal"] .btn-chrome:focus-visible,
+html[data-theme="maximal"] .btn-ghost:focus-visible,
+html[data-theme="maximal"] .services .service-item .title a:focus-visible,
+html[data-theme="maximal"] .scroll-top:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+
+/* =============================================================
+   NAV  ->  cream top bar under a hard ink rule; outlined pill chips,
+            filled mustard when active
+   ============================================================= */
+html[data-theme="maximal"] .header {
+  background: var(--surface) !important;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  border-bottom: 3px solid var(--ink);
+  box-shadow: 0 6px 0 rgba(43, 33, 24, 0.10);
+}
+html[data-theme="maximal"] .header .profile-img img {
+  border: 2.5px solid var(--ink);
+  box-shadow: var(--shadow-hard-sm);
+}
+html[data-theme="maximal"] .header .logo h1.sitename {
+  font-family: var(--heading-font);
+  color: var(--head);
+  letter-spacing: -0.01em;
+  font-weight: 800;
+}
+
+html[data-theme="maximal"] .navmenu a,
+html[data-theme="maximal"] .navmenu a:focus {
+  font-family: var(--nav-font);
+  background: var(--surface);
+  border: 2px solid var(--ink);
+  border-radius: 11px;
+  color: var(--ink);
+  font-size: 12px; font-weight: 600; letter-spacing: 0.01em;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: box-shadow 0.15s ease, color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+html[data-theme="maximal"] .navmenu a .navicon { display: none; }
+html[data-theme="maximal"] .navmenu a:hover {
+  color: var(--ink); background: var(--accent-soft);
+  transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink);
+}
+html[data-theme="maximal"] .navmenu .active,
+html[data-theme="maximal"] .navmenu .active:focus {
+  color: var(--ink) !important;
+  background: var(--accent) !important;
+  border: 2px solid var(--ink) !important;
+  box-shadow: 2px 2px 0 var(--ink) !important;
+  transform: translate(1px, 1px);
+}
+
+/* social cluster + toggle: outlined hard-shadow buttons */
+html[data-theme="maximal"] .header .social-links a {
+  background: var(--surface);
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+  transition: box-shadow 0.15s ease, color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+html[data-theme="maximal"] .header .social-links a:hover {
+  color: var(--ink); background: var(--accent-3);
+  transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--ink);
+}
+html[data-theme="maximal"] .header .social-links a:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }
+html[data-theme="maximal"] .site-theme-toggle,
+html[data-theme="maximal"] .header .header-toggle {
+  background: var(--surface); border: 2px solid var(--ink); color: var(--ink);
+  border-radius: 10px; box-shadow: 2px 2px 0 var(--ink);
+}
+html[data-theme="maximal"] .site-theme-toggle:hover,
+html[data-theme="maximal"] .header .header-toggle:hover { color: var(--ink); background: var(--accent); }
+html[data-theme="maximal"] .site-theme-toggle:active,
+html[data-theme="maximal"] .header .header-toggle:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }
+
+/* mobile dropdown — outlined paper panel */
+@media (max-width: 991.98px) {
+  html[data-theme="maximal"] .navmenu {
+    background: var(--surface) !important;
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+    border: 2.5px solid var(--ink);
+    border-radius: 14px;
+    box-shadow: var(--shadow-hard);
+  }
+}
+
+/* =============================================================
+   HERO  ->  loud centred poster; chunky outlined buttons that press
+   ============================================================= */
+html[data-theme="maximal"] .hero { background: transparent !important; }
+html[data-theme="maximal"] .hero-eyebrow { color: var(--accent-link); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+html[data-theme="maximal"] .hero h2 { font-family: var(--heading-font); color: var(--head); letter-spacing: -0.02em; font-weight: 800; }
+html[data-theme="maximal"] .hero .hero-role, html[data-theme="maximal"] .hero p { color: var(--muted); }
+html[data-theme="maximal"] .hero .hero-role .typed, html[data-theme="maximal"] .hero p span.typed { color: var(--accent-2); font-weight: 700; }
+html[data-theme="maximal"] .typed-cursor { color: var(--accent-2); }
+
+/* drop the hanging-pendulum chrome; sit the buttons flat (as Neo does) */
+html[data-theme="maximal"] .hang { padding: 0 !important; display: inline-flex; }
+html[data-theme="maximal"] .hang__shadow,
+html[data-theme="maximal"] .hang__pivot,
+html[data-theme="maximal"] .pendulum__chain { display: none !important; }
+html[data-theme="maximal"] .pendulum { transform: none !important; display: inline-flex; }
+
+html[data-theme="maximal"] .btn-chrome,
+html[data-theme="maximal"] .btn-ghost {
+  background: var(--surface);
+  border: 2.5px solid var(--ink);
+  border-radius: 12px;
+  font-weight: 700;
+  box-shadow: var(--shadow-hard);
+  transition: box-shadow 0.15s ease, color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+html[data-theme="maximal"] .btn-chrome { color: var(--ink); background: var(--accent); }
+html[data-theme="maximal"] .btn-chrome:hover { color: var(--ink); background: var(--accent-soft); transform: translate(-2px, -2px); box-shadow: var(--shadow-hard-lg); }
+html[data-theme="maximal"] .btn-chrome:active { transform: translate(3px, 3px); box-shadow: var(--shadow-hard-sm); }
+html[data-theme="maximal"] .btn-ghost { color: var(--ink); }
+html[data-theme="maximal"] .btn-ghost:hover { color: var(--ink); background: var(--accent-3); transform: translate(-2px, -2px); box-shadow: var(--shadow-hard-lg); }
+html[data-theme="maximal"] .btn-ghost:active { transform: translate(3px, 3px); box-shadow: var(--shadow-hard-sm); }
+
+/* =============================================================
+   SECTION TITLES + OUTLINED STICKER CARDS
+   ============================================================= */
+html[data-theme="maximal"] .section-title h2 { font-family: var(--heading-font); color: var(--head); letter-spacing: -0.01em; font-weight: 800; }
+html[data-theme="maximal"] .section-title h2:after { background: var(--accent-2); height: 3px; }
+html[data-theme="maximal"] .section-title p { color: var(--muted); }
+
+html[data-theme="maximal"] .about .content,
+html[data-theme="maximal"] .resume .resume-item,
+html[data-theme="maximal"] .stats .stats-item,
+html[data-theme="maximal"] .services .service-item,
+html[data-theme="maximal"] .contact .info-wrap,
+html[data-theme="maximal"] .contact .php-email-form,
+html[data-theme="maximal"] .portfolio-details .portfolio-info,
+html[data-theme="maximal"] .service-details .services-list {
+  background: var(--surface) !important;
+  border: 2.5px solid var(--ink);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-hard);
+}
+html[data-theme="maximal"] .stats .stats-item,
+html[data-theme="maximal"] .services .service-item {
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+html[data-theme="maximal"] .stats .stats-item:hover,
+html[data-theme="maximal"] .services .service-item:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: var(--shadow-hard-lg);
+}
+
+/* About */
+html[data-theme="maximal"] .about .content h2 { color: var(--head); }
+html[data-theme="maximal"] .about .content ul i { color: var(--accent-3); }
+html[data-theme="maximal"] .about .content ul strong { color: var(--head); }
+
+/* Stats */
+html[data-theme="maximal"] .stats .stats-item i { color: var(--accent-2); }
+html[data-theme="maximal"] .stats .stats-item .purecounter { color: var(--head); }
+html[data-theme="maximal"] .stats .stats-item p { color: var(--muted); }
+
+/* Skills */
+html[data-theme="maximal"] .skills-tags .resume-title { color: var(--head); }
+html[data-theme="maximal"] .skills-tags .badge {
+  background: var(--accent-soft); border: 2px solid var(--ink); color: var(--ink);
+  box-shadow: 2px 2px 0 var(--ink); font-weight: 600;
+}
+html[data-theme="maximal"] .skills .progress .skill { color: var(--head); }
+html[data-theme="maximal"] .skills .progress .skill .val { color: var(--accent-2); }
+html[data-theme="maximal"] .skills .progress-bar-wrap {
+  background: var(--surface-hi);
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  box-shadow: inset 2px 2px 0 rgba(43, 33, 24, 0.10);
+  overflow: hidden;
+}
+/* candy-stripe fill — peak retro */
+html[data-theme="maximal"] .skills .progress-bar { background: repeating-linear-gradient(45deg, var(--accent) 0 10px, var(--accent-2) 10px 20px) !important; }
+
+/* Resume timeline */
+html[data-theme="maximal"] .resume .resume-title { color: var(--head); }
+html[data-theme="maximal"] .resume .resume-item { border-left: 0; }
+html[data-theme="maximal"] .resume .resume-item h4 { color: var(--head); }
+html[data-theme="maximal"] .resume .resume-item h5 { background: var(--accent-4); color: #fff; border: 2px solid var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+html[data-theme="maximal"] .resume .resume-item::before { background: var(--accent); border: 2.5px solid var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+
+/* Portfolio */
+html[data-theme="maximal"] .portfolio .portfolio-filters li.filter-active,
+html[data-theme="maximal"] .portfolio .portfolio-filters li:hover { color: var(--accent-2); }
+html[data-theme="maximal"] .portfolio .portfolio-content { border: 2.5px solid var(--ink); border-radius: 14px; box-shadow: var(--shadow-hard); overflow: hidden; }
+html[data-theme="maximal"] .portfolio .portfolio-content .portfolio-info { background: rgba(43, 33, 24, 0.85); }
+html[data-theme="maximal"] .portfolio .portfolio-content .portfolio-info h4 { background: var(--accent); color: var(--ink); border: 2px solid var(--ink); }
+
+/* Services */
+html[data-theme="maximal"] .services .service-item .icon {
+  background: var(--accent); border: 2.5px solid var(--ink);
+  box-shadow: var(--shadow-hard-sm);
+}
+html[data-theme="maximal"] .services .service-item .icon i { color: var(--ink); }
+html[data-theme="maximal"] .services .service-item:hover .icon { background: var(--accent-3); }
+html[data-theme="maximal"] .services .service-item:hover .icon i { color: var(--ink); }
+html[data-theme="maximal"] .services .service-item .title a { color: var(--head); }
+html[data-theme="maximal"] .services .service-item:hover .title a { color: var(--accent-2); }
+html[data-theme="maximal"] .services .service-item .description { color: var(--muted); }
+
+/* Contact */
+html[data-theme="maximal"] .contact .info-item h3 { color: var(--head); }
+html[data-theme="maximal"] .contact .info-item p { color: var(--muted) !important; }
+html[data-theme="maximal"] .contact .info-item i {
+  background: var(--accent); color: var(--ink); border: 2.5px solid var(--ink);
+  box-shadow: var(--shadow-hard-sm);
+}
+html[data-theme="maximal"] .contact .info-item:hover i { background: var(--accent-4); color: #fff; }
+html[data-theme="maximal"] .contact .info-wrap iframe { border: 2.5px solid var(--ink) !important; border-radius: 12px !important; }
+html[data-theme="maximal"] .contact .php-email-form input[type=text],
+html[data-theme="maximal"] .contact .php-email-form input[type=email],
+html[data-theme="maximal"] .contact .php-email-form textarea {
+  background: var(--surface-hi) !important;
+  border: 2.5px solid var(--ink) !important;
+  color: var(--head) !important;
+  border-radius: 10px !important;
+  box-shadow: inset 2px 2px 0 rgba(43, 33, 24, 0.10) !important;
+}
+html[data-theme="maximal"] .contact .php-email-form input:focus,
+html[data-theme="maximal"] .contact .php-email-form textarea:focus {
+  box-shadow: inset 2px 2px 0 rgba(43, 33, 24, 0.10), 3px 3px 0 var(--accent) !important;
+}
+html[data-theme="maximal"] .contact .php-email-form button[type=submit] {
+  background: var(--accent-2); color: #fff; border: 2.5px solid var(--ink);
+  border-radius: 11px; font-weight: 700;
+  box-shadow: var(--shadow-hard);
+}
+html[data-theme="maximal"] .contact .php-email-form button[type=submit]:hover { color: #fff; transform: translate(-2px, -2px); box-shadow: var(--shadow-hard-lg); }
+html[data-theme="maximal"] .contact .php-email-form button[type=submit]:active { transform: translate(3px, 3px); box-shadow: var(--shadow-hard-sm); }
+
+/* Sub-pages */
+html[data-theme="maximal"] .page-title h1 { font-family: var(--heading-font); color: var(--head); font-weight: 800; }
+html[data-theme="maximal"] .page-title .breadcrumbs ol li a { color: var(--accent-link); }
+html[data-theme="maximal"] .service-details .services-list a { color: var(--muted); border-left: 0; border-radius: 9px; }
+html[data-theme="maximal"] .service-details .services-list a.active,
+html[data-theme="maximal"] .service-details .services-list a:hover { color: var(--ink); background: var(--accent-soft); box-shadow: 2px 2px 0 var(--ink); }
+html[data-theme="maximal"] .portfolio-details .portfolio-description p { color: var(--muted); }
+html[data-theme="maximal"] .portfolio-details .portfolio-info h3 { color: var(--head); border-bottom-color: var(--ink); }
+
+/* =============================================================
+   FOOTER + UTILITIES
+   ============================================================= */
+html[data-theme="maximal"] .footer {
+  background: var(--surface) !important;
+  border-top: 3px solid var(--ink);
+  color: var(--muted);
+}
+html[data-theme="maximal"] .footer .sitename { font-family: var(--heading-font); color: var(--head); font-weight: 800; }
+html[data-theme="maximal"] .footer .social-links a {
+  background: var(--surface); border: 2px solid var(--ink); color: var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+html[data-theme="maximal"] .footer .social-links a:hover { color: var(--ink); background: var(--accent); transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--ink); }
+
+html[data-theme="maximal"] .scroll-top {
+  background: var(--accent) !important;
+  border: 2.5px solid var(--ink);
+  box-shadow: var(--shadow-hard-sm);
+}
+html[data-theme="maximal"] .scroll-top i { color: var(--ink); }
+html[data-theme="maximal"] .scroll-top:hover { background: var(--accent-2) !important; }
+html[data-theme="maximal"] .scroll-top:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+
+/* =============================================================
+   Click ripple  ->  mustard -> rust -> teal
+   ============================================================= */
+html[data-theme="maximal"] .ripple__ring { border-color: rgba(224, 161, 43, 0.55); box-shadow: 0 0 6px rgba(224, 161, 43, 0.25), inset 0 0 5px rgba(255, 255, 255, 0.5); }
+html[data-theme="maximal"] .ripple__ring--2 { border-color: rgba(210, 96, 58, 0.40); }
+html[data-theme="maximal"] .ripple__ring--3 { border-color: rgba(42, 157, 143, 0.30); }
+html[data-theme="maximal"] .ripple__drop { background: radial-gradient(closest-side, rgba(210, 96, 58, 0.30), transparent 72%); }
+html[data-theme="maximal"] .ripple__jet { background: radial-gradient(circle at 38% 32%, #fff, rgba(224, 161, 43, 0.9) 45%, rgba(210, 96, 58, 0.7)); box-shadow: 0 2px 6px rgba(120, 90, 30, 0.35); }
