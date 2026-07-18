@@ -8,6 +8,7 @@
 //   · bento  (Bento Grid)  -> drifting wireframe BOXES   (violet)
 //   · glass  (Smoke Glass) -> drifting translucent BUBBLES (steel)
 //   · aurum  (Aurum)       -> one slow amber wireframe TORUS KNOT
+//   · neo    (Neomorphism) -> one quiet, smooth indigo SPHERE
 //
 // Each object recolours itself from the active theme's --accent / --bg.
 //   - prefers-reduced-motion: renders one static frame, no animation loop
@@ -188,12 +189,29 @@ import * as THREE from 'three';
     };
   }
 
+  // neo: one quiet, smooth, low-opacity indigo sphere — soft + light
+  function makeNeo() {
+    var g = new THREE.IcosahedronGeometry(1.9, 4);   // high detail = smooth, soft globe
+    var fm = new THREE.MeshStandardMaterial({ roughness: 0.65, metalness: 0.1, transparent: true, opacity: 0.06, depthWrite: false });
+    var em = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.10 });
+    var group = new THREE.Group();
+    group.add(new THREE.Mesh(g, fm));
+    group.add(new THREE.LineSegments(new THREE.WireframeGeometry(g), em));
+    group.rotation.set(0.4, 0.2, 0);
+    return {
+      group: group,
+      recolor: function (p) { fm.color.copy(p.accent); em.color.copy(p.accent); },
+      animate: function () { group.rotation.y += 0.0010; group.rotation.x += 0.0004; }
+    };
+  }
+
   var sphere = makeSphere();
   var gem = makeGem();
   var boxes = makeBoxes();
   var bubbles = makeBubbles();
   var aurum = makeAurum();
-  scene.add(sphere.group, gem.group, boxes.group, bubbles.group, aurum.group);
+  var neo = makeNeo();
+  scene.add(sphere.group, gem.group, boxes.group, bubbles.group, aurum.group, neo.group);
 
   // theme -> object + camera/fog framing
   var CONFIG = {
@@ -201,7 +219,8 @@ import * as THREE from 'three';
     light: { obj: gem,     fov: 45, camZ: 6,  fogNear: 4.5, fogFar: 11 },
     bento: { obj: boxes,   fov: 50, camZ: 11, fogNear: 6,   fogFar: 18 },
     glass: { obj: bubbles, fov: 50, camZ: 10, fogNear: 6,   fogFar: 18 },
-    aurum: { obj: aurum,   fov: 48, camZ: 8,  fogNear: 5,   fogFar: 13 }
+    aurum: { obj: aurum,   fov: 48, camZ: 8,  fogNear: 5,   fogFar: 13 },
+    neo:   { obj: neo,     fov: 45, camZ: 6,  fogNear: 4.5, fogFar: 11 }
   };
 
   function themeName() {
@@ -219,6 +238,7 @@ import * as THREE from 'three';
     boxes.group.visible = (current.obj === boxes);
     bubbles.group.visible = (current.obj === bubbles);
     aurum.group.visible = (current.obj === aurum);
+    neo.group.visible = (current.obj === neo);
 
     current.obj.recolor({
       accent: cssColor('--accent', '#9b8cff'),

@@ -1,0 +1,355 @@
+/* =============================================================
+   NEOMORPHISM  —  the SIXTH design (light "soft UI").
+
+   The signature soft-UI look: ONE flat grey backdrop where every
+   surface is the SAME colour as the page and is shaped only by a
+   pair of soft shadows — a white highlight (top-left) and a cool
+   grey shadow (bottom-right). Raised elements extrude from the
+   page; active / pressed elements INVERT to an inset shadow.
+
+     · LAYOUT  -> reuses Soft Light's sticky top-bar layout.
+     · COLOUR  -> one flat #e0e5ec grey + a soft INDIGO accent.
+     · SURFACES-> borderless, big radii, dual light/dark shadows
+                  (no frosted glass, no hairline borders).
+     · TYPE    -> ORBITRON (futuristic display) on headings / nav /
+                  hero / wordmark; EXO 2 (readable) on body.
+                  Both loaded via <link> in each page's <head>.
+     · 3D      -> one quiet soft indigo sphere (assets/js/hero-3d.js).
+
+   Loaded LAST. Every rule is scoped under html[data-theme="neo"],
+   so the other five designs are untouched.
+   ============================================================= */
+
+/* ---- Tokens ------------------------------------------------------ */
+html[data-theme="neo"] {
+  --bg: #e0e5ec;               /* one flat backdrop */
+  --surface: #e0e5ec;          /* SAME as --bg on purpose (the neo rule) */
+  --surface-hi: #eaeef4;       /* slightly lighter (pressed insets, inputs) */
+  --line: rgba(163, 177, 198, 0.30);
+  --line-soft: rgba(163, 177, 198, 0.18);
+
+  --text: #55627a;
+  --muted: #6f7c96;            /* ~4.6:1 on --bg */
+  --head: #2c3444;
+  --ink: #2c3444;
+  --accent: #6d5dfc;           /* soft indigo */
+  --accent-2: #8b7dff;         /* lighter indigo (hover) */
+  --accent-soft: #a99bff;      /* pale indigo (read by hero-3d) */
+  --accent-link: #5646e0;      /* darker indigo — AA link text on grey */
+
+  /* the two neomorphic light sources */
+  --neo-light: #ffffff;
+  --neo-dark: #a3b1c6;
+  --neo-out: -6px -6px 12px var(--neo-light), 6px 6px 14px var(--neo-dark);
+  --neo-out-sm: -3px -3px 7px var(--neo-light), 3px 3px 8px var(--neo-dark);
+  --neo-in: inset -4px -4px 8px var(--neo-light), inset 4px 4px 8px var(--neo-dark);
+  --neo-in-sm: inset -2px -2px 5px var(--neo-light), inset 3px 3px 6px var(--neo-dark);
+
+  /* iPortfolio bridge tokens (consumed by main.css) */
+  --background-color: var(--bg);
+  --default-color: var(--text);
+  --heading-color: var(--head);
+  --accent-color: var(--accent);
+  --surface-color: var(--surface);
+  --contrast-color: #ffffff;
+
+  /* fonts — display face on headings/nav, readable face on body */
+  --heading-font: "Orbitron", "Sora", sans-serif;
+  --nav-font: "Orbitron", "Space Grotesk", sans-serif;
+  --default-font: "Exo 2", system-ui, sans-serif;
+
+  /* cursor effects (main.js trail + click ripple read these) */
+  --sh: 163, 177, 198;
+  --trail-1: 109, 93, 252;
+  --trail-2: 139, 125, 255;
+  --trail-3: 169, 155, 255;
+
+  color-scheme: light;
+}
+
+/* =============================================================
+   BACKGROUND  ->  one flat grey, no washes (surfaces carry all depth)
+   ============================================================= */
+html[data-theme="neo"] body { background-color: var(--bg) !important; overflow-x: hidden; }
+html[data-theme="neo"] body::before { content: none; }
+html[data-theme="neo"] body::after {
+  content: "";
+  position: fixed; inset: 0; z-index: -3; pointer-events: none;
+  background:
+    radial-gradient(70rem 44rem at 50% -12%, rgba(255, 255, 255, 0.55), transparent 60%),
+    radial-gradient(60rem 60rem at 88% 112%, rgba(109, 93, 252, 0.05), transparent 60%),
+    linear-gradient(180deg, #e6eaf1, var(--bg));
+}
+
+/* selection / scrollbar / links */
+html[data-theme="neo"] ::selection { background: var(--accent); color: #fff; }
+html[data-theme="neo"] ::-webkit-scrollbar-track { background: #d5dbe4; }
+html[data-theme="neo"] ::-webkit-scrollbar-thumb { background: #bcc6d6; border: 3px solid #d5dbe4; border-radius: 10px; }
+html[data-theme="neo"] ::-webkit-scrollbar-thumb:hover { background: #a9b5c9; }
+html[data-theme="neo"] a { color: var(--accent-link); }
+html[data-theme="neo"] a:hover { color: var(--accent); }
+html[data-theme="neo"] #preloader { background: var(--bg) !important; }
+html[data-theme="neo"] #preloader .three-body { --uib-color: var(--accent); }
+
+html[data-theme="neo"] .shadow-lit-text {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7),
+    calc(var(--sx) * 1px) calc(var(--sy) * 1px) var(--sblur) rgba(var(--sh), var(--salpha));
+}
+html[data-theme="neo"] .navmenu a:focus-visible,
+html[data-theme="neo"] .header .social-links a:focus-visible,
+html[data-theme="neo"] .site-theme-toggle:focus-visible,
+html[data-theme="neo"] .header .header-toggle:focus-visible,
+html[data-theme="neo"] .btn-chrome:focus-visible,
+html[data-theme="neo"] .btn-ghost:focus-visible,
+html[data-theme="neo"] .services .service-item .title a:focus-visible,
+html[data-theme="neo"] .scroll-top:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* =============================================================
+   NAV  ->  soft top bar; raised pill chips, pressed when active
+   ============================================================= */
+html[data-theme="neo"] .header {
+  background: var(--bg) !important;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  border-bottom: 0;
+  box-shadow: 0 6px 16px rgba(163, 177, 198, 0.35);
+}
+html[data-theme="neo"] .header .profile-img img {
+  border: 0;
+  box-shadow: var(--neo-out-sm);
+}
+html[data-theme="neo"] .header .logo h1.sitename {
+  font-family: var(--heading-font);
+  color: var(--head);
+  letter-spacing: 0.04em;
+  font-weight: 700;
+}
+
+html[data-theme="neo"] .navmenu a,
+html[data-theme="neo"] .navmenu a:focus {
+  font-family: var(--nav-font);
+  background: var(--bg);
+  border: 0;
+  border-radius: 12px;
+  color: var(--text);
+  font-size: 12.5px; font-weight: 500; letter-spacing: 0.02em;
+  box-shadow: var(--neo-out-sm);
+  transition: box-shadow 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+html[data-theme="neo"] .navmenu a .navicon { display: none; }
+html[data-theme="neo"] .navmenu a:hover { color: var(--head); transform: translateY(-1px); }
+html[data-theme="neo"] .navmenu .active,
+html[data-theme="neo"] .navmenu .active:focus {
+  color: var(--accent) !important;
+  background: var(--bg) !important;
+  border: 0 !important;
+  box-shadow: var(--neo-in) !important;
+  transform: none;
+}
+
+/* social cluster + toggle: soft raised buttons */
+html[data-theme="neo"] .header .social-links a {
+  background: var(--bg);
+  border: 0;
+  color: var(--text);
+  box-shadow: var(--neo-out-sm);
+  transition: box-shadow 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+html[data-theme="neo"] .header .social-links a:hover { color: var(--accent); transform: translateY(-1px); }
+html[data-theme="neo"] .header .social-links a:active { box-shadow: var(--neo-in-sm); }
+html[data-theme="neo"] .site-theme-toggle,
+html[data-theme="neo"] .header .header-toggle {
+  background: var(--bg); border: 0; color: var(--head);
+  border-radius: 10px; box-shadow: var(--neo-out-sm);
+}
+html[data-theme="neo"] .site-theme-toggle:hover,
+html[data-theme="neo"] .header .header-toggle:hover { color: var(--accent); background: var(--bg); }
+html[data-theme="neo"] .site-theme-toggle:active,
+html[data-theme="neo"] .header .header-toggle:active { box-shadow: var(--neo-in-sm); }
+
+/* mobile dropdown — soft panel */
+@media (max-width: 991.98px) {
+  html[data-theme="neo"] .navmenu {
+    background: var(--bg) !important;
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+    border-bottom: 0;
+    box-shadow: 0 12px 26px rgba(163, 177, 198, 0.45);
+  }
+}
+
+/* =============================================================
+   HERO  ->  clean centred poster; soft raised buttons
+   ============================================================= */
+html[data-theme="neo"] .hero { background: transparent !important; }
+html[data-theme="neo"] .hero-eyebrow { color: var(--accent-link); }
+html[data-theme="neo"] .hero h2 { font-family: var(--heading-font); color: var(--head); letter-spacing: 0.01em; }
+html[data-theme="neo"] .hero .hero-role, html[data-theme="neo"] .hero p { color: var(--muted); }
+html[data-theme="neo"] .hero .hero-role .typed, html[data-theme="neo"] .hero p span.typed { color: var(--accent); font-weight: 600; }
+html[data-theme="neo"] .typed-cursor { color: var(--accent); }
+
+/* drop the hanging-pendulum chrome; sit the buttons flat (as Aurum does) */
+html[data-theme="neo"] .hang { padding: 0 !important; display: inline-flex; }
+html[data-theme="neo"] .hang__shadow,
+html[data-theme="neo"] .hang__pivot,
+html[data-theme="neo"] .pendulum__chain { display: none !important; }
+html[data-theme="neo"] .pendulum { transform: none !important; display: inline-flex; }
+
+html[data-theme="neo"] .btn-chrome,
+html[data-theme="neo"] .btn-ghost {
+  background: var(--bg);
+  border: 0;
+  box-shadow: var(--neo-out);
+  transition: box-shadow 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+html[data-theme="neo"] .btn-chrome { color: var(--accent-link); }
+html[data-theme="neo"] .btn-chrome:hover { color: var(--accent); background: var(--bg); transform: translateY(-2px); }
+html[data-theme="neo"] .btn-chrome:active { box-shadow: var(--neo-in); transform: none; }
+html[data-theme="neo"] .btn-ghost { color: var(--head); }
+html[data-theme="neo"] .btn-ghost:hover { color: var(--accent); transform: translateY(-2px); }
+html[data-theme="neo"] .btn-ghost:active { box-shadow: var(--neo-in); transform: none; }
+
+/* =============================================================
+   SECTION TITLES + SOFT EXTRUDED CARDS
+   ============================================================= */
+html[data-theme="neo"] .section-title h2 { font-family: var(--heading-font); color: var(--head); letter-spacing: 0.01em; }
+html[data-theme="neo"] .section-title h2:after { background: var(--accent); }
+html[data-theme="neo"] .section-title p { color: var(--muted); }
+
+html[data-theme="neo"] .about .content,
+html[data-theme="neo"] .resume .resume-item,
+html[data-theme="neo"] .stats .stats-item,
+html[data-theme="neo"] .services .service-item,
+html[data-theme="neo"] .contact .info-wrap,
+html[data-theme="neo"] .contact .php-email-form,
+html[data-theme="neo"] .portfolio-details .portfolio-info,
+html[data-theme="neo"] .service-details .services-list {
+  background: var(--bg) !important;
+  border: 0;
+  border-radius: 20px;
+  box-shadow: var(--neo-out);
+}
+html[data-theme="neo"] .stats .stats-item:hover,
+html[data-theme="neo"] .services .service-item:hover {
+  box-shadow: var(--neo-in);
+  transform: none;
+}
+
+/* About */
+html[data-theme="neo"] .about .content h2 { color: var(--head); }
+html[data-theme="neo"] .about .content ul i { color: var(--accent); }
+html[data-theme="neo"] .about .content ul strong { color: var(--head); }
+
+/* Stats */
+html[data-theme="neo"] .stats .stats-item i { color: var(--accent); }
+html[data-theme="neo"] .stats .stats-item .purecounter { color: var(--head); }
+html[data-theme="neo"] .stats .stats-item p { color: var(--muted); }
+
+/* Skills */
+html[data-theme="neo"] .skills-tags .resume-title { color: var(--head); }
+html[data-theme="neo"] .skills-tags .badge {
+  background: var(--bg); border: 0; color: var(--text);
+  box-shadow: var(--neo-out-sm);
+}
+html[data-theme="neo"] .skills .progress .skill { color: var(--head); }
+html[data-theme="neo"] .skills .progress .skill .val { color: var(--accent); }
+html[data-theme="neo"] .skills .progress-bar-wrap {
+  background: var(--bg);
+  box-shadow: var(--neo-in-sm);
+}
+html[data-theme="neo"] .skills .progress-bar { background: linear-gradient(90deg, var(--accent), var(--accent-2)) !important; }
+
+/* Resume timeline */
+html[data-theme="neo"] .resume .resume-title { color: var(--head); }
+html[data-theme="neo"] .resume .resume-item { border-left: 0; }
+html[data-theme="neo"] .resume .resume-item h4 { color: var(--head); }
+html[data-theme="neo"] .resume .resume-item h5 { background: rgba(109, 93, 252, 0.12); color: var(--accent-link); box-shadow: none; }
+html[data-theme="neo"] .resume .resume-item::before { background: var(--bg); border: 0; box-shadow: var(--neo-out-sm); }
+
+/* Portfolio */
+html[data-theme="neo"] .portfolio .portfolio-filters li.filter-active,
+html[data-theme="neo"] .portfolio .portfolio-filters li:hover { color: var(--accent); }
+html[data-theme="neo"] .portfolio .portfolio-content { border-radius: 18px; box-shadow: var(--neo-out); overflow: hidden; }
+html[data-theme="neo"] .portfolio .portfolio-content .portfolio-info { background: rgba(44, 52, 68, 0.82); }
+html[data-theme="neo"] .portfolio .portfolio-content .portfolio-info h4 { background: var(--accent); color: #fff; }
+
+/* Services */
+html[data-theme="neo"] .services .service-item .icon {
+  background: var(--bg); border: 0;
+  box-shadow: var(--neo-out-sm);
+}
+html[data-theme="neo"] .services .service-item .icon i { color: var(--accent); }
+html[data-theme="neo"] .services .service-item:hover .icon { box-shadow: var(--neo-in-sm); }
+html[data-theme="neo"] .services .service-item:hover .icon i { color: var(--accent-2); }
+html[data-theme="neo"] .services .service-item .title a { color: var(--head); }
+html[data-theme="neo"] .services .service-item:hover .title a { color: var(--accent); }
+html[data-theme="neo"] .services .service-item .description { color: var(--muted); }
+
+/* Contact */
+html[data-theme="neo"] .contact .info-item h3 { color: var(--head); }
+html[data-theme="neo"] .contact .info-item p { color: var(--muted) !important; }
+html[data-theme="neo"] .contact .info-item i {
+  background: var(--bg); color: var(--accent); border: 0;
+  box-shadow: var(--neo-out-sm);
+}
+html[data-theme="neo"] .contact .info-item:hover i { box-shadow: var(--neo-in-sm); color: var(--accent-2); }
+html[data-theme="neo"] .contact .info-wrap iframe { border: 0 !important; border-radius: 14px !important; box-shadow: var(--neo-in-sm); }
+html[data-theme="neo"] .contact .php-email-form input[type=text],
+html[data-theme="neo"] .contact .php-email-form input[type=email],
+html[data-theme="neo"] .contact .php-email-form textarea {
+  background: var(--surface-hi) !important;
+  border: 0 !important;
+  color: var(--head) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--neo-in) !important;
+}
+html[data-theme="neo"] .contact .php-email-form input:focus,
+html[data-theme="neo"] .contact .php-email-form textarea:focus {
+  box-shadow: var(--neo-in), 0 0 0 3px rgba(109, 93, 252, 0.18) !important;
+}
+html[data-theme="neo"] .contact .php-email-form button[type=submit] {
+  background: var(--bg); color: var(--accent-link); border: 0;
+  box-shadow: var(--neo-out);
+}
+html[data-theme="neo"] .contact .php-email-form button[type=submit]:hover { color: var(--accent); transform: translateY(-2px); }
+html[data-theme="neo"] .contact .php-email-form button[type=submit]:active { box-shadow: var(--neo-in); transform: none; }
+
+/* Sub-pages */
+html[data-theme="neo"] .page-title h1 { font-family: var(--heading-font); color: var(--head); }
+html[data-theme="neo"] .page-title .breadcrumbs ol li a { color: var(--accent-link); }
+html[data-theme="neo"] .service-details .services-list a { color: var(--muted); border-left: 0; border-radius: 10px; }
+html[data-theme="neo"] .service-details .services-list a.active,
+html[data-theme="neo"] .service-details .services-list a:hover { color: var(--accent); box-shadow: var(--neo-in-sm); }
+html[data-theme="neo"] .portfolio-details .portfolio-description p { color: var(--muted); }
+html[data-theme="neo"] .portfolio-details .portfolio-info h3 { color: var(--head); border-bottom-color: var(--line); }
+
+/* =============================================================
+   FOOTER + UTILITIES
+   ============================================================= */
+html[data-theme="neo"] .footer {
+  background: var(--bg) !important;
+  border-top: 0;
+  color: var(--muted);
+  box-shadow: 0 -6px 16px rgba(163, 177, 198, 0.3);
+}
+html[data-theme="neo"] .footer .sitename { font-family: var(--heading-font); color: var(--head); }
+html[data-theme="neo"] .footer .social-links a {
+  background: var(--bg); border: 0; color: var(--text);
+  box-shadow: var(--neo-out-sm);
+}
+html[data-theme="neo"] .footer .social-links a:hover { color: var(--accent); transform: translateY(-2px); }
+
+html[data-theme="neo"] .scroll-top {
+  background: var(--bg) !important;
+  box-shadow: var(--neo-out-sm);
+}
+html[data-theme="neo"] .scroll-top i { color: var(--accent); }
+html[data-theme="neo"] .scroll-top:hover { background: var(--bg) !important; }
+html[data-theme="neo"] .scroll-top:active { box-shadow: var(--neo-in-sm); }
+
+/* =============================================================
+   Click ripple  ->  indigo (kept subtle)
+   ============================================================= */
+html[data-theme="neo"] .ripple__ring { border-color: rgba(109, 93, 252, 0.45); box-shadow: 0 0 6px rgba(109, 93, 252, 0.22), inset 0 0 5px rgba(255, 255, 255, 0.55); }
+html[data-theme="neo"] .ripple__ring--2 { border-color: rgba(139, 125, 255, 0.34); }
+html[data-theme="neo"] .ripple__ring--3 { border-color: rgba(169, 155, 255, 0.24); }
+html[data-theme="neo"] .ripple__drop { background: radial-gradient(closest-side, rgba(139, 125, 255, 0.30), transparent 72%); }
+html[data-theme="neo"] .ripple__jet { background: radial-gradient(circle at 38% 32%, #fff, rgba(139, 125, 255, 0.85) 45%, rgba(109, 93, 252, 0.7)); box-shadow: 0 2px 6px rgba(120, 110, 200, 0.35); }
