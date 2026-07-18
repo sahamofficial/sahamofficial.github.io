@@ -280,7 +280,7 @@ import * as THREE from 'three';
     var SPREAD = [15,   11,   8];      // horizontal scatter
     var FILL_O = [0.05, 0.09, 0.13];   // fill opacity (nearer = bolder)
     var WIRE_O = [0.16, 0.26, 0.36];   // wireframe opacity
-    var PAR    = [1.4,  3.0,  5.2];    // parallax travel over a full scroll (nearer = faster)
+    var PAR    = [3.5,  7.5,  12.5];   // parallax travel over a full scroll (nearer = faster)
 
     // eclectic low-detail polyhedra -> crisp retro facets
     function geom(kind, s) {
@@ -305,7 +305,7 @@ import * as THREE from 'three';
       shape.userData = {
         baseY: shape.position.y,
         par: PAR[band],                        // vertical travel over the full scroll
-        spin: 0.8 + Math.random() * 1.6,       // rotation (radians) over the full scroll
+        spin: 1.6 + Math.random() * 2.8,       // rotation (radians) over the full scroll
         drift: (Math.random() - 0.5) * 0.0006, // tiny idle life for full-motion users
         hueOffset: (i % 3 === 0) ? 1 : 0,      // ~1/3 of shapes sit one accent ahead -> clash
         phase: phase
