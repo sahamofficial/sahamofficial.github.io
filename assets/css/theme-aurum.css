@@ -46,6 +46,11 @@ html[data-theme="aurum"] {
   --trail-2: 240, 200, 105;
   --trail-3: 180, 140, 60;
 
+  /* fonts — editorial serif display on headings, clean sans on nav/body */
+  --heading-font: "Playfair Display", "Sora", serif;
+  --nav-font: "Inter", "Space Grotesk", sans-serif;
+  --default-font: "Inter", system-ui, sans-serif;
+
   color-scheme: dark;
 }
 
@@ -98,12 +103,13 @@ html[data-theme="aurum"] .header {
   box-shadow: none;
 }
 html[data-theme="aurum"] .header .profile-img { display: none; }
-html[data-theme="aurum"] .header .logo h1.sitename { color: var(--head); font-size: 18px; letter-spacing: 0.01em; }
+html[data-theme="aurum"] .header .logo h1.sitename { font-family: var(--heading-font); color: var(--head); font-size: 18px; letter-spacing: 0.01em; }
 
 /* minimal text nav with a thin amber underline on hover / active */
 html[data-theme="aurum"] .navmenu ul { gap: 4px; }
 html[data-theme="aurum"] .navmenu a,
 html[data-theme="aurum"] .navmenu a:focus {
+  font-family: var(--nav-font);
   position: relative;
   background: transparent !important; border: 0 !important;
   border-radius: 0; padding: 8px 12px;
@@ -157,7 +163,7 @@ html[data-theme="aurum"] .section { padding: 56px 0; }
    ============================================================= */
 html[data-theme="aurum"] .hero { min-height: calc(100vh - 62px); background: transparent !important; padding: 40px 0; }
 html[data-theme="aurum"] .hero-eyebrow { color: var(--accent); }
-html[data-theme="aurum"] .hero h2 { color: var(--head); }
+html[data-theme="aurum"] .hero h2 { font-family: var(--heading-font); color: var(--head); }
 html[data-theme="aurum"] .hero .hero-role, html[data-theme="aurum"] .hero p { color: var(--muted); }
 html[data-theme="aurum"] .hero .hero-role .typed, html[data-theme="aurum"] .hero p span.typed { color: var(--accent); }
 html[data-theme="aurum"] .typed-cursor { color: var(--accent); }
@@ -176,7 +182,7 @@ html[data-theme="aurum"] .btn-ghost:hover { color: var(--accent); border-color: 
 /* =============================================================
    SECTION TITLES + SOLID CRISP CARDS
    ============================================================= */
-html[data-theme="aurum"] .section-title h2 { color: var(--head); }
+html[data-theme="aurum"] .section-title h2 { font-family: var(--heading-font); color: var(--head); }
 html[data-theme="aurum"] .section-title h2:after { background: var(--accent); }
 html[data-theme="aurum"] .section-title p { color: var(--muted); }
 
@@ -259,7 +265,7 @@ html[data-theme="aurum"] .contact .php-email-form button[type=submit] { backgrou
 html[data-theme="aurum"] .contact .php-email-form button[type=submit]:hover { background: var(--accent-2); }
 
 /* Sub-pages */
-html[data-theme="aurum"] .page-title h1 { color: var(--head); }
+html[data-theme="aurum"] .page-title h1 { font-family: var(--heading-font); color: var(--head); }
 html[data-theme="aurum"] .page-title .breadcrumbs ol li a { color: var(--accent); }
 html[data-theme="aurum"] .service-details .services-list a { color: var(--muted); border-left-color: var(--line); }
 html[data-theme="aurum"] .service-details .services-list a.active,
@@ -273,7 +279,7 @@ html[data-theme="aurum"] .portfolio-details .portfolio-info h3 { color: var(--he
 html[data-theme="aurum"] .footer {
   background: #0a0a0c !important; border-top: 1px solid var(--line); color: var(--muted);
 }
-html[data-theme="aurum"] .footer .sitename { color: var(--head); }
+html[data-theme="aurum"] .footer .sitename { font-family: var(--heading-font); color: var(--head); }
 html[data-theme="aurum"] .footer .social-links a { background: var(--surface); border: 1px solid var(--line); color: var(--text); }
 html[data-theme="aurum"] .footer .social-links a:hover { color: var(--accent); border-color: var(--accent); }
 

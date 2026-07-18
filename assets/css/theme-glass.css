@@ -51,6 +51,11 @@ html[data-theme="glass"] {
   --trail-2: 194, 210, 230;
   --trail-3: 120, 140, 170;
 
+  /* fonts — airy geometric display on headings/nav, soft readable body */
+  --heading-font: "Josefin Sans", "Sora", sans-serif;
+  --nav-font: "Josefin Sans", "Space Grotesk", sans-serif;
+  --default-font: "Nunito Sans", system-ui, sans-serif;
+
   color-scheme: dark;
 }
 
@@ -228,7 +233,7 @@ html[data-theme="glass"] .site-theme-toggle:hover {
 html[data-theme="glass"] main { padding-top: 0; }
 html[data-theme="glass"] .hero { min-height: 100vh; padding: 90px 0 60px; background: transparent !important; }
 html[data-theme="glass"] .hero-eyebrow { color: var(--accent); }
-html[data-theme="glass"] .hero h2 { color: var(--head); }
+html[data-theme="glass"] .hero h2 { font-family: var(--heading-font); color: var(--head); }
 html[data-theme="glass"] .hero .hero-role,
 html[data-theme="glass"] .hero p { color: var(--muted); }
 html[data-theme="glass"] .hero .hero-role .typed,
@@ -332,7 +337,7 @@ html[data-theme="glass"] .service-details .services-list {
   html[data-theme="glass"] .index-page main > section { width: 100%; margin-left: 0; margin-right: 0; }
 }
 
-html[data-theme="glass"] .section-title h2 { color: var(--head); }
+html[data-theme="glass"] .section-title h2 { font-family: var(--heading-font); color: var(--head); }
 html[data-theme="glass"] .section-title h2:after { background: var(--accent); }
 html[data-theme="glass"] .section-title p { color: var(--muted); }
 
@@ -405,7 +410,7 @@ html[data-theme="glass"] .contact .php-email-form button[type=submit] { backgrou
 html[data-theme="glass"] .contact .php-email-form button[type=submit]:hover { background: var(--accent-2); }
 
 /* Sub-pages */
-html[data-theme="glass"] .page-title h1 { color: var(--head); }
+html[data-theme="glass"] .page-title h1 { font-family: var(--heading-font); color: var(--head); }
 html[data-theme="glass"] .page-title .breadcrumbs ol li a { color: var(--accent); }
 html[data-theme="glass"] .service-details .services-list a { color: var(--muted); border-left-color: var(--line); }
 html[data-theme="glass"] .service-details .services-list a.active,
@@ -422,7 +427,7 @@ html[data-theme="glass"] .footer {
   border-top: 1px solid var(--line);
   color: var(--muted);
 }
-html[data-theme="glass"] .footer .sitename { color: var(--head); }
+html[data-theme="glass"] .footer .sitename { font-family: var(--heading-font); color: var(--head); }
 /* surface the socials in the footer (the dock drops them) */
 html[data-theme="glass"] .footer .social-links { display: flex !important; }
 html[data-theme="glass"] .footer .social-links a {
