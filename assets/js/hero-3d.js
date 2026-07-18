@@ -10,7 +10,8 @@
 //   · aurum  (Aurum)       -> one slow amber wireframe TORUS KNOT
 //   · neo    (Neomorphism) -> a soft indigo BLOB that breathes (morphs)
 //   · clay   (Claymorphism)-> a matte teal puffy BALL that squishes (bounces)
-//   · maximal(Maximalism)  -> a bold faceted CRYSTAL that tumbles + pulses (mustard)
+//   · maximal(Maximalism)  -> a SCROLL-DRIVEN PARALLAX FIELD of faceted shapes that
+//                             cycles the four accents (mustard->rust->teal->plum)
 //
 // Each object recolours itself from the active theme's --accent / --bg.
 //   - prefers-reduced-motion: renders one static frame, no animation loop
@@ -261,29 +262,91 @@ import * as THREE from 'three';
     };
   }
 
-  // maximal: a bold faceted CRYSTAL — crisp dodecahedron facets under a graphic
-  // wireframe skin — that tumbles energetically on all three axes, pulses in scale
-  // and bobs. Louder and faster than the quiet morphism objects, to match the
-  // maximalist "more is more" energy. Two-tone: mustard fill, pale-mustard wire.
+  // maximal: a SCROLL-REACTIVE PARALLAX FIELD — a scattered cloud of bold faceted
+  // shapes (dodecahedra, gems, octahedra, cubes) spread across three depth bands.
+  // It does NOT spin on its own; SCROLL drives it (see applyScroll below): as you
+  // move down the page the near shapes travel far while the distant ones barely
+  // budge (parallax by depth), and the whole field's colour walks the four-way
+  // maximalist clash — mustard -> rust -> teal -> plum — tracking how far down you
+  // are. Idle: only a whisper of drift. Reduced motion: colour still tracks scroll,
+  // but the parallax travel / rotation is switched off (no vestibular motion).
   function makeMaximal() {
-    var g = new THREE.DodecahedronGeometry(1.8, 0);   // detail 0 = crisp retro facets
-    var fm = new THREE.MeshStandardMaterial({ roughness: 0.55, metalness: 0.15, flatShading: true, transparent: true, opacity: 0.12, depthWrite: false });
-    var em = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.34 });
     var group = new THREE.Group();
-    group.add(new THREE.Mesh(g, fm));
-    group.add(new THREE.LineSegments(new THREE.WireframeGeometry(g), em));
-    group.rotation.set(0.4, 0.2, 0);
+    var items = [];
+
+    // three depth bands — index 0 = far, 1 = mid, 2 = near
+    var Z      = [-6.5, -3.0, -0.5];   // depth (world z)
+    var SIZE   = [0.75, 1.15, 1.70];   // base radius
+    var SPREAD = [15,   11,   8];      // horizontal scatter
+    var FILL_O = [0.05, 0.09, 0.13];   // fill opacity (nearer = bolder)
+    var WIRE_O = [0.16, 0.26, 0.36];   // wireframe opacity
+    var PAR    = [1.4,  3.0,  5.2];    // parallax travel over a full scroll (nearer = faster)
+
+    // eclectic low-detail polyhedra -> crisp retro facets
+    function geom(kind, s) {
+      if (kind === 0) return new THREE.DodecahedronGeometry(s, 0);
+      if (kind === 1) return new THREE.IcosahedronGeometry(s, 0);
+      if (kind === 2) return new THREE.OctahedronGeometry(s, 0);
+      return new THREE.BoxGeometry(s * 1.4, s * 1.4, s * 1.4);
+    }
+
+    for (var i = 0; i < 12; i++) {
+      var band = i % 3;
+      var s = SIZE[band] * (0.8 + Math.random() * 0.6);
+      var g = geom(i % 4, s);
+      var fm = new THREE.MeshStandardMaterial({ roughness: 0.55, metalness: 0.15, flatShading: true, transparent: true, opacity: FILL_O[band], depthWrite: false });
+      var em = new THREE.LineBasicMaterial({ transparent: true, opacity: WIRE_O[band] });
+      var shape = new THREE.Group();
+      shape.add(new THREE.Mesh(g, fm));
+      shape.add(new THREE.LineSegments(new THREE.WireframeGeometry(g), em));
+      var phase = Math.random() * Math.PI * 2;
+      shape.position.set((Math.random() - 0.5) * SPREAD[band], (Math.random() - 0.5) * 9, Z[band]);
+      shape.rotation.set(phase, phase * 0.7, 0);
+      shape.userData = {
+        baseY: shape.position.y,
+        par: PAR[band],                        // vertical travel over the full scroll
+        spin: 0.8 + Math.random() * 1.6,       // rotation (radians) over the full scroll
+        drift: (Math.random() - 0.5) * 0.0006, // tiny idle life for full-motion users
+        hueOffset: (i % 3 === 0) ? 1 : 0,      // ~1/3 of shapes sit one accent ahead -> clash
+        phase: phase
+      };
+      items.push({ shape: shape, fm: fm, em: em, ud: shape.userData });
+      group.add(shape);
+    }
+
+    // the four-way accent clash + wire tint, cached by recolor() and applied per-scroll
+    var pal = [new THREE.Color(), new THREE.Color(), new THREE.Color(), new THREE.Color()];
+    var wireTint = new THREE.Color();
+
     return {
       group: group,
-      recolor: function (p) { fm.color.copy(p.accent); em.color.copy(p.accentSoft); },
-      animate: function (now) {
-        var t = (now || 0) * 0.001;
-        group.rotation.x += 0.0034;
-        group.rotation.y += 0.0026;
-        group.rotation.z += 0.0010;
-        var s = 1 + Math.sin(t * 1.4) * 0.06;         // bold scale pulse
-        group.scale.set(s, s, s);
-        group.position.y = Math.sin(t * 0.7) * 0.16;
+      recolor: function (p) {
+        pal[0].copy(p.accent);
+        pal[1].copy(p.accent2 || p.accent);
+        pal[2].copy(p.accent3 || p.accent);
+        pal[3].copy(p.accent4 || p.accent);
+        wireTint.copy(p.accentSoft || p.accent);
+      },
+      // idle drift only — SCROLL (applyScroll) is the real driver
+      animate: function () {
+        for (var k = 0; k < items.length; k++) items[k].shape.rotation.z += items[k].ud.drift;
+      },
+      // s in [0,1]: 0 = top of page (mustard) -> 1 = bottom (plum)
+      applyScroll: function (s) {
+        var seg = s * 3, bi = Math.min(2, Math.floor(seg)), bf = seg - bi;   // 3 colour segments over 4 stops
+        for (var k = 0; k < items.length; k++) {
+          var it = items[k], ud = it.ud;
+          // colour: offset shapes take the next stop -> a two-tone clash at any scroll depth
+          var ci = Math.min(2, bi + ud.hueOffset);
+          it.fm.color.lerpColors(pal[ci], pal[ci + 1], bf);
+          it.em.color.copy(it.fm.color).lerp(wireTint, 0.5);
+          // motion is gated off for reduced-motion users (colour above still tracks scroll)
+          if (!reduceMotion) {
+            it.shape.position.y = ud.baseY + (s - 0.5) * ud.par;   // parallax: near band travels farther
+            it.shape.rotation.x = ud.phase + s * ud.spin;
+            it.shape.rotation.y = ud.phase * 0.7 + s * ud.spin * 0.8;
+          }
+        }
       }
     };
   }
@@ -307,7 +370,7 @@ import * as THREE from 'three';
     aurum: { obj: aurum,   fov: 48, camZ: 8,  fogNear: 5,   fogFar: 13 },
     neo:   { obj: neo,     fov: 45, camZ: 6,  fogNear: 4.5, fogFar: 11 },
     clay:  { obj: clay,    fov: 45, camZ: 6,  fogNear: 4.5, fogFar: 11 },
-    maximal: { obj: maximal, fov: 46, camZ: 6.5, fogNear: 4.5, fogFar: 12 }
+    maximal: { obj: maximal, fov: 52, camZ: 8.5, fogNear: 6, fogFar: 20 }
   };
 
   function themeName() {
@@ -332,7 +395,10 @@ import * as THREE from 'three';
     current.obj.recolor({
       accent: cssColor('--accent', '#9b8cff'),
       accentSoft: cssColor('--accent-soft', '#f0a6d6'),
-      blue: new THREE.Color('#78a0ff')
+      blue: new THREE.Color('#78a0ff'),
+      accent2: cssColor('--accent-2', '#d2603a'),
+      accent3: cssColor('--accent-3', '#2a9d8f'),
+      accent4: cssColor('--accent-4', '#7a3b69')
     });
 
     scene.fog.color.copy(cssColor('--bg', '#0b0e17'));
@@ -354,11 +420,32 @@ import * as THREE from 'three';
     ty = (e.clientY / window.innerHeight) - 0.5;
   });
 
+  // scroll drives the maximal parallax field: 0 = top of page, 1 = bottom.
+  // rAF-throttled passive listener (mirrors theme-toggle.js's .nav-scrolled sync);
+  // when the render loop is idle (reduced motion / hidden tab) we paint one frame
+  // so the background still tracks scroll.
+  var scrollNorm = 0, scrollQueued = false;
+  function computeScrollNorm() {
+    var max = (document.documentElement.scrollHeight || 0) - window.innerHeight;
+    var y = window.scrollY || window.pageYOffset || 0;
+    scrollNorm = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
+  }
+  window.addEventListener('scroll', function () {
+    if (scrollQueued) return;
+    scrollQueued = true;
+    requestAnimationFrame(function () {
+      scrollQueued = false;
+      computeScrollNorm();
+      if (!running && current.obj.applyScroll) { current.obj.applyScroll(scrollNorm); render(); }
+    });
+  }, { passive: true });
+
   function resize() {
     var w = window.innerWidth, h = window.innerHeight;
     renderer.setSize(w, h, false);   // false: CSS controls display size
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
+    computeScrollNorm();             // page height / viewport changed
   }
   resize();
   window.addEventListener('resize', resize);
@@ -368,6 +455,7 @@ import * as THREE from 'three';
   var running = false, rafId = 0;
   function tick(now) {
     current.obj.animate(now);
+    if (current.obj.applyScroll) current.obj.applyScroll(scrollNorm);
     if (parallaxOn) {
       px += (tx - px) * 0.04;
       py += (ty - py) * 0.04;
@@ -396,12 +484,15 @@ import * as THREE from 'three';
   // change shows even while the loop is idle (paused tab / reduced motion)
   window.addEventListener('themechange', function () {
     applyTheme();
+    if (current.obj.applyScroll) current.obj.applyScroll(scrollNorm);
     render();
     start();
   });
 
   // initial state
   applyTheme();
+  computeScrollNorm();
+  if (current.obj.applyScroll) current.obj.applyScroll(scrollNorm);   // colour the field before first paint
   if (reduceMotion) render();
   else start();
 })();
