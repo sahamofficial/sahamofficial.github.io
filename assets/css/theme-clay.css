@@ -274,7 +274,7 @@ html[data-theme="clay"] .resume .resume-title { color: var(--head); }
 html[data-theme="clay"] .resume .resume-item { border-left: 0; }
 html[data-theme="clay"] .resume .resume-item h4 { color: var(--head); }
 html[data-theme="clay"] .resume .resume-item h5 { background: rgba(18, 184, 134, 0.14); color: var(--accent-link); border-radius: 12px; box-shadow: none; }
-html[data-theme="clay"] .resume .resume-item::before { background: var(--surface); border: 0; box-shadow: var(--clay-out-sm); }
+html[data-theme="clay"] .resume .resume-item::before { display: none; }
 
 /* Portfolio */
 html[data-theme="clay"] .portfolio .portfolio-filters li.filter-active,

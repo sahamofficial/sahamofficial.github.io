@@ -284,7 +284,7 @@ html[data-theme="maximal"] .resume .resume-title { color: var(--head); }
 html[data-theme="maximal"] .resume .resume-item { border-left: 0; }
 html[data-theme="maximal"] .resume .resume-item h4 { color: var(--head); }
 html[data-theme="maximal"] .resume .resume-item h5 { background: var(--accent-4); color: #fff; border: 2px solid var(--ink); box-shadow: 2px 2px 0 var(--ink); }
-html[data-theme="maximal"] .resume .resume-item::before { background: var(--accent); border: 2.5px solid var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+html[data-theme="maximal"] .resume .resume-item::before { display: none; }
 
 /* Portfolio */
 html[data-theme="maximal"] .portfolio .portfolio-filters li.filter-active,

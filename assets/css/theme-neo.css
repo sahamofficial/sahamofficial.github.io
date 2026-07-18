@@ -262,7 +262,7 @@ html[data-theme="neo"] .resume .resume-title { color: var(--head); }
 html[data-theme="neo"] .resume .resume-item { border-left: 0; }
 html[data-theme="neo"] .resume .resume-item h4 { color: var(--head); }
 html[data-theme="neo"] .resume .resume-item h5 { background: rgba(109, 93, 252, 0.12); color: var(--accent-link); box-shadow: none; }
-html[data-theme="neo"] .resume .resume-item::before { background: var(--bg); border: 0; box-shadow: var(--neo-out-sm); }
+html[data-theme="neo"] .resume .resume-item::before { display: none; }
 
 /* Portfolio */
 html[data-theme="neo"] .portfolio .portfolio-filters li.filter-active,

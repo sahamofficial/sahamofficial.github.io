@@ -87,6 +87,7 @@ body {
   background-color: var(--bg) !important;
   color: var(--text);
   font-family: var(--default-font);
+  overflow-x: hidden;
 }
 /* soft warm light wash + faint paper vignette */
 body::after {
@@ -360,7 +361,8 @@ main { padding-top: var(--nav-h); }
 }
 
 /* Resume timeline */
-.resume .resume-item { padding: 24px 24px 24px 30px; margin-left: 6px; border-left: 3px solid var(--accent); }
+.resume .resume-item { padding: 24px 24px 24px 30px; margin: 0 0 24px 6px; border-left: 3px solid var(--accent); }
+.resume .resume-item:last-child { margin-bottom: 0; }
 .resume .resume-title { color: var(--head); }
 .resume .resume-item h4 { color: var(--head); }
 .resume .resume-item h5 { background: rgba(192, 96, 58, 0.12); color: #a44c2b; border-radius: 6px; }
@@ -393,7 +395,8 @@ main { padding-top: var(--nav-h); }
 /* Contact */
 .contact .info-wrap { padding: 32px; }
 .contact .info-item h3 { color: var(--head); }
-.contact .info-item p { color: var(--muted) !important; }
+.contact .info-item p { color: var(--muted) !important; overflow-wrap: anywhere; }
+.contact .info-item > div { min-width: 0; }
 .contact .info-item i {
   background: var(--surface-hi); color: var(--accent);
   border: 1px solid var(--line); box-shadow: var(--shadow-sm);
@@ -416,6 +419,17 @@ main { padding-top: var(--nav-h); }
   background: var(--ink); color: #fff; font-weight: 600; border: 0;
 }
 .contact .php-email-form button[type=submit]:hover { background: var(--accent); transform: translateY(-2px); }
+/* Form status messages (toggled by assets/js/contact-form.js) */
+.contact .php-email-form label { display: block; font-weight: 600; color: var(--head); }
+.contact .php-email-form .loading,
+.contact .php-email-form .error-message,
+.contact .php-email-form .sent-message {
+  display: none; margin-top: 14px; padding: 12px 15px;
+  border-radius: 8px; font-size: 14px; text-align: center;
+}
+.contact .php-email-form .loading { background: var(--surface); color: var(--muted); }
+.contact .php-email-form .error-message { background: #df1529; color: #fff; }
+.contact .php-email-form .sent-message { background: #22a06b; color: #fff; }
 
 /* Subpages */
 .page-title h1 { color: var(--head); font-family: "Sora", sans-serif; }
