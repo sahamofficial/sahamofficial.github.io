@@ -8,7 +8,7 @@
 //   · bento  (Bento Grid)  -> drifting wireframe BOXES   (violet)
 //   · glass  (Smoke Glass) -> drifting translucent BUBBLES (steel)
 //   · aurum  (Aurum)       -> one slow amber wireframe TORUS KNOT
-//   · neo    (Neomorphism) -> one quiet, smooth indigo SPHERE
+//   · neo    (Neomorphism) -> a soft indigo BLOB that breathes (morphs)
 //
 // Each object recolours itself from the active theme's --accent / --bg.
 //   - prefers-reduced-motion: renders one static frame, no animation loop
@@ -189,19 +189,48 @@ import * as THREE from 'three';
     };
   }
 
-  // neo: one quiet, smooth, low-opacity indigo sphere — soft + light
+  // neo: a soft indigo BLOB that *breathes* — its surface swells and relaxes as
+  // layered sine waves push each vertex along its own direction. Unlike every other
+  // theme's object (all rigid bodies that only spin/drift), this one deforms live.
+  // One shared geometry drives both a faint lit fill and a wireframe skin, so the
+  // wireframe morphs for free (no per-frame WireframeGeometry rebuild).
   function makeNeo() {
-    var g = new THREE.IcosahedronGeometry(1.9, 4);   // high detail = smooth, soft globe
-    var fm = new THREE.MeshStandardMaterial({ roughness: 0.65, metalness: 0.1, transparent: true, opacity: 0.06, depthWrite: false });
-    var em = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.10 });
+    var R = 1.9;
+    var g = new THREE.IcosahedronGeometry(R, 3);        // detail 3 (~1.3k tris): smooth + cheap to morph
+    var fm = new THREE.MeshStandardMaterial({ roughness: 0.7, metalness: 0.1, flatShading: false, transparent: true, opacity: 0.05, depthWrite: false });
+    var wm = new THREE.MeshBasicMaterial({ wireframe: true, transparent: true, opacity: 0.12 });
     var group = new THREE.Group();
     group.add(new THREE.Mesh(g, fm));
-    group.add(new THREE.LineSegments(new THREE.WireframeGeometry(g), em));
+    group.add(new THREE.Mesh(g, wm));                   // same geometry -> morphs in lockstep
     group.rotation.set(0.4, 0.2, 0);
+
+    var posAttr = g.attributes.position;
+    var pos = posAttr.array;
+    var base = new Float32Array(pos);                   // cached rest pose (all verts at radius R)
+
+    // push verts out/in along their direction by a sum of sines keyed to base coords + time
+    function morph(t) {
+      for (var i = 0; i < pos.length; i += 3) {
+        var bx = base[i], by = base[i + 1], bz = base[i + 2];
+        var d = Math.sin(bx * 1.8 + t * 0.9) * 0.14
+              + Math.sin(by * 2.3 + t * 1.15) * 0.10
+              + Math.sin(bz * 1.5 - t * 0.75) * 0.12;
+        var s = (R + d) / R;                            // scale factor keeps displacement seamless across shared verts
+        pos[i] = bx * s; pos[i + 1] = by * s; pos[i + 2] = bz * s;
+      }
+      posAttr.needsUpdate = true;
+      g.computeVertexNormals();                          // keep the faint fill lit correctly
+    }
+    morph(0);                                            // organic even in the static (reduced-motion) frame
+
     return {
       group: group,
-      recolor: function (p) { fm.color.copy(p.accent); em.color.copy(p.accent); },
-      animate: function () { group.rotation.y += 0.0010; group.rotation.x += 0.0004; }
+      recolor: function (p) { fm.color.copy(p.accent); wm.color.copy(p.accent); },
+      animate: function (now) {
+        morph((now || 0) * 0.001);
+        group.rotation.y += 0.0012;
+        group.rotation.x += 0.0004;
+      }
     };
   }
 
