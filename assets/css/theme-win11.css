@@ -1,0 +1,491 @@
+/* =============================================================
+   WINDOWS 11 DESKTOP  —  the NINTH design.
+
+   The index page becomes a Win11 desktop: wallpaper + centred
+   taskbar; each <section> opens as a draggable window driven by
+   assets/js/theme-win11.js. Contact = Notepad, Portfolio = Photos,
+   About = Settings, Resume = document viewer; the rest are generic
+   Win11 windows. The Start (Windows) button cycles the theme.
+
+   Every rule is scoped under html[data-theme="win11"]; the
+   destructive desktop layout is further scoped to .index-page so
+   the sub-pages keep normal flow. No Microsoft assets are used —
+   the wallpaper / Start glyph / icons are original CSS + SVG + BI.
+   ============================================================= */
+
+/* ---- Tokens ------------------------------------------------------ */
+html[data-theme="win11"] {
+  --w-accent: #0067c0;
+  --w-accent-soft: #4cc2ff;
+  --w-window: #f7f7fb;            /* mica window surface */
+  --w-window-bar: #eceef4;
+  --w-text: #1b1b1f;
+  --w-muted: #5b5b66;
+  --w-head: #0b0b12;
+  --w-line: #e2e3ea;
+  --w-taskbar: rgba(36, 38, 46, 0.72);
+  --w-radius: 8px;
+
+  /* feed the template's shared vars a light, readable scheme so moved
+     section content reads well inside the light windows */
+  --background-color: #0a1830;
+  --default-color: #1b1b1f;
+  --heading-color: #0b0b12;
+  --accent-color: #0067c0;
+  --surface-color: #ffffff;
+  --contrast-color: #ffffff;
+
+  --heading-font: "Segoe UI", system-ui, "Segoe UI Variable", Roboto, sans-serif;
+  --nav-font: "Segoe UI", system-ui, sans-serif;
+  --default-font: "Segoe UI", system-ui, "Segoe UI Variable", Roboto, sans-serif;
+
+  color-scheme: light;
+}
+
+/* =============================================================
+   Base resets — hide the normal chrome, become a desktop
+   ============================================================= */
+html[data-theme="win11"] .bg-3d-canvas { display: none !important; }   /* win11 unknown to hero-3d -> would draw the gem */
+html[data-theme="win11"] .index-page #header,
+html[data-theme="win11"] .index-page #footer,
+html[data-theme="win11"] .index-page .scroll-top,        /* keep in DOM (main.js binds to it); just hide */
+html[data-theme="win11"] .index-page .header-toggle { display: none !important; }
+
+html[data-theme="win11"] body.index-page {
+  overflow: hidden;
+  margin: 0;
+  background: #0a1830 !important;
+  font-family: var(--default-font);
+}
+html[data-theme="win11"] .index-page .main,
+html[data-theme="win11"] .index-page .header ~ main { margin-left: 0 !important; }
+
+/* windows open on demand -> AOS must not leave content invisible */
+html[data-theme="win11"] [data-aos] { opacity: 1 !important; transform: none !important; }
+
+/* drop the hanging-pendulum chrome (like bento) */
+html[data-theme="win11"] .hang__shadow,
+html[data-theme="win11"] .hang__pivot,
+html[data-theme="win11"] .pendulum__chain { display: none !important; }
+html[data-theme="win11"] .pendulum { transform: none !important; display: inline-flex; }
+html[data-theme="win11"] .hang { padding: 0 !important; display: inline-flex; }
+
+/* keep the AI chat launcher, lift it above the taskbar */
+html[data-theme="win11"] .chat__launch { bottom: 64px; }
+html[data-theme="win11"] .chat.chat--raised .chat__launch { bottom: 64px; }
+
+/* =============================================================
+   Desktop + wallpaper
+   ============================================================= */
+html[data-theme="win11"] .w11-desktop {
+  position: fixed; inset: 0;
+  z-index: 5;
+  font-family: var(--default-font);
+  color: #fff;
+}
+html[data-theme="win11"] .w11-wallpaper {
+  position: absolute; inset: 0; z-index: 0; overflow: hidden;
+  background: #0a1830 url("../img/windows-11-wallpapers.webp") center / cover no-repeat;
+}
+html[data-theme="win11"] .w11-wallpaper.is-refresh { animation: w11-refresh 0.5s ease; }
+@keyframes w11-refresh { 0% { filter: brightness(1.25); } 100% { filter: brightness(1); } }
+
+/* =============================================================
+   Desktop icons (top-left)
+   ============================================================= */
+html[data-theme="win11"] .w11-icons {
+  position: absolute; top: 14px; left: 10px; z-index: 1;   /* below windows — open windows cover the icons, like real Windows */
+  display: flex; flex-direction: column; flex-wrap: wrap; gap: 2px;
+  max-height: calc(100vh - 70px);
+}
+html[data-theme="win11"] .w11-icon {
+  width: 84px; padding: 8px 4px; border: 1px solid transparent; border-radius: 6px;
+  background: transparent; color: #fff; cursor: default;
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  font: inherit; text-align: center;
+}
+html[data-theme="win11"] .w11-icon:hover { background: rgba(255, 255, 255, 0.12); }
+html[data-theme="win11"] .w11-icon.is-selected { background: rgba(76, 194, 255, 0.28); border-color: rgba(120, 200, 255, 0.5); }
+html[data-theme="win11"] .w11-icon__img {
+  width: 46px; height: 40px; display: grid; place-items: center; font-size: 26px;
+  color: #dff0ff;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
+}
+html[data-theme="win11"] .w11-icon__label {
+  font-size: 12px; line-height: 1.2; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  word-break: break-word;
+}
+
+/* =============================================================
+   Windows layer + window frame
+   ============================================================= */
+html[data-theme="win11"] .w11-windows { position: absolute; left: 0; top: 0; right: 0; bottom: 48px; z-index: 2; }
+html[data-theme="win11"] .w11-window {
+  position: absolute; z-index: 20;
+  min-width: 300px; min-height: 200px;
+  display: flex; flex-direction: column; overflow: hidden;
+  background: var(--w-window);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--w-radius);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.3);
+  color: var(--w-text);
+  animation: w11-open 0.16s ease;
+}
+@keyframes w11-open { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: none; } }
+html[data-theme="win11"] .w11-window.is-active { box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(76, 194, 255, 0.25); }
+html[data-theme="win11"] .w11-window.is-min { display: none !important; }
+html[data-theme="win11"] .w11-window.is-dragging { transition: none; animation: none; user-select: none; }
+html[data-theme="win11"] .w11-window.is-max { left: 0 !important; top: 0 !important; width: 100% !important; height: 100% !important; border-radius: 0; border-color: transparent; }
+
+/* title bar */
+html[data-theme="win11"] .w11-window__titlebar {
+  flex: 0 0 auto; height: 40px; display: flex; align-items: center;
+  padding-left: 12px; gap: 8px; cursor: default; touch-action: none;
+  background: var(--w-window-bar); border-bottom: 1px solid var(--w-line);
+}
+html[data-theme="win11"] .w11-window__title {
+  display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600;
+  color: var(--w-head); flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+html[data-theme="win11"] .w11-window__title i { color: var(--w-accent); font-size: 15px; }
+html[data-theme="win11"] .w11-window__controls { display: flex; align-items: stretch; height: 100%; }
+html[data-theme="win11"] .w11-wbtn {
+  width: 46px; border: 0; background: transparent; color: var(--w-text);
+  display: grid; place-items: center; font-size: 13px; cursor: default;
+}
+html[data-theme="win11"] .w11-wbtn:hover { background: rgba(0, 0, 0, 0.08); }
+html[data-theme="win11"] .w11-wbtn--close:hover { background: #e81123; color: #fff; }
+
+/* body */
+html[data-theme="win11"] .w11-window__body { flex: 1 1 auto; overflow: auto; background: #fff; }
+
+/* moved sections: strip the full-page section spacing/centering */
+html[data-theme="win11"] .w11-window__body .section,
+html[data-theme="win11"] .w11-window__body section { padding: 22px 26px !important; margin: 0 !important; background: transparent !important; }
+html[data-theme="win11"] .w11-window__body .container { max-width: 100% !important; padding-left: 0 !important; padding-right: 0 !important; width: 100% !important; }
+html[data-theme="win11"] .w11-window__body .section-title { text-align: left; padding-bottom: 12px; margin: 0; }
+html[data-theme="win11"] .w11-window__body .section-title h2 { font-size: 22px; color: var(--w-head); padding-bottom: 8px; }
+html[data-theme="win11"] .w11-window__body .section-title h2:after { left: 0; transform: none; width: 48px; background: var(--w-accent); }
+html[data-theme="win11"] .w11-window__body .section-title p { font-size: 14px; color: var(--w-muted); }
+html[data-theme="win11"] .w11-window__body h1,
+html[data-theme="win11"] .w11-window__body h2,
+html[data-theme="win11"] .w11-window__body h3,
+html[data-theme="win11"] .w11-window__body h4 { color: var(--w-head); }
+html[data-theme="win11"] .w11-window__body p,
+html[data-theme="win11"] .w11-window__body li,
+html[data-theme="win11"] .w11-window__body span { color: var(--w-text); }
+
+/* =============================================================
+   HOME (generic) — hero inside a window
+   ============================================================= */
+html[data-theme="win11"] .index-page .w11-window__body #hero.hero { min-height: auto !important; display: block; }
+html[data-theme="win11"] .w11-window__body #hero .container { text-align: center; padding: 10px 0; }
+html[data-theme="win11"] .w11-window__body .hero-eyebrow { color: var(--w-accent); font-weight: 600; letter-spacing: 0.12em; }
+html[data-theme="win11"] .w11-window__body .hero h2 { font-size: clamp(32px, 5vw, 48px); color: var(--w-head); }
+html[data-theme="win11"] .w11-window__body .hero .hero-role { color: var(--w-muted); }
+html[data-theme="win11"] .w11-window__body .hero .hero-role .typed { color: var(--w-accent); }
+html[data-theme="win11"] .w11-window__body .typed-cursor { color: var(--w-accent); }
+html[data-theme="win11"] .w11-window__body .hero-actions { display: flex; gap: 12px; justify-content: center; padding-top: 18px; }
+html[data-theme="win11"] .w11-window__body .btn-chrome {
+  background: var(--w-accent); color: #fff; border: 1px solid var(--w-accent);
+  border-radius: 6px; padding: 10px 22px; box-shadow: 0 4px 12px rgba(0, 103, 192, 0.3);
+}
+html[data-theme="win11"] .w11-window__body .btn-chrome:hover { background: #005aa8; }
+html[data-theme="win11"] .w11-window__body .btn-ghost {
+  background: #fff; color: var(--w-accent); border: 1px solid #c7c9d2; border-radius: 6px; padding: 10px 22px;
+}
+html[data-theme="win11"] .w11-window__body .btn-ghost:hover { border-color: var(--w-accent); }
+
+/* =============================================================
+   ABOUT (Settings skin) — left rail + pages (About / Skills / Stats)
+   ============================================================= */
+html[data-theme="win11"] .w11-app--settings .w11-window__body { padding: 0; background: #f3f3f6; }
+html[data-theme="win11"] .w11-settings { display: flex; height: 100%; }
+html[data-theme="win11"] .w11-settings__rail {
+  flex: 0 0 210px; padding: 12px 8px; background: #eceef3; border-right: 1px solid var(--w-line);
+  display: flex; flex-direction: column; gap: 3px; overflow: auto;
+}
+html[data-theme="win11"] .w11-settings__navitem {
+  display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
+  border: 0; background: transparent; border-radius: 6px; padding: 9px 12px;
+  font: inherit; font-size: 14px; color: var(--w-text); cursor: default; position: relative;
+}
+html[data-theme="win11"] .w11-settings__navitem i { color: var(--w-accent); font-size: 16px; }
+html[data-theme="win11"] .w11-settings__navitem:hover { background: rgba(0, 0, 0, 0.05); }
+html[data-theme="win11"] .w11-settings__navitem.is-active { background: #e0eaf6; font-weight: 600; }
+html[data-theme="win11"] .w11-settings__navitem.is-active::before {
+  content: ""; position: absolute; left: 0; top: 20%; bottom: 20%; width: 3px; border-radius: 3px; background: var(--w-accent);
+}
+html[data-theme="win11"] .w11-settings__pane { flex: 1 1 auto; overflow: auto; background: #f3f3f6; }
+html[data-theme="win11"] .w11-settings__pane > section { display: none; }
+html[data-theme="win11"] .w11-settings__pane > section.w11-pane-active { display: block; }
+html[data-theme="win11"] .w11-settings__pane .about .content ul i,
+html[data-theme="win11"] .w11-settings__pane .about .content ul strong { color: var(--w-head); }
+html[data-theme="win11"] .w11-settings__pane .about .col-lg-8 { flex: 0 0 100%; max-width: 100%; }
+/* Stats grid inside the pane */
+html[data-theme="win11"] .w11-settings__pane .stats-item { background: #fff; border: 1px solid var(--w-line); border-radius: 8px; padding: 16px; text-align: center; }
+html[data-theme="win11"] .w11-settings__pane .stats-item i { color: var(--w-accent); font-size: 28px; }
+html[data-theme="win11"] .w11-settings__pane .stats-item .purecounter { color: var(--w-head); font-weight: 700; }
+/* Skills chips */
+html[data-theme="win11"] .w11-settings__pane .skills-tags .resume-title { color: var(--w-head); }
+html[data-theme="win11"] .w11-settings__pane .skills-tags .badge {
+  background: #e8eef7; color: var(--w-accent); border: 1px solid #cfe0f3; border-radius: 999px;
+  padding: 6px 12px; margin: 3px; font-weight: 600;
+}
+
+/* =============================================================
+   RESUME (doc viewer skin)
+   ============================================================= */
+html[data-theme="win11"] .w11-app--doc .w11-window__body { background: #d7d8de; padding: 22px; }
+html[data-theme="win11"] .w11-app--doc .resume.section {
+  background: #fff !important; max-width: 820px; margin: 0 auto !important;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.2); border-radius: 4px; padding: 34px 40px !important;
+}
+html[data-theme="win11"] .w11-app--doc .resume-title { color: var(--w-head); border-bottom: 2px solid var(--w-accent); display: inline-block; padding-bottom: 3px; }
+html[data-theme="win11"] .w11-app--doc .resume-item { border-left: 2px solid var(--w-line); padding-left: 18px; }
+html[data-theme="win11"] .w11-app--doc .resume-item h4 { color: var(--w-head); }
+html[data-theme="win11"] .w11-app--doc .resume-item h5 { background: #e8eef7; color: var(--w-accent); border-radius: 4px; display: inline-block; padding: 2px 8px; }
+
+/* =============================================================
+   PORTFOLIO (Photos skin)
+   ============================================================= */
+html[data-theme="win11"] .w11-app--photos .w11-window__body { background: #202024; }
+html[data-theme="win11"] .w11-app--photos .portfolio.section { padding: 16px !important; }
+html[data-theme="win11"] .w11-app--photos .section-title h2 { color: #fff; }
+html[data-theme="win11"] .w11-app--photos .section-title p { color: #b9b9c2; }
+html[data-theme="win11"] .w11-app--photos .portfolio-filters { text-align: left; padding-left: 0; }
+html[data-theme="win11"] .w11-app--photos .portfolio-filters li {
+  color: #cfcfd6; background: rgba(255, 255, 255, 0.06); border-radius: 999px; padding: 5px 14px; margin: 3px; display: inline-block;
+}
+html[data-theme="win11"] .w11-app--photos .portfolio-filters li.filter-active { color: #fff; background: var(--w-accent); }
+html[data-theme="win11"] .w11-app--photos .portfolio-content { border-radius: 8px; overflow: hidden; background: #2b2b31; }
+html[data-theme="win11"] .w11-app--photos .portfolio-content img { border-radius: 8px 8px 0 0; }
+html[data-theme="win11"] .w11-app--photos .portfolio-info { padding: 10px 12px; }
+html[data-theme="win11"] .w11-app--photos .portfolio-info p,
+html[data-theme="win11"] .w11-app--photos .portfolio-info span { color: #d6d6de; }
+html[data-theme="win11"] .w11-app--photos .portfolio-info .badge { background: rgba(255, 255, 255, 0.1); color: #cfe0ff; }
+html[data-theme="win11"] .w11-app--photos .portfolio-info a { color: #fff; }
+
+/* =============================================================
+   SERVICES (Store skin)
+   ============================================================= */
+html[data-theme="win11"] .w11-app--store .w11-window__body { background: #f3f3f6; }
+html[data-theme="win11"] .w11-app--store .service-item {
+  background: #fff !important; border: 1px solid var(--w-line); border-radius: 10px;
+  padding: 16px !important; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+html[data-theme="win11"] .w11-app--store .service-item .icon { background: #e8eef7; border-radius: 8px; }
+html[data-theme="win11"] .w11-app--store .service-item .icon i { color: var(--w-accent); }
+html[data-theme="win11"] .w11-app--store .service-item .title a { color: var(--w-head); }
+html[data-theme="win11"] .w11-app--store .service-item:hover .title a { color: var(--w-accent); }
+html[data-theme="win11"] .w11-app--store .service-item .description { color: var(--w-muted); }
+
+/* =============================================================
+   CONTACT (Notepad skin)
+   ============================================================= */
+html[data-theme="win11"] .w11-app--notepad .w11-window__body { background: #fff; padding: 0; }
+html[data-theme="win11"] .w11-notepad { display: flex; flex-direction: column; height: 100%; }
+html[data-theme="win11"] .w11-notepad__menu {
+  flex: 0 0 auto; display: flex; gap: 16px; padding: 4px 12px; font-size: 13px;
+  color: #333; border-bottom: 1px solid #e6e6e6; background: #fbfbfb;
+}
+html[data-theme="win11"] .w11-notepad__menu span { cursor: default; }
+html[data-theme="win11"] .w11-notepad__menu span:hover { color: var(--w-accent); }
+html[data-theme="win11"] .w11-notepad__body { flex: 1 1 auto; overflow: auto; }
+html[data-theme="win11"] .w11-app--notepad .contact.section { padding: 18px 20px !important; }
+html[data-theme="win11"] .w11-app--notepad .info-item i { color: var(--w-accent); background: #eef4fb; }
+html[data-theme="win11"] .w11-app--notepad .info-item h3 { color: var(--w-head); }
+html[data-theme="win11"] .w11-app--notepad .info-item p { color: var(--w-muted) !important; }
+html[data-theme="win11"] .w11-app--notepad .php-email-form label { color: var(--w-text); font-weight: 600; }
+html[data-theme="win11"] .w11-app--notepad .php-email-form input,
+html[data-theme="win11"] .w11-app--notepad .php-email-form textarea {
+  background: #fff !important; border: 1px solid #c7c9d2 !important; color: var(--w-text) !important;
+  border-radius: 6px !important; font-family: "Consolas", "Cascadia Mono", monospace !important;
+}
+html[data-theme="win11"] .w11-app--notepad .php-email-form input:focus,
+html[data-theme="win11"] .w11-app--notepad .php-email-form textarea:focus {
+  border-color: var(--w-accent) !important; box-shadow: 0 0 0 2px rgba(0, 103, 192, 0.2) !important;
+}
+html[data-theme="win11"] .w11-app--notepad .php-email-form button[type="submit"] {
+  background: var(--w-accent); border: 1px solid var(--w-accent); color: #fff; border-radius: 6px;
+}
+html[data-theme="win11"] .w11-app--notepad .php-email-form button[type="submit"]:hover { background: #005aa8; }
+
+/* generic list/badge readability (about, etc.) */
+html[data-theme="win11"] .w11-window__body .badge { color: var(--w-accent); }
+html[data-theme="win11"] .w11-window__body .about .content ul i { color: var(--w-accent); }
+
+/* =============================================================
+   Taskbar + Start + tray
+   ============================================================= */
+html[data-theme="win11"] .w11-taskbar {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 48px; z-index: 30;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--w-taskbar);
+  -webkit-backdrop-filter: blur(24px) saturate(150%); backdrop-filter: blur(24px) saturate(150%);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+html[data-theme="win11"] .w11-taskbar__center { display: flex; align-items: center; gap: 4px; }
+html[data-theme="win11"] .w11-start,
+html[data-theme="win11"] .w11-taskitem {
+  width: 40px; height: 40px; border: 0; background: transparent; border-radius: 6px;
+  display: grid; place-items: center; cursor: default; color: #fff; position: relative;
+}
+html[data-theme="win11"] .w11-start:hover,
+html[data-theme="win11"] .w11-taskitem:hover { background: rgba(255, 255, 255, 0.1); }
+html[data-theme="win11"] .w11-taskitem i { font-size: 20px; color: #e8f1ff; }
+html[data-theme="win11"] .w11-start__logo {
+  width: 18px; height: 18px;
+  background:
+    linear-gradient(var(--w-accent-soft), var(--w-accent-soft)) 0 0 / 8px 8px no-repeat,
+    linear-gradient(var(--w-accent-soft), var(--w-accent-soft)) 10px 0 / 8px 8px no-repeat,
+    linear-gradient(var(--w-accent-soft), var(--w-accent-soft)) 0 10px / 8px 8px no-repeat,
+    linear-gradient(var(--w-accent-soft), var(--w-accent-soft)) 10px 10px / 8px 8px no-repeat;
+}
+/* running / active indicator */
+html[data-theme="win11"] .w11-taskitem::after {
+  content: ""; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%);
+  width: 0; height: 3px; border-radius: 3px; background: #9fbfe8; transition: width 0.15s ease;
+}
+html[data-theme="win11"] .w11-taskitem.is-running::after { width: 6px; }
+html[data-theme="win11"] .w11-taskitem.is-active::after { width: 16px; background: var(--w-accent-soft); }
+
+html[data-theme="win11"] .w11-tray {
+  position: absolute; right: 8px; top: 0; bottom: 0; display: flex; align-items: center; gap: 12px; padding-right: 8px; color: #e8f1ff;
+}
+html[data-theme="win11"] .w11-tray > i { font-size: 15px; }
+html[data-theme="win11"] .w11-tray__clock {
+  border: 0; background: transparent; color: #e8f1ff; font: inherit; font-size: 12px;
+  display: flex; flex-direction: column; align-items: flex-end; line-height: 1.25; cursor: default; border-radius: 6px; padding: 4px 8px;
+}
+html[data-theme="win11"] .w11-tray__clock:hover { background: rgba(255, 255, 255, 0.1); }
+
+/* =============================================================
+   Context menu
+   ============================================================= */
+html[data-theme="win11"] .w11-ctx {
+  position: fixed; z-index: 60; min-width: 220px; padding: 6px;
+  background: rgba(249, 249, 251, 0.96);
+  -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 8px; box-shadow: 0 12px 34px rgba(0, 0, 0, 0.3);
+  color: var(--w-text);
+}
+html[data-theme="win11"] .w11-ctx__item {
+  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+  border: 0; background: transparent; border-radius: 5px; padding: 8px 12px; font: inherit; font-size: 14px; color: var(--w-text); cursor: default;
+}
+html[data-theme="win11"] .w11-ctx__item i { color: var(--w-accent); font-size: 15px; }
+html[data-theme="win11"] .w11-ctx__item:hover { background: rgba(0, 103, 192, 0.12); }
+html[data-theme="win11"] .w11-ctx__sep { height: 1px; margin: 5px 8px; background: rgba(0, 0, 0, 0.1); }
+
+/* =============================================================
+   "Shut Down Windows" dialog (Start button)
+   ============================================================= */
+html[data-theme="win11"] .w11-shutdown-backdrop {
+  position: absolute; inset: 0; z-index: 70;
+  display: grid; place-items: center;
+  background: rgba(0, 0, 0, 0.35);
+  -webkit-backdrop-filter: saturate(60%) brightness(0.85); backdrop-filter: saturate(60%) brightness(0.85);
+  animation: w11-fade 0.14s ease;
+}
+@keyframes w11-fade { from { opacity: 0; } to { opacity: 1; } }
+html[data-theme="win11"] .w11-shutdown {
+  width: 440px; max-width: 92vw;
+  background: #f0f0f0; color: #1b1b1f;
+  border: 1px solid rgba(0, 0, 0, 0.2); border-radius: 8px; overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  font-family: var(--default-font);
+}
+html[data-theme="win11"] .w11-shutdown__bar {
+  padding: 9px 14px; font-size: 13px; color: #202024;
+  background: #eaeaea; border-bottom: 1px solid #dcdcdc;
+}
+html[data-theme="win11"] .w11-shutdown__content { padding: 18px 20px 8px; }
+html[data-theme="win11"] .w11-shutdown__brand { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+html[data-theme="win11"] .w11-shutdown__logo {
+  width: 30px; height: 30px; flex: 0 0 auto;
+  background:
+    linear-gradient(var(--w-accent), var(--w-accent)) 0 0 / 13px 13px no-repeat,
+    linear-gradient(var(--w-accent), var(--w-accent)) 17px 0 / 13px 13px no-repeat,
+    linear-gradient(var(--w-accent), var(--w-accent)) 0 17px / 13px 13px no-repeat,
+    linear-gradient(var(--w-accent), var(--w-accent)) 17px 17px / 13px 13px no-repeat;
+}
+html[data-theme="win11"] .w11-shutdown__wordmark { font-size: 30px; font-weight: 400; color: var(--w-accent); letter-spacing: 0.5px; }
+html[data-theme="win11"] .w11-shutdown__row { display: flex; align-items: flex-start; gap: 16px; }
+html[data-theme="win11"] .w11-shutdown__pc { font-size: 38px; color: #3a6ea5; flex: 0 0 auto; margin-top: 2px; }
+html[data-theme="win11"] .w11-shutdown__fields { flex: 1 1 auto; min-width: 0; }
+html[data-theme="win11"] .w11-shutdown__label { display: block; font-size: 13px; color: #1b1b1f; margin-bottom: 8px; }
+html[data-theme="win11"] .w11-shutdown__select {
+  width: 100%; font: inherit; font-size: 13px; padding: 5px 8px;
+  background: #fff; color: #1b1b1f; border: 1px solid #7a7a7a; border-radius: 3px;
+}
+html[data-theme="win11"] .w11-shutdown__select:focus { outline: none; border-color: var(--w-accent); box-shadow: 0 0 0 2px rgba(0, 103, 192, 0.25); }
+html[data-theme="win11"] .w11-shutdown__desc { font-size: 12.5px; color: #444; margin: 8px 0 0; }
+html[data-theme="win11"] .w11-shutdown__footer { display: flex; justify-content: flex-end; gap: 8px; padding: 16px 20px 18px; }
+html[data-theme="win11"] .w11-dlgbtn {
+  min-width: 90px; padding: 6px 14px; font: inherit; font-size: 13px; cursor: default;
+  background: #fdfdfd; color: #1b1b1f; border: 1px solid #adadad; border-radius: 4px;
+}
+html[data-theme="win11"] .w11-dlgbtn:hover { background: #eef4fb; border-color: #6ba7e0; }
+html[data-theme="win11"] .w11-dlgbtn:active { background: #e2eefb; }
+html[data-theme="win11"] .w11-dlgbtn--ok { border-color: var(--w-accent); box-shadow: inset 0 0 0 1px var(--w-accent); }
+html[data-theme="win11"] .w11-dlgbtn--ok:hover { background: #dcebfb; }
+html[data-theme="win11"] .w11-dlgbtn:focus-visible { outline: 2px solid var(--w-accent); outline-offset: 1px; }
+@media (max-width: 768px) {
+  html[data-theme="win11"] .w11-shutdown__row { flex-direction: column; gap: 10px; }
+  html[data-theme="win11"] .w11-shutdown__footer { flex-wrap: wrap; }
+}
+
+/* =============================================================
+   Boot splash
+   ============================================================= */
+html[data-theme="win11"] .w11-boot {
+  position: absolute; inset: 0; z-index: 80;
+  background: #000814;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px;
+  transition: opacity 0.5s ease;
+}
+html[data-theme="win11"] .w11-boot.is-hiding { opacity: 0; }
+html[data-theme="win11"] .w11-boot__logo {
+  width: 68px; height: 68px;
+  background:
+    linear-gradient(var(--w-accent-soft), var(--w-accent-soft)) 0 0 / 30px 30px no-repeat,
+    linear-gradient(var(--w-accent-soft), var(--w-accent-soft)) 38px 0 / 30px 30px no-repeat,
+    linear-gradient(var(--w-accent-soft), var(--w-accent-soft)) 0 38px / 30px 30px no-repeat,
+    linear-gradient(var(--w-accent-soft), var(--w-accent-soft)) 38px 38px / 30px 30px no-repeat;
+}
+html[data-theme="win11"] .w11-boot__spinner {
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.25); border-top-color: #fff;
+  animation: w11-spin 0.9s linear infinite;
+}
+@keyframes w11-spin { to { transform: rotate(360deg); } }
+html[data-theme="win11"] .w11-boot__name { color: #cfe0ff; font-size: 15px; letter-spacing: 0.08em; }
+
+/* =============================================================
+   Responsive / touch
+   ============================================================= */
+@media (max-width: 768px) {
+  html[data-theme="win11"] .w11-window { min-width: 0; }
+  html[data-theme="win11"] .w11-window .w11-wbtn--max { display: none; }   /* always maximised on mobile */
+  html[data-theme="win11"] .w11-settings { flex-direction: column; }
+  html[data-theme="win11"] .w11-settings__rail { flex: 0 0 auto; flex-direction: row; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--w-line); }
+  html[data-theme="win11"] .w11-taskbar__center { gap: 2px; }
+  html[data-theme="win11"] .w11-start, html[data-theme="win11"] .w11-taskitem { width: 36px; height: 36px; }
+  html[data-theme="win11"] .w11-taskitem i { font-size: 18px; }
+  html[data-theme="win11"] .w11-tray > i { display: none; }
+  html[data-theme="win11"] .w11-icons { max-height: calc(100vh - 120px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="win11"] .w11-window { animation: none; }
+  html[data-theme="win11"] .w11-boot__spinner { animation: none; }
+  html[data-theme="win11"] .w11-wallpaper.is-refresh { animation: none; }
+}
+
+/* =============================================================
+   Sub-pages (non-index) — no desktop shell, just a neutral backdrop
+   so a saved win11 theme keeps portfolio-details / privacy readable
+   ============================================================= */
+html[data-theme="win11"]:not(.index-page) body,
+html[data-theme="win11"] body:not(.index-page) { background: #eef1f6; color: var(--w-text); }

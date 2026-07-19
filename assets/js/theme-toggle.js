@@ -26,7 +26,8 @@
     { value: "aurum", icon: "bi-gem",                  label: "Aurum" },
     { value: "neo",   icon: "bi-circle-square",        label: "Neomorphism" },
     { value: "clay",  icon: "bi-balloon-fill",         label: "Claymorphism" },
-    { value: "maximal", icon: "bi-palette-fill",       label: "Maximalism" }
+    { value: "maximal", icon: "bi-palette-fill",       label: "Maximalism" },
+    { value: "win11", icon: "bi-windows",              label: "Windows 11" }
   ];
 
   function indexOfValue(value) {
@@ -54,6 +55,20 @@
     store(theme);
     window.dispatchEvent(new CustomEvent("themechange", { detail: { theme: theme } }));
   }
+
+  // Advance to the next design in the cycle (used by the toggle button, and by
+  // the Windows 11 theme's Start button — see assets/js/theme-win11.js).
+  function next() { apply(THEMES[(currentIndex() + 1) % THEMES.length].value); }
+
+  // Tiny public API so other theme controllers can drive the switch without
+  // reaching into this IIFE or synthesising clicks on the injected button.
+  window.SiteTheme = {
+    list: THEMES,
+    apply: apply,
+    next: next,
+    current: function () { return root.getAttribute("data-theme") || "neo"; },
+    STORAGE_KEY: STORAGE_KEY
+  };
 
   function build() {
     var header = document.querySelector("#header");
