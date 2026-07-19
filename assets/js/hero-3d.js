@@ -57,6 +57,34 @@ import * as THREE from 'three';
   var fill = new THREE.DirectionalLight(0xbfd0ff, 0.6); fill.position.set(-4, -2, 2);
   scene.add(key, fill, new THREE.AmbientLight(0xffffff, 0.4));
 
+  // A tiny procedural "studio" environment, PMREM-filtered, used ONLY by the maximal
+  // soap bubbles (applied to scene.environment in applyTheme, cleared for every other
+  // theme). Gives their glassy skin something bright to reflect -> a fresnel rim +
+  // specular highlight. All core Three.js (no addons); if anything fails the bubbles
+  // still render, just less shiny.
+  var bubbleEnv = (function () {
+    try {
+      var c = document.createElement('canvas'); c.width = 256; c.height = 128;
+      var ctx = c.getContext('2d');
+      var grad = ctx.createLinearGradient(0, 0, 0, 128);   // warm sky -> floor
+      grad.addColorStop(0, '#fffaf0'); grad.addColorStop(0.55, '#f4ecd8'); grad.addColorStop(1, '#d8c7a2');
+      ctx.fillStyle = grad; ctx.fillRect(0, 0, 256, 128);
+      function blob(x, y, rad, a) {                          // soft bright "light source" spots
+        var rg = ctx.createRadialGradient(x, y, 0, x, y, rad);
+        rg.addColorStop(0, 'rgba(255,255,255,' + a + ')'); rg.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(x, y, rad, 0, Math.PI * 2); ctx.fill();
+      }
+      blob(70, 34, 42, 0.95); blob(196, 26, 26, 0.85);
+      var tex = new THREE.CanvasTexture(c);
+      tex.mapping = THREE.EquirectangularReflectionMapping;
+      if ('SRGBColorSpace' in THREE) tex.colorSpace = THREE.SRGBColorSpace;
+      var pmrem = new THREE.PMREMGenerator(renderer);
+      var env = pmrem.fromEquirectangular(tex).texture;
+      tex.dispose(); pmrem.dispose();
+      return env;
+    } catch (e) { return null; }
+  })();
+
   // ---- objects (built once; only the active theme's object is visible) -------
 
   // dark: faint lit facets + crisp triangle wireframe, slow geodesic spin
@@ -262,14 +290,16 @@ import * as THREE from 'three';
     };
   }
 
-  // maximal: a SCROLL-REACTIVE PARALLAX FIELD — a scattered cloud of bold faceted
-  // shapes (dodecahedra, gems, octahedra, cubes) spread across three depth bands.
-  // It does NOT spin on its own; SCROLL drives it (see applyScroll below): as you
-  // move down the page the near shapes travel far while the distant ones barely
-  // budge (parallax by depth), and the whole field's colour walks the four-way
-  // maximalist clash — mustard -> rust -> teal -> plum — tracking how far down you
-  // are. Idle: only a whisper of drift. Reduced motion: colour still tracks scroll,
-  // but the parallax travel / rotation is switched off (no vestibular motion).
+  // maximal: a SCROLL-REACTIVE FIELD OF GLASSY SOAP BUBBLES — translucent spheres
+  // scattered across three depth bands. It does NOT spin on its own; SCROLL drives it
+  // (see applyScroll below): as you move down the page the near bubbles travel far
+  // while the distant ones barely budge (parallax by depth), and their faint tint
+  // walks the four-way maximalist clash — mustard -> rust -> teal -> plum — tracking
+  // how far down you are. The soap-bubble skin (bright fresnel rim + iridescent thin
+  // film + specular highlight) is a MeshPhysicalMaterial reflecting a small procedural
+  // studio environment (bubbleEnv, applied to the scene only for this theme). Idle: a
+  // whisper of drift + slow tumble so the iridescence shimmers. Reduced motion: colour
+  // still tracks scroll, but the parallax travel / rotation is switched off.
   function makeMaximal() {
     var group = new THREE.Group();
     var items = [];
@@ -278,45 +308,41 @@ import * as THREE from 'three';
     var Z      = [-6.5, -3.0, -0.5];   // depth (world z)
     var SIZE   = [0.75, 1.15, 1.70];   // base radius
     var SPREAD = [15,   11,   8];      // horizontal scatter
-    var FILL_O = [0.05, 0.09, 0.13];   // fill opacity (nearer = bolder)
-    var WIRE_O = [0.16, 0.26, 0.36];   // wireframe opacity
     var PAR    = [3.5,  7.5,  12.5];   // parallax travel over a full scroll (nearer = faster)
-
-    // eclectic low-detail polyhedra -> crisp retro facets
-    function geom(kind, s) {
-      if (kind === 0) return new THREE.DodecahedronGeometry(s, 0);
-      if (kind === 1) return new THREE.IcosahedronGeometry(s, 0);
-      if (kind === 2) return new THREE.OctahedronGeometry(s, 0);
-      return new THREE.BoxGeometry(s * 1.4, s * 1.4, s * 1.4);
-    }
 
     for (var i = 0; i < 12; i++) {
       var band = i % 3;
-      var s = SIZE[band] * (0.8 + Math.random() * 0.6);
-      var g = geom(i % 4, s);
-      var fm = new THREE.MeshStandardMaterial({ roughness: 0.55, metalness: 0.15, flatShading: true, transparent: true, opacity: FILL_O[band], depthWrite: false });
-      var em = new THREE.LineBasicMaterial({ transparent: true, opacity: WIRE_O[band] });
-      var shape = new THREE.Group();
-      shape.add(new THREE.Mesh(g, fm));
-      shape.add(new THREE.LineSegments(new THREE.WireframeGeometry(g), em));
+      var r = SIZE[band] * (0.8 + Math.random() * 0.6);
+      var g = new THREE.SphereGeometry(r, 32, 24);
+      // glassy soap-bubble skin: translucent, low-roughness, clearcoat sheen + an
+      // iridescent thin film. Reflects bubbleEnv (set on the scene for this theme),
+      // so grazing edges catch a bright fresnel rim. depthWrite off -> bubbles blend
+      // softly instead of hard-occluding each other.
+      var fm = new THREE.MeshPhysicalMaterial({
+        roughness: 0.12, metalness: 0.0,
+        iridescence: 1.0, iridescenceIOR: 1.3, iridescenceThicknessRange: [120, 500],
+        clearcoat: 1.0, clearcoatRoughness: 0.08,
+        transparent: true, opacity: 0.28, depthWrite: false, envMapIntensity: 1.4
+      });
+      var bubble = new THREE.Group();
+      bubble.add(new THREE.Mesh(g, fm));
       var phase = Math.random() * Math.PI * 2;
-      shape.position.set((Math.random() - 0.5) * SPREAD[band], (Math.random() - 0.5) * 9, Z[band]);
-      shape.rotation.set(phase, phase * 0.7, 0);
-      shape.userData = {
-        baseY: shape.position.y,
+      bubble.position.set((Math.random() - 0.5) * SPREAD[band], (Math.random() - 0.5) * 9, Z[band]);
+      bubble.rotation.set(phase, phase * 0.7, 0);
+      bubble.userData = {
+        baseY: bubble.position.y,
         par: PAR[band],                        // vertical travel over the full scroll
         spin: 1.6 + Math.random() * 2.8,       // rotation (radians) over the full scroll
         drift: (Math.random() - 0.5) * 0.0006, // tiny idle life for full-motion users
-        hueOffset: (i % 3 === 0) ? 1 : 0,      // ~1/3 of shapes sit one accent ahead -> clash
+        hueOffset: (i % 3 === 0) ? 1 : 0,      // ~1/3 of bubbles sit one accent ahead -> clash
         phase: phase
       };
-      items.push({ shape: shape, fm: fm, em: em, ud: shape.userData });
-      group.add(shape);
+      items.push({ shape: bubble, fm: fm, ud: bubble.userData });
+      group.add(bubble);
     }
 
-    // the four-way accent clash + wire tint, cached by recolor() and applied per-scroll
+    // the four-way accent clash, cached by recolor() and applied to the bubble tint per-scroll
     var pal = [new THREE.Color(), new THREE.Color(), new THREE.Color(), new THREE.Color()];
-    var wireTint = new THREE.Color();
 
     return {
       group: group,
@@ -325,7 +351,6 @@ import * as THREE from 'three';
         pal[1].copy(p.accent2 || p.accent);
         pal[2].copy(p.accent3 || p.accent);
         pal[3].copy(p.accent4 || p.accent);
-        wireTint.copy(p.accentSoft || p.accent);
       },
       // idle drift only — SCROLL (applyScroll) is the real driver
       animate: function () {
@@ -336,10 +361,9 @@ import * as THREE from 'three';
         var seg = s * 3, bi = Math.min(2, Math.floor(seg)), bf = seg - bi;   // 3 colour segments over 4 stops
         for (var k = 0; k < items.length; k++) {
           var it = items[k], ud = it.ud;
-          // colour: offset shapes take the next stop -> a two-tone clash at any scroll depth
+          // colour: offset bubbles take the next stop -> a two-tone clash at any scroll depth
           var ci = Math.min(2, bi + ud.hueOffset);
-          it.fm.color.lerpColors(pal[ci], pal[ci + 1], bf);
-          it.em.color.copy(it.fm.color).lerp(wireTint, 0.5);
+          it.fm.color.lerpColors(pal[ci], pal[ci + 1], bf);   // faint accent tint walks with scroll
           // motion is gated off for reduced-motion users (colour above still tracks scroll)
           if (!reduceMotion) {
             it.shape.position.y = ud.baseY + (s - 0.5) * ud.par;   // parallax: near band travels farther
@@ -370,7 +394,7 @@ import * as THREE from 'three';
     aurum: { obj: aurum,   fov: 48, camZ: 8,  fogNear: 5,   fogFar: 13 },
     neo:   { obj: neo,     fov: 45, camZ: 6,  fogNear: 4.5, fogFar: 11 },
     clay:  { obj: clay,    fov: 45, camZ: 6,  fogNear: 4.5, fogFar: 11 },
-    maximal: { obj: maximal, fov: 52, camZ: 8.5, fogNear: 6, fogFar: 20 }
+    maximal: { obj: maximal, fov: 52, camZ: 8.5, fogNear: 11, fogFar: 34 }
   };
 
   function themeName() {
@@ -400,6 +424,9 @@ import * as THREE from 'three';
       accent3: cssColor('--accent-3', '#2a9d8f'),
       accent4: cssColor('--accent-4', '#7a3b69')
     });
+
+    // glassy soap bubbles reflect the procedural studio env; every other theme clears it
+    scene.environment = (current.obj === maximal) ? bubbleEnv : null;
 
     scene.fog.color.copy(cssColor('--bg', '#0b0e17'));
     scene.fog.near = current.fogNear;
