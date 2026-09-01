@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Search web results powered by SerpAPI and the Openverse of the web.">
+  <title>Search | Saham Ali</title>
+  <link href="../favicon.png" rel="icon" type="image/x-icon">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
+  <link href="../assets/css/soft-light.css" rel="stylesheet">
+  <link href="../assets/css/theme-terminal.css" rel="stylesheet">
+  <link href="../assets/css/theme-bento.css" rel="stylesheet">
+  <link href="../assets/css/theme-glass.css" rel="stylesheet">
+  <link href="../assets/css/theme-aurum.css" rel="stylesheet">
+  <link href="../assets/css/theme-neo.css" rel="stylesheet">
+  <link href="../assets/css/theme-clay.css" rel="stylesheet">
+  <link href="../assets/css/theme-maximal.css" rel="stylesheet">
+  <link href="../assets/css/theme-win11.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--background-color, #101418);
+      color: var(--text-color, #edf2f7);
+    }
+    .search-shell {
+      max-width: 980px;
+      margin: 8rem auto 3rem;
+      padding: 0 1.2rem;
+    }
+    .search-card {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      padding: 1.5rem;
+      backdrop-filter: blur(14px);
+    }
+    .search-form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+    .search-input {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: inherit;
+      border-radius: 14px;
+      padding: 0.95rem 1rem;
+      font-size: 1rem;
+    }
+    .btn-search {
+      border: 0;
+      border-radius: 14px;
+      padding: 0.95rem 1.4rem;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: #fff;
+      font-weight: 700;
+    }
+    .results-meta {
+      margin: 0 0 1rem;
+      color: rgba(255,255,255,0.68);
+      font-size: 0.95rem;
+    }
+    .result-list {
+      display: grid;
+      gap: 1rem;
+    }
+    .result-item {
+      padding: 1rem 1.1rem;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .result-item a {
+      color: #74c0fc;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .result-item a:hover {
+      text-decoration: underline;
+    }
+    .result-domain {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.82rem;
+      margin-bottom: 0.35rem;
+    }
+    .result-snippet {
+      color: rgba(255,255,255,0.8);
+      line-height: 1.6;
+      margin: 0.5rem 0 0;
+    }
+    .answer-box {
+      margin-bottom: 1rem;
+      padding: 1rem 1.1rem;
+      border-radius: 16px;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+    .empty-state {
+      padding: 2rem 1rem;
+      text-align: center;
+      color: rgba(255,255,255,0.72);
+    }
+    @media (max-width: 640px) {
+      .search-form {
+        grid-template-columns: 1fr;
+      }
+      .search-shell {
+        margin-top: 6rem;
+      }
+    }
+  </style>
+</head>
+
+<body class="search-page" data-page="search">
+  <div id="site-header"></div>
+
+  <main class="search-shell">
+    <div class="search-card">
+      <form class="search-form" id="searchForm">
+        <input id="searchInput" class="search-input" type="search" name="q" placeholder="Search the web for web development, portfolio, or a topic..." aria-label="Search query" autocomplete="off">
+        <button class="btn-search" type="submit">Search</button>
+      </form>
+
+      <div id="resultsMeta" class="results-meta" aria-live="polite"></div>
+      <div id="answerBox" class="answer-box" hidden></div>
+      <div id="results" class="result-list" aria-live="polite"></div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/partials.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/theme-toggle.js" defer></script>
+  <script src="../assets/js/theme-win11.js" defer></script>
+  <script>
+    const workerSearchUrl = 'https://saham-portfolio-ai.sahamaliofficial.workers.dev/search?q=';
+    const form = document.getElementById('searchForm');
+    const input = document.getElementById('searchInput');
+    const results = document.getElementById('results');
+    const resultsMeta = document.getElementById('resultsMeta');
+    const answerBox = document.getElementById('answerBox');
+
+    function showResults(data) {
+      results.innerHTML = '';
+      answerBox.hidden = true;
+      answerBox.textContent = '';
+
+      if (!data || !Array.isArray(data.organic) || data.organic.length === 0) {
+        results.innerHTML = '<div class="empty-state">No results were returned for that query.</div>';
+        resultsMeta.textContent = 'No results';
+        return;
+      }
+
+      if (data.answerBox && data.answerBox.answer) {
+        answerBox.hidden = false;
+        answerBox.textContent = data.answerBox.answer;
+      }
+
+      resultsMeta.textContent = 'Showing ' + data.organic.length + ' results for “' + data.query + '”';
+
+      data.organic.forEach((item) => {
+        const card = document.createElement('article');
+        card.className = 'result-item';
+
+        const domain = document.createElement('div');
+        domain.className = 'result-domain';
+        domain.textContent = item.link ? new URL(item.link).hostname.replace(/^www\./, '') : 'Search result';
+
+        const titleLink = document.createElement('a');
+        titleLink.href = item.link || '#';
+        titleLink.target = '_blank';
+        titleLink.rel = 'noopener noreferrer';
+        titleLink.textContent = item.title || 'Result';
+
+        const snippet = document.createElement('p');
+        snippet.className = 'result-snippet';
+        snippet.textContent = item.snippet || 'No preview available for this result.';
+
+        card.appendChild(domain);
+        card.appendChild(titleLink);
+        card.appendChild(snippet);
+        results.appendChild(card);
+      });
+    }
+
+    async function runSearch(query) {
+      const q = (query || '').trim();
+      if (!q) {
+        results.innerHTML = '<div class="empty-state">Enter a search term to begin.</div>';
+        resultsMeta.textContent = 'Search query is empty';
+        return;
+      }
+
+      resultsMeta.textContent = 'Searching…';
+      results.innerHTML = '<div class="empty-state">Loading results…</div>';
+
+      try {
+        const response = await fetch(workerSearchUrl + encodeURIComponent(q));
+        const data = await response.json();
+
+        if (!response.ok || data.error) {
+          throw new Error(data.error || 'Search failed');
+        }
+
+        showResults(data);
+      } catch (error) {
+        resultsMeta.textContent = 'Search error';
+        results.innerHTML = '<div class="empty-state">' + (error.message || 'The search service is unavailable right now.') + '</div>';
+      }
+    }
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      runSearch(input.value);
+    });
+
+    const initialQuery = 'Saham Ali portfolio developer';
+    input.value = initialQuery;
+    runSearch(initialQuery);
+  </script>
+</body>
+</html>

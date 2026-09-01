@@ -20,6 +20,8 @@
 // models (e.g. '@cf/meta/llama-3.3-70b-instruct-fp8-fast' for higher quality,
 // or '@cf/meta/llama-4-scout-17b-16e-instruct' for the newest Llama).
 const MODEL = "@cf/meta/llama-3.2-3b-instruct";
+const SERPAPI_ENDPOINT = "https://serpapi.com/search.json";
+const SERPAPI_API_KEY_FALLBACK = "6f0d24348c83787fae70f227af3318d61c93974009b628048a9029d9073c0cf0";
 
 // Origins allowed to call this Worker. The live site plus common local-dev
 // hosts (so `npx serve` / Live Server work while developing).
@@ -29,6 +31,9 @@ const ALLOWED_ORIGINS = [
   "http://localhost:5500",
   "http://127.0.0.1:5500",
   "http://localhost:8080",
+  "http://localhost:8000",
+  "http://127.0.0.1:8000",
+  "http://localhost",
 ];
 
 // Cost/abuse caps.
@@ -96,6 +101,50 @@ function json(body, status, origin) {
   });
 }
 
+async function fetchSerpResults(query, env) {
+  const key = (env && env.SERPAPI_API_KEY) || SERPAPI_API_KEY_FALLBACK;
+  if (!key || key.includes("<your-")) {
+    throw new Error("SerpAPI key is not configured.");
+  }
+
+  const params = new URLSearchParams({
+    q: query.trim(),
+    engine: "google",
+    api_key: key,
+    num: "10",
+    hl: "en",
+    gl: "us",
+  });
+
+  const response = await fetch(`${SERPAPI_ENDPOINT}?${params.toString()}`, {
+    headers: { Accept: "application/json" },
+  });
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(`SerpAPI request failed (${response.status}): ${body.slice(0, 200)}`);
+  }
+
+  const data = await response.json();
+  const organic = Array.isArray(data && data.organic_results)
+    ? data.organic_results.slice(0, 10).map((result) => ({
+        title: result && result.title ? result.title : "Untitled result",
+        link: result && result.link ? result.link : "",
+        snippet: result && result.snippet ? result.snippet : "",
+      }))
+    : [];
+
+  return {
+    query: query.trim(),
+    organic,
+    answerBox: data && data.answer_box ? data.answer_box : null,
+    totalResults: organic.length,
+    searchUrl: data && data.search_metadata && data.search_metadata.google_url
+      ? data.search_metadata.google_url
+      : "",
+  };
+}
+
 /**
  * Sanitize the client-supplied history into a safe messages array:
  * drop anything that isn't a user/assistant turn with string content,
@@ -118,10 +167,38 @@ function sanitize(messages) {
 export default {
   async fetch(request, env) {
     const origin = request.headers.get("Origin") || "";
+    const url = new URL(request.url);
 
     // CORS preflight.
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: corsHeaders(origin) });
+    }
+
+    if (url.pathname === "/search" || url.pathname === "/api/search") {
+      if (request.method !== "GET" && request.method !== "POST") {
+        return json({ error: "Method not allowed for search. Use GET or POST." }, 405, origin);
+      }
+
+      let query = url.searchParams.get("q");
+      if (!query && request.method === "POST") {
+        try {
+          const payload = await request.json();
+          query = payload && payload.q ? payload.q : "";
+        } catch (e) {
+          return json({ error: "Invalid search payload." }, 400, origin);
+        }
+      }
+
+      if (!query || !query.trim()) {
+        return json({ error: "A search query is required." }, 400, origin);
+      }
+
+      try {
+        const results = await fetchSerpResults(query, env);
+        return json(results, 200, origin);
+      } catch (error) {
+        return json({ error: error.message || "Search is unavailable right now." }, 500, origin);
+      }
     }
 
     if (request.method !== "POST") {

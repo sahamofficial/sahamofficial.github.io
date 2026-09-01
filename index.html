@@ -118,47 +118,9 @@
     crossorigin="anonymous"></script>
 </head>
 
-<body class="index-page">
+<body class="index-page" data-page="home">
 
-  <header id="header" class="header dark-background d-flex flex-column">
-    <i class="header-toggle d-xl-none bi bi-list"></i>
-
-    <div class="profile-img">
-      <img src="favicon.png" alt="" class="img-fluid rounded-circle">
-    </div>
-
-    <a href="index.html" class="logo d-flex align-items-center justify-content-center">
-      <!-- Uncomment the line below if you also wish to use an image logo -->
-      <!-- <img src="favicon.png" alt=""> -->
-      <h1 class="sitename">Saham Ali</h1>
-    </a>
-
-    <div class="social-links text-center">
-      <a href="https://x.com/_saham__" class="twitter"><i class="bi bi-twitter-x"></i></a>
-      <a href="https://www.facebook.com/share/14xxnybjPg/" class="facebook"><i class="bi bi-facebook"></i></a>
-      <a href="https://www.instagram.com/saham__official_?igsh=dmJsaDNjODJqYmR4" class="instagram"><i
-          class="bi bi-instagram"></i></a>
-      <a href="https://join.skype.com/invite/xVkN9duK6J1E" class="google-plus"><i class="bi bi-skype"></i></a>
-      <!--       <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a> -->
-    </div>
-
-    <nav id="navmenu" class="navmenu">
-      <ul>
-        <li><a href="#hero" class="active"><i class="bi bi-house navicon"></i>Home</a></li>
-        <li><a href="#about"><i class="bi bi-person navicon"></i> About</a></li>
-        <li><a href="#resume"><i class="bi bi-file-earmark-text navicon"></i> Resume</a></li>
-        <!-- <li>
-          <a href="showcase/" class="nav-featured" style="color: var(--lc-accent-2); font-weight: 600;">
-            <i class="bi bi-code-slash navicon"></i>My Creations
-          </a>
-        </li> -->
-        <li><a href="#portfolio"><i class="bi bi-images navicon"></i> Portfolio</a></li>
-        <li><a href="#services"><i class="bi bi-hdd-stack navicon"></i> Services</a></li>
-        <li><a href="#contact"><i class="bi bi-envelope navicon"></i> Contact</a></li>
-      </ul>
-    </nav>
-
-  </header>
+  <div id="site-header"></div>
 
   <main class="main">
 
@@ -747,28 +709,7 @@
 
   </main>
 
-  <footer id="footer" class="footer position-relative light-background">
-
-    <div class="container">
-      <div class="social-links">
-        <a href="https://x.com/_saham__" class="twitter" aria-label="X (Twitter)"><i class="bi bi-twitter-x"></i></a>
-        <a href="https://www.facebook.com/share/14xxnybjPg/" class="facebook" aria-label="Facebook"><i
-            class="bi bi-facebook"></i></a>
-        <a href="https://www.instagram.com/saham__official_?igsh=dmJsaDNjODJqYmR4" class="instagram"
-          aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-        <a href="https://join.skype.com/invite/xVkN9duK6J1E" class="skype" aria-label="Skype"><i
-            class="bi bi-skype"></i></a>
-      </div>
-      <div class="copyright text-center ">
-        <p>© <span>Copyright</span> <strong class="px-1 sitename">Saham</strong> <span>All Rights Reserved</span></p>
-      </div>
-      <div class="credits">
-        Designed by <a href="https://sahamofficial.github.io">Saham</a><br>
-        <a href="privacy-policy/">Privacy Policy</a>
-      </div>
-    </div>
-
-  </footer>
+  <div id="site-footer"></div>
 
   <!-- Single unobtrusive ad (after footer). Library is loaded once in <head>. -->
   <!-- NOTE: verify data-ad-client and data-ad-slot match your live AdSense account. -->
@@ -801,6 +742,9 @@
   <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Shared page partials -->
+  <script src="assets/js/partials.js"></script>
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
