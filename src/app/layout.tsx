@@ -72,9 +72,9 @@ export default function RootLayout({
         <link href="/assets/css/chat-widget.css" rel="stylesheet" />
 
         {/* Google AdSense */}
-        <Script
+        <script
+          async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8342538101846472"
-          strategy="beforeInteractive"
           crossOrigin="anonymous"
         />
 
