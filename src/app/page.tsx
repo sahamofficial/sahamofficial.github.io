@@ -245,7 +245,7 @@ export default function Home() {
               <h3 className="resume-title">Education</h3>
               <div className="resume-item">
                 <h4>Diploma / Course Name — PLACEHOLDER (replace with your qualification)</h4>
-                <h5>20XX - 20XX</h5>
+                <h5>2026 - present</h5>
                 <p>
                   <em>Institution name, Puttalam, Sri Lanka</em>
                 </p>
