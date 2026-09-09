@@ -28,7 +28,7 @@ export default function Home() {
                   <i></i>
                   <i></i>
                 </span>
-                <a href="#portfolio" className="btn-chrome">
+                <a href="/portfolio" className="btn-chrome">
                   View Work
                 </a>
               </span>
@@ -45,7 +45,7 @@ export default function Home() {
                   <i></i>
                   <i></i>
                 </span>
-                <a href="#contact" className="btn-ghost">
+                <a href="/contact" className="btn-ghost">
                   Get in Touch
                 </a>
               </span>
@@ -80,7 +80,7 @@ export default function Home() {
                   <ul>
                     <li>
                       <i className="bi bi-chevron-right"></i> <strong>Website:</strong>
-                      <span>sahamofficial.github.io</span>
+                      <span>sahamali.dev</span>
                     </li>
                     <li>
                       <i className="bi bi-chevron-right"></i> <strong>Phone:</strong> <span>+94 77 850 2300</span>
@@ -123,7 +123,7 @@ export default function Home() {
               <div className="stats-item">
                 <i className="bi bi-translate"></i>
                 <span data-purecounter-start="0" data-purecounter-end="3" data-purecounter-duration="1" className="purecounter">
-                  0
+                  3
                 </span>
                 <p>
                   <strong>Languages I Build In</strong>
@@ -135,7 +135,7 @@ export default function Home() {
               <div className="stats-item">
                 <i className="bi bi-stack"></i>
                 <span data-purecounter-start="0" data-purecounter-end="4" data-purecounter-duration="1" className="purecounter">
-                  0
+                  4
                 </span>
                 <p>
                   <strong>Frameworks Used</strong>
@@ -147,7 +147,7 @@ export default function Home() {
               <div className="stats-item">
                 <i className="bi bi-headset"></i>
                 <span data-purecounter-start="0" data-purecounter-end="24" data-purecounter-duration="1" className="purecounter">
-                  0
+                  24
                 </span>
                 <p>
                   <strong>Hrs Response Time</strong>
@@ -159,7 +159,7 @@ export default function Home() {
               <div className="stats-item">
                 <i className="bi bi-cup-hot"></i>
                 <span data-purecounter-start="0" data-purecounter-end="100" data-purecounter-duration="2" className="purecounter">
-                  0
+                  100
                 </span>
                 <p>
                   <strong>% Commitment</strong>
@@ -462,101 +462,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="contact section">
-        <div className="container section-title" data-aos="fade-up">
-          <h2>Contact</h2>
-          <p>
-            Feel free to reach out for collaborations, project inquiries, or just to say hello. I&apos;m here to help
-            bring your ideas to life!
-          </p>
-        </div>
-
-        <div className="container" data-aos="fade-up" data-aos-delay="100">
-          <div className="row gy-4">
-            <div className="col-lg-5">
-              <div className="info-wrap">
-                <a href="https://wa.me/0778502300" target="_blank" rel="noopener noreferrer">
-                  <div className="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
-                    <i className="bi bi-telephone flex-shrink-0"></i>
-                    <div>
-                      <h3>WhatsApp Me</h3>
-                      <p>+94 77 850 2300</p>
-                    </div>
-                  </div>
-                </a>
-                <a href="mailto:sahamaliofficial@gmail.com?subject=Inquiry&body=Hello%2C%0AI%20am%20interested%20in%20your%20web%20development%20services.">
-                  <div className="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
-                    <i className="bi bi-envelope flex-shrink-0"></i>
-                    <div>
-                      <h3>Email Me</h3>
-                      <p>sahamaliofficial@gmail.com</p>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            </div>
-
-            <div className="col-lg-7">
-              <form
-                className="php-email-form"
-                action="https://formsubmit.co/ajax/sahamaliofficial@gmail.com"
-                method="POST"
-                data-aos="fade-up"
-                data-aos-delay="200"
-              >
-                <div className="row gy-4">
-                  <div className="col-md-6">
-                    <label htmlFor="name-field" className="pb-2">
-                      Your Name
-                    </label>
-                    <input type="text" name="name" id="name-field" className="form-control" required />
-                  </div>
-
-                  <div className="col-md-6">
-                    <label htmlFor="email-field" className="pb-2">
-                      Your Email
-                    </label>
-                    <input type="email" className="form-control" name="email" id="email-field" required />
-                  </div>
-
-                  <div className="col-md-12">
-                    <label htmlFor="subject-field" className="pb-2">
-                      Subject
-                    </label>
-                    <input type="text" className="form-control" name="subject" id="subject-field" required />
-                  </div>
-
-                  <div className="col-md-12">
-                    <label htmlFor="message-field" className="pb-2">
-                      Message
-                    </label>
-                    <textarea
-                      className="form-control"
-                      name="message"
-                      rows={6}
-                      id="message-field"
-                      required
-                    ></textarea>
-                  </div>
-
-                  <input type="hidden" name="_subject" value="New portfolio contact message" />
-                  <input type="hidden" name="_template" value="table" />
-                  <input type="text" name="_honey" tabIndex={-1} autoComplete="off" style={{ display: 'none' }} />
-
-                  <div className="col-md-12 text-center">
-                    <div className="loading">Loading</div>
-                    <div className="error-message"></div>
-                    <div className="sent-message">Your message has been sent. Thank you!</div>
-
-                    <button type="submit">Send Message</button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </section>
     </>
   );
 }

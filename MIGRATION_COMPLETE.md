@@ -52,7 +52,7 @@ Your portfolio has been **successfully converted from pure HTML/CSS to Next.js 1
 
 ### Step 1: Start Development Server
 ```bash
-cd c:\Projects\sahamofficial.github.io
+cd c:\Projects\sahamali.dev
 npm run dev
 ```
 

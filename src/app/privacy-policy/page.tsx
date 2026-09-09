@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Saham Ali",
-  description: "Privacy information for sahamofficial.github.io.",
+  description: "Privacy information for sahamali.dev.",
 };
 
 export default function PrivacyPolicyPage() {
@@ -18,20 +18,25 @@ export default function PrivacyPolicyPage() {
           This website is a personal portfolio for Saham Ali. If you contact me by email, WhatsApp, or the contact form,
           I receive the information you choose to provide, such as your name, email address, and message.
         </p>
-        <h2>Analytics and advertising</h2>
+        <h2>Cookies, analytics, and advertising</h2>
         <p>
-          This website may use Google AdSense and Microsoft Clarity. These services may use cookies, web beacons, IP
-          addresses, or similar technologies to measure usage, provide reports, and serve or personalize advertising.
-          Third-party providers may place and read cookies on your browser as a result of ad serving.
+          sahamali.dev may use cookies for ad personalization through Google AdSense and may use Microsoft Clarity to
+          understand how the site is used. Google and its advertising partners use cookies to serve ads based on your
+          prior visits to this site or other sites. Third-party providers may place and read cookies in your browser as
+          a result of ad serving.
         </p>
         <p>
-          You can learn how Google uses data when you use partners&apos; sites at{" "}
-          <a href="https://www.google.com/policies/privacy/partners/">Google&apos;s partner privacy page</a>.
+          You can learn how Google uses data on partner sites at{" "}
+          <a href="https://policies.google.com/technologies/partner-sites">Google&apos;s partner privacy page</a> and
+          opt out of personalized advertising through{" "}
+          <a href="https://adssettings.google.com/">Google&apos;s Ads Settings</a>.
         </p>
-        <h2>How information is used</h2>
+        <h2>Contact form data</h2>
         <p>
-          Information sent through contact channels is used only to respond to inquiries and provide requested services.
-          I do not sell personal information.
+          When you submit the contact form, your name, email address, subject, and message are sent through FormSubmit
+          to sahamaliofficial@gmail.com. I use that information to respond to your inquiry and discuss requested
+          services. I do not sell personal information. FormSubmit may process the submission as described in its own
+          privacy policy.
         </p>
         <h2>Your choices</h2>
         <p>

@@ -101,7 +101,7 @@ public/
    - Education details
    - Custom services
 
-2. **Update Assets**: Replace placeholder images in `public/assets/img/`
+2. **Update Assets**: Review the current images in `public/assets/img/`
 
 3. **Customize Themes**: Modify CSS files in `public/assets/css/`
 

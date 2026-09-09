@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Terms of Service | Saham Ali",
-  description: "Terms of service for sahamofficial.github.io.",
+  description: "Terms of service for sahamali.dev.",
 };
 
 export default function TermsPage() {

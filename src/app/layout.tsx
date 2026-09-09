@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { Viewport } from "next";
 import Script from "next/script";
 import Link from "next/link";
 import "./globals.css";
@@ -14,16 +15,21 @@ export const metadata: Metadata = {
     title: "Saham Ali | Full-Stack Web Developer",
     description:
       "Check out my latest web development projects built with Laravel, JavaScript, and Python.",
-    url: "https://sahamofficial.github.io",
+    url: "https://sahamali.dev",
     type: "website",
-    images: [{ url: "https://sahamofficial.github.io/assets/img/IMG-ME.jpg" }],
+    images: [{ url: "https://sahamali.dev/assets/img/IMG-ME.jpg" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Saham Ali | Full-Stack Developer",
     description: "Experienced full-stack web developer. See my projects!",
-    images: "https://sahamofficial.github.io/assets/img/IMG-ME.jpg",
+    images: "https://sahamali.dev/assets/img/IMG-ME.jpg",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -114,9 +120,9 @@ export default function RootLayout({
         <div id="preloader"></div>
 
         {/* Scroll Top Button */}
-        <a href="#" className="scroll-top d-flex align-items-center justify-content-center">
+        <Link href="/" className="scroll-top d-flex align-items-center justify-content-center" aria-label="Back to home">
           <i className="bi bi-arrow-up-short"></i>
-        </a>
+        </Link>
 
         <header id="header" className="header dark-background d-flex flex-column">
           <i className="header-toggle d-xl-none bi bi-list" aria-label="Toggle navigation"></i>
@@ -125,9 +131,9 @@ export default function RootLayout({
             <img src="/assets/img/IMG-ME.jpg" alt="Saham Ali" className="img-fluid rounded-circle" />
           </div>
 
-          <a href="/" className="logo d-flex align-items-center justify-content-center">
+          <Link href="/" className="logo d-flex align-items-center justify-content-center">
             <h1 className="sitename">Saham Ali</h1>
-          </a>
+          </Link>
 
           <div className="social-links text-center">
             <a href="https://x.com/_saham__" className="twitter" aria-label="X profile"><i className="bi bi-twitter-x"></i></a>
@@ -139,12 +145,12 @@ export default function RootLayout({
           <nav id="navmenu" className="navmenu" aria-label="Main navigation">
             <ul>
               <li><Link href="/#hero"><i className="bi bi-house navicon"></i>Home</Link></li>
-              <li><Link href="/#about"><i className="bi bi-person navicon"></i> About</Link></li>
+              <li><Link href="/about"><i className="bi bi-person navicon"></i> About</Link></li>
               <li><Link href="/#resume"><i className="bi bi-file-earmark-text navicon"></i> Resume</Link></li>
-              <li><Link href="/#portfolio"><i className="bi bi-images navicon"></i> Portfolio</Link></li>
+              <li><Link href="/portfolio"><i className="bi bi-images navicon"></i> Portfolio</Link></li>
               <li><Link href="/#services"><i className="bi bi-hdd-stack navicon"></i> Services</Link></li>
-              <li><Link href="/#contact"><i className="bi bi-envelope navicon"></i> Contact</Link></li>
-              <li><a href="/privacy-policy/"><i className="bi bi-shield-check navicon"></i> Privacy</a></li>
+              <li><Link href="/contact"><i className="bi bi-envelope navicon"></i> Contact</Link></li>
+              <li><Link href="/privacy-policy"><i className="bi bi-shield-check navicon"></i> Privacy</Link></li>
             </ul>
           </nav>
         </header>
@@ -155,11 +161,11 @@ export default function RootLayout({
           <div className="container text-center">
             <p>© {new Date().getFullYear()} Saham Ali. All rights reserved.</p>
             <p>
-              <a href="/privacy-policy/">Privacy Policy</a>{' '}
+              <Link href="/privacy-policy">Privacy Policy</Link>{' '}
               <span aria-hidden="true">|</span>{' '}
               <Link href="/terms">Terms of Service</Link>{' '}
               <span aria-hidden="true">|</span>{' '}
-              <Link href="/#contact">Contact</Link>
+              <Link href="/contact">Contact</Link>
             </p>
           </div>
         </footer>
@@ -182,7 +188,7 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
         <Script
-          src="/assets/vendor/glightbox/js/glightbox.min.js"
+          src="/assets/vendor/glightbox/js/glightbox.js"
           strategy="afterInteractive"
         />
         <Script

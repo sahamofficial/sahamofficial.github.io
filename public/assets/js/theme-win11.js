@@ -453,7 +453,7 @@
     var a = e.target.closest && e.target.closest('a[href^="#"]');
     if (!a) return;
     var app = hashToApp(a.getAttribute("href"));
-    if (!app) return;                        // e.g. href="#" (scroll-top) — ignore
+    if (!app) return;                        // Ignore controls without a destination.
     e.preventDefault();
     e.stopPropagation();
     openWindow(app.id);
