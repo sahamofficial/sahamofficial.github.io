@@ -359,6 +359,10 @@ h1,h2,h3,h4,h5,h6{
     align-items:center;
     background:var(--background-color,#000)
 }
+#preloader.preloader-hidden{
+    visibility:hidden;
+    pointer-events:none;
+}
 #preloader img{
     width:100px;
     height:auto

@@ -244,43 +244,25 @@ export default function Home() {
 
               <h3 className="resume-title">Education</h3>
               <div className="resume-item">
-                <h4>Diploma / Course Name — PLACEHOLDER (replace with your qualification)</h4>
-                <h5>2026 - present</h5>
                 <p>
-                  <em>Institution name, Puttalam, Sri Lanka</em>
+                  My professional development is built through practical software engineering work, independent study,
+                  and hands-on project experience.
                 </p>
-                <p>PLACEHOLDER: briefly describe what you studied and the key skills you gained.</p>
               </div>
             </div>
 
             <div className="col-lg-6" data-aos="fade-up" data-aos-delay="200">
               <h3 className="resume-title">Professional Experience</h3>
               <div className="resume-item">
-                <h4>Web & Graphic Designer — PLACEHOLDER (confirm your exact title)</h4>
-                <h5>2022 - Present</h5>
+                <h4>Associate Software Engineer</h4>
+                <h5>Current role</h5>
                 <p>
-                  <em>Imara Software Solutions, Puttalam, Sri Lanka</em>
+                  <em>Finovation Tech</em>
                 </p>
                 <p>
-                  Designed and developed modern, responsive websites and engaging graphics for various client projects.
-                  Collaborated with developers and marketing teams to create visually appealing user interfaces and
-                  maintain brand consistency.
+                  I contribute to software development work across frontend interfaces, backend services, and practical
+                  problem solving as part of a professional engineering team.
                 </p>
-                <ul>
-                  <li>PLACEHOLDER: quantify impact (e.g., delivered N client sites, cut page load time by Y%).</li>
-                  <li>PLACEHOLDER: name a key project and the stack you used (Laravel, React, MySQL…).</li>
-                </ul>
-              </div>
-
-              <div className="resume-item">
-                <h4>Freelance Web Developer</h4>
-                <h5>PLACEHOLDER — year range</h5>
-                <p>
-                  <em>Self-employed, Remote</em>
-                </p>
-                <ul>
-                  <li>PLACEHOLDER: a freelance project, the client need, and how you solved it.</li>
-                </ul>
               </div>
             </div>
           </div>
@@ -314,7 +296,7 @@ export default function Home() {
                 <div className="portfolio-content h-100">
                   <img src="assets/img/project-01.png" className="img-fluid" alt="Project One" />
                   <div className="portfolio-info">
-                    <p>One line: what you built and the stack you used.</p>
+                    <p>Website interface work using semantic HTML and responsive CSS.</p>
                     <span className="badge rounded-pill">HTML</span>
                     <span className="badge rounded-pill">CSS</span>
                     <a href="assets/img/project-01.png" data-gallery="portfolio-gallery-web" className="glightbox preview-link">
@@ -328,7 +310,7 @@ export default function Home() {
                 <div className="portfolio-content h-100">
                   <img src="assets/img/project-02.png" className="img-fluid" alt="Project Two" />
                   <div className="portfolio-info">
-                    <p>One line: what you built and the stack you used.</p>
+                    <p>Application interface exploration using Laravel and MySQL.</p>
                     <span className="badge rounded-pill">Laravel</span>
                     <span className="badge rounded-pill">MySQL</span>
                     <a href="assets/img/project-02.png" data-gallery="portfolio-gallery-fullstack" className="glightbox preview-link">
@@ -342,7 +324,7 @@ export default function Home() {
                 <div className="portfolio-content h-100">
                   <img src="assets/img/project-03.png" className="img-fluid" alt="Project Three" />
                   <div className="portfolio-info">
-                    <p>One line: the design problem and your solution.</p>
+                    <p>Interface design study focused on layout, hierarchy, and usability.</p>
                     <span className="badge rounded-pill">Figma</span>
                     <span className="badge rounded-pill">UI/UX</span>
                     <a href="assets/img/project-03.png" data-gallery="portfolio-gallery-uiux" className="glightbox preview-link">
@@ -356,15 +338,12 @@ export default function Home() {
                 <div className="portfolio-content h-100">
                   <img src="assets/img/project-04.png" className="img-fluid" alt="Project Four" />
                   <div className="portfolio-info">
-                    <h4>Project Four — replace me</h4>
-                    <p>One line: what you built and the stack you used.</p>
+                    <h4>Frontend interface study</h4>
+                    <p>Responsive JavaScript and React interface exploration.</p>
                     <span className="badge rounded-pill">JavaScript</span>
                     <span className="badge rounded-pill">React</span>
                     <a href="assets/img/project-04.png" data-gallery="portfolio-gallery-web" className="glightbox preview-link">
                       <i className="bi bi-zoom-in"></i>
-                    </a>
-                    <a href="#" title="Live site / GitHub" className="details-link">
-                      <i className="bi bi-link-45deg"></i>
                     </a>
                   </div>
                 </div>
@@ -374,15 +353,12 @@ export default function Home() {
                 <div className="portfolio-content h-100">
                   <img src="assets/img/project-05.png" className="img-fluid" alt="Project Five" />
                   <div className="portfolio-info">
-                    <h4>Project Five — replace me</h4>
-                    <p>One line: what you built and the stack you used.</p>
+                    <h4>Backend application study</h4>
+                    <p>PHP and Node.js development practice represented by a local work sample.</p>
                     <span className="badge rounded-pill">PHP</span>
                     <span className="badge rounded-pill">Node.js</span>
                     <a href="assets/img/project-05.png" data-gallery="portfolio-gallery-fullstack" className="glightbox preview-link">
                       <i className="bi bi-zoom-in"></i>
-                    </a>
-                    <a href="#" title="Live site / GitHub" className="details-link">
-                      <i className="bi bi-link-45deg"></i>
                     </a>
                   </div>
                 </div>
@@ -410,11 +386,7 @@ export default function Home() {
                 <i className="bi bi-briefcase"></i>
               </div>
               <div>
-                <h4 className="title">
-                  <a href="" className="stretched-link">
-                    Web Development
-                  </a>
-                </h4>
+                <h4 className="title">Web Development</h4>
                 <p className="description">
                   I build responsive, high-performance websites using modern tools and frameworks. My focus is on
                   delivering clean code, optimized UX, and scalable solutions tailored to your project goals.
@@ -427,11 +399,7 @@ export default function Home() {
                 <i className="bi bi-card-checklist"></i>
               </div>
               <div>
-                <h4 className="title">
-                  <a href="" className="stretched-link">
-                    UI/UX Design
-                  </a>
-                </h4>
+                <h4 className="title">UI/UX Design</h4>
                 <p className="description">
                   I design user-friendly interfaces that focus on intuitive navigation, visual consistency, and
                   optimal usability across devices to enhance user experience and engagement.
@@ -444,11 +412,7 @@ export default function Home() {
                 <i className="bi bi-bar-chart"></i>
               </div>
               <div>
-                <h4 className="title">
-                  <a href="" className="stretched-link">
-                    Graphic Designing
-                  </a>
-                </h4>
+                <h4 className="title">Graphic Designing</h4>
                 <p className="description">
                   I create visually appealing designs for logos, social media, branding, and marketing materials using
                   tools like Adobe Illustrator, Photoshop, and Figma.
@@ -461,11 +425,7 @@ export default function Home() {
                 <i className="bi bi-binoculars"></i>
               </div>
               <div>
-                <h4 className="title">
-                  <a href="" className="stretched-link">
-                    Full Stack Development
-                  </a>
-                </h4>
+                <h4 className="title">Full Stack Development</h4>
                 <p className="description">
                   Building robust and scalable web applications using technologies like React, Node.js, Express, and
                   databases such as MongoDB and MySQL.
@@ -478,11 +438,7 @@ export default function Home() {
                 <i className="bi bi-brightness-high"></i>
               </div>
               <div>
-                <h4 className="title">
-                  <a href="" className="stretched-link">
-                    Front End Development
-                  </a>
-                </h4>
+                <h4 className="title">Front End Development</h4>
                 <p className="description">
                   Crafting engaging and responsive user interfaces using HTML, CSS, JavaScript, and modern frameworks
                   like React and Vue.js.
@@ -495,11 +451,7 @@ export default function Home() {
                 <i className="bi bi-calendar4-week"></i>
               </div>
               <div>
-                <h4 className="title">
-                  <a href="" className="stretched-link">
-                    Back End Development
-                  </a>
-                </h4>
+                <h4 className="title">Back End Development</h4>
                 <p className="description">
                   Building robust and scalable server-side applications, APIs, and databases using technologies like
                   Node.js, PHP, and Laravel.

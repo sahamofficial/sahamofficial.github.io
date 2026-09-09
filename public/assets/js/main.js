@@ -57,7 +57,7 @@ if (headerToggleBtn) {
   if (preloader) {
     window.addEventListener('load', () => {
       preloader.style.opacity = '0'; // Fade out effect
-      setTimeout(() => preloader.remove(), 600); // Remove after fade-out
+      setTimeout(() => preloader.classList.add('preloader-hidden'), 600);
     });
   }
 

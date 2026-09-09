@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,13 +16,13 @@ export const metadata: Metadata = {
       "Check out my latest web development projects built with Laravel, JavaScript, and Python.",
     url: "https://sahamofficial.github.io",
     type: "website",
-    images: [{ url: "https://sahamofficial.github.io/your-profile-image.jpg" }],
+    images: [{ url: "https://sahamofficial.github.io/assets/img/IMG-ME.jpg" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Saham Ali | Full-Stack Developer",
     description: "Experienced full-stack web developer. See my projects!",
-    images: "https://yourwebsite.com/your-profile-image.jpg",
+    images: "https://sahamofficial.github.io/assets/img/IMG-ME.jpg",
   },
 };
 
@@ -31,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="neo" suppressHydrationWarning>
+    <html lang="en" data-theme="neo" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         {/* Preconnect to Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -117,10 +118,51 @@ export default function RootLayout({
           <i className="bi bi-arrow-up-short"></i>
         </a>
 
-        {/* Header Placeholder */}
-        <div id="site-header"></div>
+        <header id="header" className="header dark-background d-flex flex-column">
+          <i className="header-toggle d-xl-none bi bi-list" aria-label="Toggle navigation"></i>
+
+          <div className="profile-img">
+            <img src="/assets/img/IMG-ME.jpg" alt="Saham Ali" className="img-fluid rounded-circle" />
+          </div>
+
+          <a href="/" className="logo d-flex align-items-center justify-content-center">
+            <h1 className="sitename">Saham Ali</h1>
+          </a>
+
+          <div className="social-links text-center">
+            <a href="https://x.com/_saham__" className="twitter" aria-label="X profile"><i className="bi bi-twitter-x"></i></a>
+            <a href="https://www.facebook.com/share/14xxnybjPg/" className="facebook" aria-label="Facebook profile"><i className="bi bi-facebook"></i></a>
+            <a href="https://www.instagram.com/saham__official_?igsh=dmJsaDNjODJqYmR4" className="instagram" aria-label="Instagram profile"><i className="bi bi-instagram"></i></a>
+            <a href="https://join.skype.com/invite/xVkN9duK6J1E" className="google-plus" aria-label="Skype profile"><i className="bi bi-skype"></i></a>
+          </div>
+
+          <nav id="navmenu" className="navmenu" aria-label="Main navigation">
+            <ul>
+              <li><Link href="/#hero"><i className="bi bi-house navicon"></i>Home</Link></li>
+              <li><Link href="/#about"><i className="bi bi-person navicon"></i> About</Link></li>
+              <li><Link href="/#resume"><i className="bi bi-file-earmark-text navicon"></i> Resume</Link></li>
+              <li><Link href="/#portfolio"><i className="bi bi-images navicon"></i> Portfolio</Link></li>
+              <li><Link href="/#services"><i className="bi bi-hdd-stack navicon"></i> Services</Link></li>
+              <li><Link href="/#contact"><i className="bi bi-envelope navicon"></i> Contact</Link></li>
+              <li><a href="/privacy-policy/"><i className="bi bi-shield-check navicon"></i> Privacy</a></li>
+            </ul>
+          </nav>
+        </header>
 
         <main className="main">{children}</main>
+
+        <footer id="footer" className="footer position-relative light-background">
+          <div className="container text-center">
+            <p>© {new Date().getFullYear()} Saham Ali. All rights reserved.</p>
+            <p>
+              <a href="/privacy-policy/">Privacy Policy</a>{' '}
+              <span aria-hidden="true">|</span>{' '}
+              <Link href="/terms">Terms of Service</Link>{' '}
+              <span aria-hidden="true">|</span>{' '}
+              <Link href="/#contact">Contact</Link>
+            </p>
+          </div>
+        </footer>
 
         {/* Vendor JS Files - Load after React hydration */}
         <Script
@@ -167,6 +209,7 @@ export default function RootLayout({
         />
         <Script
           src="/assets/js/hero-3d.js"
+          type="module"
           strategy="afterInteractive"
         />
         <Script
@@ -185,7 +228,10 @@ export default function RootLayout({
           src="/assets/js/chat-widget.js"
           strategy="afterInteractive"
         />
-        <script src="/assets/js/click-sound.js"></script>
+        <Script
+          src="/assets/js/click-sound.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
