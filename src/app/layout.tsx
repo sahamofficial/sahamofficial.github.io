@@ -145,6 +145,7 @@ export default function RootLayout({
         <Script src="/assets/vendor/typed.js/typed.umd.js" strategy="afterInteractive" />
         <Script src="/assets/vendor/waypoints/noframework.waypoints.js" strategy="afterInteractive" />
 
+        <Script src="/assets/js/navigation-state.js" strategy="afterInteractive" />
         <Script src="/assets/js/main.js" strategy="afterInteractive" />
         <Script src="/assets/js/hero-3d.js" type="module" strategy="afterInteractive" />
         <Script src="/assets/js/bento-tilt.js" strategy="afterInteractive" />

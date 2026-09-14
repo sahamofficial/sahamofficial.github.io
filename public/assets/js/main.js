@@ -9,12 +9,35 @@
 (function() {
   "use strict";
 
-  const header = document.getElementById("header");
-  const headerToggleBtn = document.querySelector(".header-toggle");
-  const navLinks = Array.from(document.querySelectorAll("#navmenu a"));
+  const navigationState = typeof window !== "undefined" ? (window.NavigationState || {}) : {};
+  const normalizeLocationPath = navigationState.normalizeLocationPath || function(pathname) {
+    return (pathname || "/").replace(/\/+$/, "") || "/";
+  };
+  const getNavStateForLink = navigationState.getNavStateForLink || function(href, currentPath, currentHash, locationHref) {
+    const target = new URL(href, locationHref || "http://localhost/");
+    const targetPath = normalizeLocationPath(target.pathname);
+    const targetHash = target.hash || "";
+    const normalizedCurrentPath = normalizeLocationPath(currentPath);
+    const normalizedCurrentHash = currentHash || "";
 
-  function applyHeaderToggleState(expanded) {
+    let isActive = false;
+    if (href === "/" && normalizedCurrentPath === "/") {
+      isActive = !normalizedCurrentHash || normalizedCurrentHash === "#hero" || normalizedCurrentHash === "";
+    } else if (targetPath === normalizedCurrentPath) {
+      isActive = !targetHash || normalizedCurrentHash === targetHash;
+    } else if (normalizedCurrentPath === "/" && targetHash.startsWith("#") && normalizedCurrentHash === targetHash) {
+      isActive = true;
+    }
+
+    return { isActive, ariaCurrent: isActive ? (targetHash ? "location" : "page") : null };
+  };
+  const applyHeaderToggleState = function(expanded) {
     if (!header || !headerToggleBtn) return;
+    if (navigationState.applyHeaderToggleState) {
+      navigationState.applyHeaderToggleState(header, headerToggleBtn, expanded);
+      return;
+    }
+
     header.classList.toggle("header-show", expanded);
     headerToggleBtn.setAttribute("aria-expanded", String(expanded));
     headerToggleBtn.setAttribute("aria-label", expanded ? "Close navigation menu" : "Open navigation menu");
@@ -23,7 +46,11 @@
       icon.classList.toggle("bi-list", !expanded);
       icon.classList.toggle("bi-x", expanded);
     }
-  }
+  };
+
+  const header = document.getElementById("header");
+  const headerToggleBtn = document.querySelector(".header-toggle");
+  const navLinks = Array.from(document.querySelectorAll("#navmenu a"));
 
   function closeNavMenu() {
     applyHeaderToggleState(false);
@@ -46,27 +73,16 @@
   }
 
   function syncActiveNav() {
-    const currentPath = (window.location.pathname || "/").replace(/\/+$/, "") || "/";
+    const currentPath = normalizeLocationPath(window.location.pathname);
     const currentHash = window.location.hash || "";
 
     navLinks.forEach((link) => {
       const href = link.getAttribute("href") || "";
-      const target = new URL(href, window.location.href);
-      const targetPath = (target.pathname || "/").replace(/\/+$/, "") || "/";
-      const targetHash = target.hash || "";
-
-      let isActive = false;
-      if (href === "/" && currentPath === "/") {
-        isActive = !currentHash || currentHash === "#hero" || currentHash === "";
-      } else if (targetPath === currentPath) {
-        isActive = !targetHash || currentHash === targetHash;
-      } else if (currentPath === "/" && targetHash.startsWith("#") && currentHash === targetHash) {
-        isActive = true;
-      }
+      const { isActive, ariaCurrent } = getNavStateForLink(href, currentPath, currentHash, window.location.href);
 
       link.classList.toggle("active", isActive);
-      if (isActive) {
-        link.setAttribute("aria-current", targetHash ? "location" : "page");
+      if (isActive && ariaCurrent) {
+        link.setAttribute("aria-current", ariaCurrent);
       } else {
         link.removeAttribute("aria-current");
       }
@@ -116,8 +132,11 @@
 
   const scrollTop = document.querySelector(".scroll-top");
   function toggleScrollTop() {
-    if (scrollTop) {
-      window.scrollY > 100 ? scrollTop.classList.add("active") : scrollTop.classList.remove("active");
+    if (!scrollTop) return;
+    if (window.scrollY > 100) {
+      scrollTop.classList.add("active");
+    } else {
+      scrollTop.classList.remove("active");
     }
   }
   if (scrollTop) {
@@ -162,7 +181,7 @@
         });
         typedInitialized = true;
         document.documentElement.classList.remove("typed-unavailable");
-      } catch (error) {
+      } catch {
         document.documentElement.classList.add("typed-unavailable");
       }
     }
