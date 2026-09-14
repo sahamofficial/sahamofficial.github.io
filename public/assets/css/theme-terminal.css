@@ -166,6 +166,7 @@ html[data-theme="dark"] .navmenu a::after { content: '.tsx'; color: rgba(167, 19
 html[data-theme="dark"] .navmenu a[data-nav="about"]::after { content: '.ts'; }
 html[data-theme="dark"] .navmenu a[data-nav="resume"]::after { content: '.md'; }
 html[data-theme="dark"] .navmenu a[data-nav="portfolio"]::after { content: '/'; }
+html[data-theme="dark"] .navmenu a[data-nav="playground"]::after { content: '.md'; }
 html[data-theme="dark"] .navmenu a[data-nav="services"]::after { content: '.json'; }
 html[data-theme="dark"] .navmenu a[data-nav="contact"]::after { content: '.sh'; }
 html[data-theme="dark"] .navmenu a:hover { color: var(--head); background: rgba(98, 227, 255, 0.06); transform: none; }

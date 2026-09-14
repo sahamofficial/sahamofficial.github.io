@@ -112,6 +112,7 @@ export default function RootLayout({
               <li><Link href="/about" data-nav="about" aria-label="About Saham Ali"><i className="bi bi-person navicon" aria-hidden="true"></i>About</Link></li>
               <li><Link href="/#resume" data-nav="resume" aria-label="Resume"><i className="bi bi-file-earmark-text navicon" aria-hidden="true"></i>Resume</Link></li>
               <li><Link href="/portfolio" data-nav="portfolio" aria-label="Portfolio"><i className="bi bi-images navicon" aria-hidden="true"></i>Portfolio</Link></li>
+              <li><Link href="/playground" data-nav="playground" aria-label="Component Playground"><i className="bi bi-grid-3x3-gap navicon" aria-hidden="true"></i>Playground</Link></li>
               <li><Link href="/#services" data-nav="services" aria-label="Services"><i className="bi bi-hdd-stack navicon" aria-hidden="true"></i>Services</Link></li>
               <li><Link href="/contact" data-nav="contact" aria-label="Contact Saham Ali"><i className="bi bi-envelope navicon" aria-hidden="true"></i>Contact</Link></li>
               <li><Link href="/privacy-policy" data-nav="privacy" aria-label="Privacy policy"><i className="bi bi-shield-check navicon" aria-hidden="true"></i>Privacy</Link></li>

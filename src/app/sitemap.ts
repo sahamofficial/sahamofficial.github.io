@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
+import { publishedComponents } from "@/data/components";
 import { projects } from "@/data/projects";
 
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date("2026-09-10");
+  const lastModified = new Date("2026-09-14");
 
   return [
     { url: "https://sahamali.dev", lastModified, changeFrequency: "monthly", priority: 1 },
@@ -12,6 +13,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: "https://sahamali.dev/portfolio", lastModified, changeFrequency: "monthly", priority: 0.7 },
     ...projects.map((project) => ({
       url: `https://sahamali.dev/portfolio/${project.slug}`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
+    { url: "https://sahamali.dev/playground", lastModified, changeFrequency: "monthly", priority: 0.7 },
+    ...publishedComponents.map((component) => ({
+      url: `https://sahamali.dev/playground/${component.slug}`,
       lastModified,
       changeFrequency: "monthly" as const,
       priority: 0.6,
