@@ -67,7 +67,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: `{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}` }} type="importmap" />
 
         <script dangerouslySetInnerHTML={{
-          __html: `(function(){try{var t=localStorage.getItem('theme');var allowed=new Set(['light','dark','bento','glass','aurum','neo','clay','maximal','win11']);document.documentElement.setAttribute('data-theme',allowed.has(t)?t:'light');}catch(e){document.documentElement.setAttribute('data-theme','light');}})();`,
+          __html: `document.documentElement.setAttribute('data-theme','light');`,
         }} />
 
         <script dangerouslySetInnerHTML={{
@@ -148,7 +148,6 @@ export default function RootLayout({
         <Script src="/assets/js/main.js" strategy="afterInteractive" />
         <Script src="/assets/js/hero-3d.js" type="module" strategy="afterInteractive" />
         <Script src="/assets/js/bento-tilt.js" strategy="afterInteractive" />
-        <Script src="/assets/js/theme-toggle.js" strategy="afterInteractive" />
         <Script src="/assets/js/contact-form.js" strategy="afterInteractive" />
         <Script src="/assets/js/chat-widget.js" strategy="afterInteractive" />
         <Script src="/assets/js/click-sound.js" strategy="afterInteractive" />

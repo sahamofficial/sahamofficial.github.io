@@ -23,8 +23,8 @@
   --muted: #6f6a5f;          /* WCAG AA (~5:1) on --bg / --surface */
   --head: #221f1a;
   --ink: #2a2723;            /* dark primary (buttons, active) */
-  --accent: #c0603a;         /* warm clay accent */
-  --accent-soft: #d68a64;
+  --accent: #6D5DFC;
+  --accent-soft: #887DFF;
 
   --sh: 56, 50, 40;          /* warm-grey shadow base (rgb) */
 
@@ -98,7 +98,7 @@ body::after {
   pointer-events: none;
   background:
     radial-gradient(70rem 40rem at 50% -12%, rgba(255, 252, 245, 0.9), transparent 60%),
-    radial-gradient(60rem 60rem at 88% 110%, rgba(192, 96, 58, 0.05), transparent 60%),
+    radial-gradient(60rem 60rem at 88% 110%, rgba(109, 93, 252, 0.05), transparent 60%),
     linear-gradient(180deg, #f1eee8, var(--bg));
 }
 body::before { content: none; }
@@ -116,15 +116,15 @@ body::before { content: none; }
    ------------------------------------------------------------- */
 h1, h2, h3, h4, h5, h6 { color: var(--head); letter-spacing: -0.01em; }
 /* link text uses a darker clay (#a44c2b ~4.6:1) for AA; --accent stays for decorative use */
-a { color: #a44c2b; transition: 0.25s; }
-a:hover { color: #8a3f24; }
+a { color: #5146C9; transition: 0.25s; }
+a:hover { color: #4036A8; }
 
 /* Keyboard focus affordance for interactive elements (cursor-shadow elements have none by default) */
 .navmenu a:focus-visible, .header .social-links a:focus-visible, .header-toggle:focus-visible,
 .btn-chrome:focus-visible, .btn-ghost:focus-visible, .scroll-top:focus-visible,
 .services .service-item .title a:focus-visible, .portfolio .portfolio-info a:focus-visible,
 .footer .social-links a:focus-visible, .page-title .breadcrumbs ol li a:focus-visible {
-  outline: 2px solid #a44c2b;
+  outline: 2px solid #6D5DFC;
   outline-offset: 2px;
 }
 
@@ -196,7 +196,7 @@ main { padding-top: var(--nav-h); }
 
 /* "My Creations" featured link (kept for when re-enabled) */
 .navmenu a.nav-featured { color: #fff !important; background: var(--accent); border-color: var(--accent); }
-.navmenu a.nav-featured:hover { background: #a44c2b; }
+.navmenu a.nav-featured:hover { background: #5146C9; }
 .navmenu a.active,
 .navmenu a[aria-current="page"] {
   color: #fff !important;
@@ -272,7 +272,7 @@ main { padding-top: var(--nav-h); }
   font-family: var(--nav-font);
   text-transform: uppercase; letter-spacing: 0.4em;
   font-size: 12.5px; font-weight: 600;
-  color: #a44c2b;
+  color: #5146C9;
   margin: 0 0 18px; text-indent: 0.4em;
 }
 @media (max-width: 575.98px) {
@@ -393,7 +393,7 @@ main { padding-top: var(--nav-h); }
 .resume .resume-item:last-child { margin-bottom: 0; }
 .resume .resume-title { color: var(--head); }
 .resume .resume-item h4 { color: var(--head); }
-.resume .resume-item h5 { background: rgba(192, 96, 58, 0.12); color: #a44c2b; border-radius: 6px; }
+.resume .resume-item h5 { background: rgba(109, 93, 252, 0.12); color: #5146C9; border-radius: 6px; }
 .resume .resume-item::before {
   background: var(--surface-hi); border: 3px solid var(--accent);
   box-shadow: var(--shadow-sm); left: -8px;
@@ -441,7 +441,7 @@ main { padding-top: var(--nav-h); }
 }
 .contact .php-email-form input:focus,
 .contact .php-email-form textarea:focus {
-  border-color: var(--accent) !important; box-shadow: 0 0 0 3px rgba(192, 96, 58, 0.15) !important;
+  border-color: var(--accent) !important; box-shadow: 0 0 0 3px rgba(109, 93, 252, 0.15) !important;
 }
 .contact .php-email-form button[type=submit] {
   background: var(--ink); color: #fff; font-weight: 600; border: 0;
@@ -537,9 +537,9 @@ main { padding-top: var(--nav-h); }
 }
 .ripple__ring {
   width: 10px; height: 10px;
-  border: 1.5px solid rgba(192, 96, 58, 0.5);
+  border: 1.5px solid rgba(109, 93, 252, 0.5);
   /* lit crest on top, soft outer glow — gives the wave some dimension */
-  box-shadow: 0 0 6px rgba(192, 96, 58, 0.22), inset 0 0 5px rgba(255, 252, 246, 0.45);
+  box-shadow: 0 0 6px rgba(109, 93, 252, 0.22), inset 0 0 5px rgba(255, 252, 246, 0.45);
   animation: ripple-ring 1.5s cubic-bezier(0.1, 0.7, 0.2, 1) forwards;
 }
 .ripple__ring--2 {
@@ -559,7 +559,7 @@ main { padding-top: var(--nav-h); }
 .ripple__jet {
   width: 7px; height: 7px;
   background: radial-gradient(circle at 38% 32%,
-    rgba(255, 252, 246, 0.9), rgba(216, 138, 100, 0.85) 45%, rgba(192, 96, 58, 0.7));
+    rgba(255, 252, 246, 0.9), rgba(166, 158, 255, 0.85) 45%, rgba(109, 93, 252, 0.7));
   box-shadow: 0 2px 5px rgba(120, 60, 35, 0.3);
   opacity: 0;
   animation: ripple-jet 0.95s cubic-bezier(0.3, 0, 0.4, 1) 0.05s forwards;

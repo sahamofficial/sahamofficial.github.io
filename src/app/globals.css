@@ -8,12 +8,12 @@
   --portfolio-ink-primary: #221f1a;
   --portfolio-ink-secondary: #6f6a5f;
   --portfolio-ink-tertiary: #8a8478;
-  --portfolio-accent: #c0603a;
-  --portfolio-accent-strong: #d68a64;
-  --portfolio-accent-warm: #b7791f;
+  --portfolio-accent: #6D5DFC;
+  --portfolio-accent-strong: #887DFF;
+  --portfolio-accent-warm: #A69EFF;
   --portfolio-border-subtle: rgba(45, 40, 30, 0.1);
   --portfolio-border-strong: rgba(45, 40, 30, 0.2);
-  --portfolio-shadow-glow: rgba(192, 96, 58, 0.25);
+  --portfolio-shadow-glow: rgba(109, 93, 252, 0.25);
   --portfolio-button-ink: #221f1a;
   --portfolio-radius-sm: 8px;
   --portfolio-radius-md: 14px;
@@ -445,6 +445,22 @@ html[data-theme="dark"] a.portfolio-button-primary:hover {
 .portfolio-button-primary:hover,
 .portfolio-button-secondary:hover {
   transform: translateY(-1px);
+}
+
+.portfolio-button-primary:hover {
+  color: var(--portfolio-button-ink);
+}
+
+.portfolio-button-secondary:hover {
+  color: var(--portfolio-ink-primary);
+}
+
+html[data-theme] .portfolio-button-primary:hover {
+  color: var(--portfolio-button-ink);
+}
+
+html[data-theme] .portfolio-button-secondary:hover {
+  color: var(--portfolio-ink-primary);
 }
 
 .portfolio-stat {
