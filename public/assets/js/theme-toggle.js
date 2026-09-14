@@ -1,116 +1,116 @@
-/**
- * Theme switcher — cycles eight designs:
- *   Soft Light -> Terminal -> Bento Grid -> Smoke Glass -> Aurum -> Neomorphism -> Claymorphism -> Maximalism -> (repeat)
- *
- * The active design is the `data-theme` attribute on <html>
- * ("light" | "dark" | "bento" | "glass" | "aurum" | "neo" | "clay" | "maximal"). An inline snippet in each page's <head>
- * restores it from localStorage BEFORE first paint (no flash). This script:
- *   - injects the toggle button into the header (one source of truth),
- *   - cycles + persists the choice on click,
- *   - shows the NEXT design's icon (so the button previews what a click does),
- *   - dispatches a window "themechange" event so the canvas effects
- *     (hero-3d.js, cursor trail in main.js) recolor live.
- */
 (function () {
   "use strict";
 
-  var STORAGE_KEY = "theme";
-  var root = document.documentElement;
+  const STORAGE_KEY = "theme";
+  const root = document.documentElement;
 
-  // order defines the cycle; `icon` is a Bootstrap-Icons class
-  var THEMES = [
+  const THEMES = [
     { value: "light", icon: "bi-brightness-high-fill", label: "Soft Light" },
-    { value: "dark",  icon: "bi-terminal-fill",        label: "Terminal" },
-    { value: "bento", icon: "bi-grid-1x2-fill",        label: "Bento Grid" },
-    { value: "glass", icon: "bi-droplet-half",         label: "Smoke Glass" },
-    { value: "aurum", icon: "bi-gem",                  label: "Aurum" },
-    { value: "neo",   icon: "bi-circle-square",        label: "Neomorphism" },
-    { value: "clay",  icon: "bi-balloon-fill",         label: "Claymorphism" },
-    { value: "maximal", icon: "bi-palette-fill",       label: "Maximalism" },
-    { value: "win11", icon: "bi-windows",              label: "Windows 11" }
+    { value: "dark", icon: "bi-terminal-fill", label: "Terminal" },
+    { value: "bento", icon: "bi-grid-1x2-fill", label: "Bento Grid" },
+    { value: "glass", icon: "bi-droplet-half", label: "Smoke Glass" },
+    { value: "aurum", icon: "bi-gem", label: "Aurum" },
+    { value: "neo", icon: "bi-circle-square", label: "Neomorphism" },
+    { value: "clay", icon: "bi-balloon-fill", label: "Claymorphism" },
+    { value: "maximal", icon: "bi-palette-fill", label: "Maximalism" },
+    { value: "win11", icon: "bi-windows", label: "Windows 11" },
   ];
 
   function indexOfValue(value) {
-    for (var i = 0; i < THEMES.length; i++) if (THEMES[i].value === value) return i;
-    return 0; // default -> Soft Light
+    for (let i = 0; i < THEMES.length; i += 1) {
+      if (THEMES[i].value === value) return i;
+    }
+    return 0;
   }
-  function currentIndex() { return indexOfValue(root.getAttribute("data-theme")); }
+
+  function currentIndex() {
+    return indexOfValue(root.getAttribute("data-theme") || "light");
+  }
 
   function store(theme) {
-    try { localStorage.setItem(STORAGE_KEY, theme); } catch (e) { /* ignore */ }
+    try {
+      localStorage.setItem(STORAGE_KEY, theme);
+    } catch (error) {
+      // Ignore storage issues.
+    }
   }
 
-  // the button shows the NEXT design (what clicking switches to)
-  function paintButton(btn) {
-    var next = THEMES[(currentIndex() + 1) % THEMES.length];
-    var icon = btn.querySelector("i");
-    if (icon) icon.className = "bi " + next.icon;
-    var label = "Switch to " + next.label + " theme";
-    btn.setAttribute("aria-label", label);
-    btn.setAttribute("title", label);
+  function paintButton(button) {
+    const next = THEMES[(currentIndex() + 1) % THEMES.length];
+    const icon = button.querySelector("i");
+    if (icon) {
+      icon.className = "bi " + next.icon;
+    }
+    const label = "Switch to " + next.label + " theme";
+    button.setAttribute("aria-label", label);
+    button.setAttribute("title", label);
   }
 
   function apply(theme) {
+    if (!THEMES.some((item) => item.value === theme)) {
+      theme = "light";
+    }
     root.setAttribute("data-theme", theme);
     store(theme);
-    window.dispatchEvent(new CustomEvent("themechange", { detail: { theme: theme } }));
+    window.dispatchEvent(new CustomEvent("themechange", { detail: { theme } }));
   }
 
-  // Advance to the next design in the cycle (used by the toggle button, and by
-  // the Windows 11 theme's Start button — see assets/js/theme-win11.js).
-  function next() { apply(THEMES[(currentIndex() + 1) % THEMES.length].value); }
+  function next() {
+    apply(THEMES[(currentIndex() + 1) % THEMES.length].value);
+  }
 
-  // Tiny public API so other theme controllers can drive the switch without
-  // reaching into this IIFE or synthesising clicks on the injected button.
   window.SiteTheme = {
     list: THEMES,
-    apply: apply,
-    next: next,
-    current: function () { return root.getAttribute("data-theme") || "neo"; },
-    STORAGE_KEY: STORAGE_KEY
+    apply,
+    next,
+    current: () => root.getAttribute("data-theme") || "light",
+    STORAGE_KEY,
   };
 
   function build() {
-    var header = document.querySelector("#header");
+    const header = document.querySelector("#header");
     if (!header || header.querySelector(".site-theme-toggle")) return;
 
-    var btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "site-theme-toggle";
-    btn.appendChild(document.createElement("i"));
-    paintButton(btn);
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "site-theme-toggle";
+    button.appendChild(document.createElement("i"));
+    paintButton(button);
 
-    btn.addEventListener("click", function () {
-      var next = THEMES[(currentIndex() + 1) % THEMES.length];
-      apply(next.value);
-      paintButton(btn);
+    button.addEventListener("click", () => {
+      const nextTheme = THEMES[(currentIndex() + 1) % THEMES.length];
+      apply(nextTheme.value);
+      paintButton(button);
     });
 
-    var social = header.querySelector(".social-links");
-    if (social && social.parentNode === header) social.insertAdjacentElement("afterend", btn);
-    else header.appendChild(btn);
+    const social = header.querySelector(".social-links");
+    if (social && social.parentNode === header) {
+      social.insertAdjacentElement("afterend", button);
+    } else {
+      header.appendChild(button);
+    }
   }
 
-  if (document.readyState !== "loading") build();
-  else document.addEventListener("DOMContentLoaded", build);
+  if (document.readyState !== "loading") {
+    build();
+  } else {
+    document.addEventListener("DOMContentLoaded", build);
+  }
 
-  // -------------------------------------------------------------
-  // Scroll-reactive dock (Smoke Glass design):
-  //   the nav floats at the bottom of the hero, then glides up to the
-  //   top once you scroll past ~60% of the first screen. We only toggle
-  //   a class on <html>; the CSS (scoped to [data-theme="glass"]) does
-  //   the actual transform + transition. Passive + rAF-throttled, and a
-  //   no-op in the other three themes (their CSS ignores .nav-scrolled).
-  // -------------------------------------------------------------
-  var ticking = false;
+  let ticking = false;
   function syncNav() {
-    var y = window.scrollY || window.pageYOffset || 0;
+    const y = window.scrollY || window.pageYOffset || 0;
     root.classList.toggle("nav-scrolled", y > window.innerHeight * 0.6);
     ticking = false;
   }
-  window.addEventListener("scroll", function () {
-    if (!ticking) { ticking = true; requestAnimationFrame(syncNav); }
+
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      ticking = true;
+      (window.requestAnimationFrame || ((callback) => window.setTimeout(callback, 16)))(syncNav);
+    }
   }, { passive: true });
+
   window.addEventListener("resize", syncNav, { passive: true });
-  syncNav();   // set initial state (e.g. when reloaded mid-page)
+  syncNav();
 })();

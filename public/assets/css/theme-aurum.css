@@ -163,8 +163,9 @@ html[data-theme="aurum"] .section { padding: 56px 0; }
    ============================================================= */
 html[data-theme="aurum"] .hero { min-height: calc(100vh - 62px); background: transparent !important; padding: 40px 0; }
 html[data-theme="aurum"] .hero-eyebrow { color: var(--accent); }
+html[data-theme="aurum"] .hero h1,
 html[data-theme="aurum"] .hero h2 { font-family: var(--heading-font); color: var(--head); }
-html[data-theme="aurum"] .hero .hero-role, html[data-theme="aurum"] .hero p { color: var(--muted); }
+html[data-theme="aurum"] .hero .hero-role, html[data-theme="aurum"] .hero .hero-value { color: var(--muted); }
 html[data-theme="aurum"] .hero .hero-role .typed, html[data-theme="aurum"] .hero p span.typed { color: var(--accent); }
 html[data-theme="aurum"] .typed-cursor { color: var(--accent); }
 

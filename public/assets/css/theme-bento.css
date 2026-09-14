@@ -234,8 +234,9 @@ html[data-theme="bento"] .index-page #hero.hero {
 }
 html[data-theme="bento"] #hero .container { text-align: left; }
 html[data-theme="bento"] .hero-eyebrow { color: var(--accent); }
+html[data-theme="bento"] .hero h1,
 html[data-theme="bento"] .hero h2 { font-family: var(--heading-font); font-size: clamp(34px, 4vw, 56px); }
-html[data-theme="bento"] .hero .hero-role, html[data-theme="bento"] .hero p { color: var(--muted); }
+html[data-theme="bento"] .hero .hero-role, html[data-theme="bento"] .hero .hero-value { color: var(--muted); }
 html[data-theme="bento"] .hero .hero-role .typed { color: var(--head); }
 html[data-theme="bento"] .typed-cursor { color: var(--accent); }
 

@@ -16,7 +16,7 @@ export default function ContactPage() {
         <div className="row gy-4">
           <div className="col-lg-5">
             <div className="info-wrap">
-              <a href="https://wa.me/0778502300" target="_blank" rel="noopener noreferrer">
+              <a href="https://wa.me/94778502300" target="_blank" rel="noopener noreferrer">
                 <div className="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
                   <i className="bi bi-telephone flex-shrink-0"></i>
                   <div>

@@ -193,8 +193,9 @@ html[data-theme="maximal"] .header .header-toggle:active { transform: translate(
    ============================================================= */
 html[data-theme="maximal"] .hero { background: transparent !important; }
 html[data-theme="maximal"] .hero-eyebrow { color: var(--accent-link); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+html[data-theme="maximal"] .hero h1,
 html[data-theme="maximal"] .hero h2 { font-family: var(--heading-font); color: var(--head); letter-spacing: -0.02em; font-weight: 800; }
-html[data-theme="maximal"] .hero .hero-role, html[data-theme="maximal"] .hero p { color: var(--muted); }
+html[data-theme="maximal"] .hero .hero-role, html[data-theme="maximal"] .hero .hero-value { color: var(--muted); }
 html[data-theme="maximal"] .hero .hero-role .typed, html[data-theme="maximal"] .hero p span.typed { color: var(--accent-2); font-weight: 700; }
 html[data-theme="maximal"] .typed-cursor { color: var(--accent-2); }
 

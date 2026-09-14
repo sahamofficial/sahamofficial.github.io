@@ -24,10 +24,26 @@
   const show = (el) => { if (el) el.style.display = "block"; };
   const hide = (el) => { if (el) el.style.display = "none"; };
 
+  const setStatus = (type, msg) => {
+    const target = type === "error" ? errorEl : sentEl;
+    if (!target) return;
+    target.setAttribute("role", "status");
+    target.setAttribute("aria-live", "polite");
+    target.setAttribute("aria-atomic", "true");
+    target.textContent = msg;
+    show(target);
+  };
+
   const fail = (msg) => {
     hide(loading);
-    if (errorEl) errorEl.textContent = msg;
+    if (errorEl) {
+      errorEl.textContent = msg;
+      errorEl.setAttribute("role", "alert");
+      errorEl.setAttribute("aria-live", "assertive");
+      errorEl.setAttribute("aria-atomic", "true");
+    }
     show(errorEl);
+    hide(sentEl);
   };
 
   form.addEventListener("submit", async function (event) {
@@ -53,7 +69,8 @@
 
       if (response.ok && (data.success === "true" || data.success === true)) {
         hide(loading);
-        show(sentEl);
+        hide(errorEl);
+        setStatus("success", "Your message has been sent. Thank you!");
         form.reset();
       } else {
         fail(data.message || "Something went wrong. Please try again, or email directly.");

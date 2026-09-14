@@ -190,8 +190,9 @@ html[data-theme="clay"] .header .header-toggle:active { box-shadow: var(--clay-i
    ============================================================= */
 html[data-theme="clay"] .hero { background: transparent !important; }
 html[data-theme="clay"] .hero-eyebrow { color: var(--accent-link); }
+html[data-theme="clay"] .hero h1,
 html[data-theme="clay"] .hero h2 { font-family: var(--heading-font); color: var(--head); letter-spacing: 0; font-weight: 600; }
-html[data-theme="clay"] .hero .hero-role, html[data-theme="clay"] .hero p { color: var(--muted); }
+html[data-theme="clay"] .hero .hero-role, html[data-theme="clay"] .hero .hero-value { color: var(--muted); }
 html[data-theme="clay"] .hero .hero-role .typed, html[data-theme="clay"] .hero p span.typed { color: var(--accent-link); font-weight: 700; }
 html[data-theme="clay"] .typed-cursor { color: var(--accent); }
 

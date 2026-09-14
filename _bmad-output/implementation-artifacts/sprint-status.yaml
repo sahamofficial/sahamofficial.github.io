@@ -29,18 +29,18 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-10-2026 12:11
-last_updated: 09-10-2026 12:11
+last_updated: 09-14-2026 11:12
 project: sahamali.dev
 project_key: NOKEY
 tracking_system: file-system
 story_location: _bmad-output\implementation-artifacts
 development_status:
-  epic-1: backlog
-  1-1-establish-shared-portfolio-shell-design-tokens-and-accessibl: backlog
-  1-2-present-the-home-identity-and-conversion-ready-hero-paths: backlog
-  1-3-present-about-and-resume-credibility-content: backlog
-  1-4-present-portfolio-project-discovery-with-original-project-co: backlog
-  1-5-provide-contact-conversion-and-trust-legal-surfaces: backlog
+  epic-1: in-progress
+  1-1-establish-shared-portfolio-shell-design-tokens-and-accessibl: done
+  1-2-present-the-home-identity-and-conversion-ready-hero-paths: done
+  1-3-present-about-and-resume-credibility-content: done
+  1-4-present-portfolio-project-discovery-with-original-project-co: done
+  1-5-provide-contact-conversion-and-trust-legal-surfaces: done
   1-6-validate-responsive-keyboard-accessible-and-recoverable-port: backlog
   epic-1-retrospective: optional
 

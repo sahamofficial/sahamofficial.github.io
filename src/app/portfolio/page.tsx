@@ -1,18 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { projects } from "@/data/projects";
 
 export const metadata: Metadata = {
   title: "Portfolio | Saham Ali",
   description: "Selected web, full-stack, and interface work by Saham Ali.",
 };
-
-const projects = [
-  { image: "project-01.png", title: "Responsive website interface", detail: "Semantic HTML and responsive CSS practice.", tools: "HTML, CSS" },
-  { image: "project-02.png", title: "Laravel application interface", detail: "A full-stack interface study using Laravel and MySQL.", tools: "Laravel, MySQL" },
-  { image: "project-03.png", title: "Interface design study", detail: "A layout and usability exploration focused on hierarchy.", tools: "Figma, UI/UX" },
-  { image: "project-04.png", title: "React interface study", detail: "A responsive interface exploration with JavaScript and React.", tools: "JavaScript, React" },
-  { image: "project-05.png", title: "Backend application study", detail: "A local work sample exploring PHP and Node.js patterns.", tools: "PHP, Node.js" },
-];
 
 export default function PortfolioPage() {
   return (
@@ -24,13 +17,26 @@ export default function PortfolioPage() {
       <div className="container">
         <div className="row gy-4">
           {projects.map((project) => (
-            <article className="col-lg-4 col-md-6" key={project.image}>
-              <div className="portfolio-content h-100">
-                <img src={`/assets/img/${project.image}`} className="img-fluid" alt={project.title} />
-                <div className="portfolio-info">
-                  <h2>{project.title}</h2>
-                  <p>{project.detail}</p>
-                  <span className="badge rounded-pill">{project.tools}</span>
+            <article className="col-lg-4 col-md-6" key={project.slug}>
+              <div className="portfolio-project-card h-100">
+                <img src={`/assets/img/${project.image}`} className="img-fluid portfolio-project-image" alt={project.imageAlt} />
+                <div className="portfolio-project-body">
+                  <div className="portfolio-project-heading">
+                    <span className="portfolio-chip">{project.category}</span>
+                    <h2>{project.title}</h2>
+                  </div>
+                  <p>{project.summary}</p>
+                  <p className="portfolio-project-purpose"><strong>Purpose:</strong> {project.purpose}</p>
+                  <ul className="portfolio-project-stack" aria-label={`${project.title} technology stack`}>
+                    {project.stack.map((technology) => <li key={technology}>{technology}</li>)}
+                  </ul>
+                  <Link
+                    className="portfolio-button-secondary portfolio-project-link"
+                    href={`/portfolio/${project.slug}`}
+                    aria-label={`Read project context for ${project.title}`}
+                  >
+                    Read the project context
+                  </Link>
                 </div>
               </div>
             </article>

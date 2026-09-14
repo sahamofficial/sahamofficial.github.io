@@ -181,8 +181,9 @@ html[data-theme="neo"] .header .header-toggle:active { box-shadow: var(--neo-in-
    ============================================================= */
 html[data-theme="neo"] .hero { background: transparent !important; }
 html[data-theme="neo"] .hero-eyebrow { color: var(--accent-link); }
+html[data-theme="neo"] .hero h1,
 html[data-theme="neo"] .hero h2 { font-family: var(--heading-font); color: var(--head); letter-spacing: 0.01em; }
-html[data-theme="neo"] .hero .hero-role, html[data-theme="neo"] .hero p { color: var(--muted); }
+html[data-theme="neo"] .hero .hero-role, html[data-theme="neo"] .hero .hero-value { color: var(--muted); }
 html[data-theme="neo"] .hero .hero-role .typed, html[data-theme="neo"] .hero p span.typed { color: var(--accent); font-weight: 600; }
 html[data-theme="neo"] .typed-cursor { color: var(--accent); }
 

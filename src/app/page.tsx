@@ -1,22 +1,38 @@
 'use client';
 
+import Link from "next/link";
+import { useState } from "react";
+import { projects } from "@/data/projects";
+
 export default function Home() {
+  const [activeFilter, setActiveFilter] = useState("*");
+  const filters = [
+    { label: "All", filter: "*" },
+    { label: "Web", filter: ".filter-web" },
+    { label: "Full-Stack", filter: ".filter-fullstack" },
+    { label: "UI/UX", filter: ".filter-uiux" },
+  ];
+
   return (
     <>
       {/* Hero Section */}
-      <section id="hero" className="hero section dark-background">
+      <section id="hero" className="hero section dark-background" aria-labelledby="hero-title">
         <div className="container" data-aos="fade-up" data-aos-delay="100">
-          <p className="hero-eyebrow">Full-Stack Web Developer</p>
-          <h2>Saham Ali</h2>
+          <p className="hero-eyebrow">Web products, from interface to data layer</p>
+          <span className="portfolio-chip hero-role-chip">JavaScript / Laravel / Python</span>
+          <h1 id="hero-title">Saham Ali</h1>
           <p className="hero-role">
             I&apos;m a{' '}
             <span
               className="typed"
-              data-typed-items="Full-Stack Developer, Laravel & PHP Developer, Front-End Developer, Freelancer"
+              data-typed-items="Full-Stack Developer, Laravel & PHP Developer, Front-End Developer"
             >
               Full-Stack Developer
             </span>
             <span className="typed-cursor typed-cursor--blink" aria-hidden="true"></span>
+          </p>
+          <p className="hero-value">
+            I build responsive web products across the front end and back end, with clear UX and maintainable code.
           </p>
           <div className="hero-actions">
             <span className="hang">
@@ -28,9 +44,9 @@ export default function Home() {
                   <i></i>
                   <i></i>
                 </span>
-                <a href="/portfolio" className="btn-chrome">
+                <Link href="/portfolio" className="btn-chrome" aria-label="View Saham Ali&apos;s portfolio work">
                   View Work
-                </a>
+                </Link>
               </span>
             </span>
             <span className="hang">
@@ -45,7 +61,7 @@ export default function Home() {
                   <i></i>
                   <i></i>
                 </span>
-                <a href="/contact" className="btn-ghost">
+                <a href="/contact" className="btn-ghost" aria-label="Contact Saham Ali about a project">
                   Get in Touch
                 </a>
               </span>
@@ -59,10 +75,8 @@ export default function Home() {
         <div className="container section-title" data-aos="fade-up">
           <h2>About Me</h2>
           <p>
-            I&apos;m a skilled web developer with experience in JavaScript, and expertise in frameworks like React,
-            Node.js, and Laravel. I&apos;m a quick learner and collaborate closely with clients to create efficient,
-            scalable, and user-friendly solutions that solve real-world problems. Let&apos;s work together to bring your
-            ideas to life!
+            I build practical web experiences with JavaScript, React, Laravel, PHP, Python, and Node.js. My focus is
+            clear structure, responsive behavior, and dependable paths from an idea to a useful product.
           </p>
         </div>
 
@@ -106,63 +120,60 @@ export default function Home() {
                 </div>
               </div>
               <p className="py-3">
-                I focus on delivering clean, functional, and user-friendly designs that solve real-world problems. I
-                enjoy turning complex ideas into elegant, accessible web experiences. Committed to quality, performance,
-                and attention to detail in every project I work on.
+                I enjoy turning complex ideas into accessible web experiences and keeping the implementation useful after
+                launch. Quality, performance, and attention to detail guide the work from the first interface through
+                the supporting systems.
               </p>
+              <div className="about-actions">
+                <a href="/about" className="portfolio-button-secondary">Read the full profile</a>
+                <a href="/contact" className="portfolio-button-primary">Start a conversation</a>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section id="stats" className="stats section">
+      <section id="stats" className="stats section" aria-labelledby="proof-points-title">
         <div className="container" data-aos="fade-up" data-aos-delay="100">
+          <h2 id="proof-points-title" className="portfolio-visually-hidden">Proof points</h2>
           <div className="row gy-4">
             <div className="col-lg-3 col-md-6">
               <div className="stats-item">
-                <i className="bi bi-translate"></i>
-                <span data-purecounter-start="0" data-purecounter-end="3" data-purecounter-duration="1" className="purecounter">
-                  3
-                </span>
+                <i className="bi bi-translate" aria-hidden="true"></i>
+                <span className="proof-label">Interface</span>
                 <p>
-                  <strong>Languages I Build In</strong>
+                  <strong>Responsive front ends</strong>
                 </p>
               </div>
             </div>
 
             <div className="col-lg-3 col-md-6">
               <div className="stats-item">
-                <i className="bi bi-stack"></i>
-                <span data-purecounter-start="0" data-purecounter-end="4" data-purecounter-duration="1" className="purecounter">
-                  4
-                </span>
+                <i className="bi bi-stack" aria-hidden="true"></i>
+                <span className="proof-label">Systems</span>
                 <p>
-                  <strong>Frameworks Used</strong>
+                  <strong>APIs and data layers</strong>
                 </p>
               </div>
             </div>
 
             <div className="col-lg-3 col-md-6">
               <div className="stats-item">
-                <i className="bi bi-headset"></i>
-                <span data-purecounter-start="0" data-purecounter-end="24" data-purecounter-duration="1" className="purecounter">
-                  24
-                </span>
+                <i className="bi bi-headset" aria-hidden="true"></i>
+                <span className="proof-label">Quality</span>
                 <p>
-                  <strong>Hrs Response Time</strong>
+                  <strong>Readable, tested paths</strong>
                 </p>
               </div>
             </div>
 
             <div className="col-lg-3 col-md-6">
               <div className="stats-item">
-                <i className="bi bi-cup-hot"></i>
-                <span data-purecounter-start="0" data-purecounter-end="100" data-purecounter-duration="2" className="purecounter">
-                  100
-                </span>
+                <i className="bi bi-cup-hot" aria-hidden="true"></i>
+                <span className="proof-label">Delivery</span>
                 <p>
-                  <strong>% Commitment</strong>
+                  <strong>Focused collaboration</strong>
                 </p>
               </div>
             </div>
@@ -175,9 +186,8 @@ export default function Home() {
         <div className="container section-title" data-aos="fade-up">
           <h2>Skills</h2>
           <p>
-            I specialize in designing and developing modern, responsive websites using tools like HTML, CSS,
-            JavaScript, and frameworks such as React and Tailwind CSS. I&apos;m also experienced in UX/UI design,
-            animation, and backend integration.
+            My toolkit covers responsive interface work, backend integration, and the practical details that help a
+            site remain understandable and maintainable after launch.
           </p>
         </div>
 
@@ -217,8 +227,8 @@ export default function Home() {
         <div className="container section-title" data-aos="fade-up">
           <h2>Resume</h2>
           <p>
-            Explore my professional background, including my education, work experience, and technical expertise. I
-            have a solid track record of building responsive, user-focused web applications and interfaces.
+            A concise view of my professional focus, current engineering work, and the skills I use to build responsive,
+            user-focused web applications.
           </p>
         </div>
 
@@ -231,8 +241,8 @@ export default function Home() {
                 <h4>Saham Ali</h4>
                 <p>
                   <em>
-                    Detail-oriented full-stack web developer focused on building responsive, user-centered web
-                    applications — from clean UI and front-end through to scalable back-end logic.
+                    Full-stack web developer focused on responsive interfaces, clear backend logic, and practical
+                    product delivery.
                   </em>
                 </p>
                 <ul>
@@ -246,7 +256,8 @@ export default function Home() {
               <div className="resume-item">
                 <p>
                   My professional development is built through practical software engineering work, independent study,
-                  and hands-on project experience.
+                  and hands-on project experience. I continue to deepen the tools that help me ship reliable web
+                  experiences.
                 </p>
               </div>
             </div>
@@ -261,8 +272,13 @@ export default function Home() {
                 </p>
                 <p>
                   I contribute to software development work across frontend interfaces, backend services, and practical
-                  problem solving as part of a professional engineering team.
+                  problem solving as part of a professional engineering team. The role keeps my work grounded in
+                  collaboration, maintenance, and delivery.
                 </p>
+              </div>
+              <div className="about-actions">
+                <Link href="/portfolio" className="portfolio-button-secondary">View selected work</Link>
+                <a href="/contact" className="portfolio-button-primary">Contact me</a>
               </div>
             </div>
           </div>
@@ -282,87 +298,67 @@ export default function Home() {
 
         <div className="container">
           <div className="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
-            <ul className="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
-              <li data-filter="*" className="filter-active">
-                All
-              </li>
-              <li data-filter=".filter-web">Web</li>
-              <li data-filter=".filter-fullstack">Full-Stack</li>
-              <li data-filter=".filter-uiux">UI/UX</li>
+            <ul className="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100" aria-label="Filter portfolio projects">
+              {filters.map((filter) => (
+                <li
+                  key={filter.filter}
+                  data-filter={filter.filter}
+                  className={filter.filter === activeFilter ? "filter-active" : undefined}
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={filter.filter === activeFilter}
+                  onClick={() => setActiveFilter(filter.filter)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      event.currentTarget.click();
+                    }
+                  }}
+                >
+                  {filter.label}
+                </li>
+              ))}
             </ul>
 
             <div className="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
-              <div className="col-lg-4 col-md-6 portfolio-item isotope-item filter-web">
-                <div className="portfolio-content h-100">
-                  <img src="assets/img/project-01.png" className="img-fluid" alt="Project One" />
-                  <div className="portfolio-info">
-                    <p>Website interface work using semantic HTML and responsive CSS.</p>
-                    <span className="badge rounded-pill">HTML</span>
-                    <span className="badge rounded-pill">CSS</span>
-                    <a href="assets/img/project-01.png" data-gallery="portfolio-gallery-web" className="glightbox preview-link">
-                      <i className="bi bi-zoom-in"></i>
-                    </a>
+              {projects.map((project) => (
+                <div
+                  className={`col-lg-4 col-md-6 portfolio-item isotope-item ${project.filterClass}`}
+                  key={project.slug}
+                  hidden={activeFilter !== "*" && project.filterClass !== activeFilter.slice(1)}
+                >
+                  <div className="portfolio-content home-portfolio-content h-100">
+                    <img src={`/assets/img/${project.image}`} className="img-fluid" alt={project.imageAlt} />
+                    <div className="portfolio-info" aria-label={`${project.title} image preview`}>
+                      <a
+                        href={`/assets/img/${project.image}`}
+                        data-gallery={project.gallery}
+                        className="glightbox preview-link"
+                        aria-label={`Preview image for ${project.title}`}
+                      >
+                        <i className="bi bi-zoom-in" aria-hidden="true"></i>
+                      </a>
+                    </div>
+                    <div className="home-portfolio-copy">
+                      <span className="portfolio-chip">{project.category}</span>
+                      <h3>{project.title}</h3>
+                      <p>{project.summary}</p>
+                      <p className="portfolio-project-purpose"><strong>Purpose:</strong> {project.purpose}</p>
+                      <p className="portfolio-project-purpose"><strong>Outcome:</strong> {project.outcome}</p>
+                      <ul className="portfolio-project-stack" aria-label={`${project.title} technology stack`}>
+                        {project.stack.map((technology) => <li key={technology}>{technology}</li>)}
+                      </ul>
+                      <Link
+                        className="portfolio-button-secondary"
+                        href={`/portfolio/${project.slug}`}
+                        aria-label={`Read project context for ${project.title}`}
+                      >
+                        Read project context
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-
-              <div className="col-lg-4 col-md-6 portfolio-item isotope-item filter-fullstack">
-                <div className="portfolio-content h-100">
-                  <img src="assets/img/project-02.png" className="img-fluid" alt="Project Two" />
-                  <div className="portfolio-info">
-                    <p>Application interface exploration using Laravel and MySQL.</p>
-                    <span className="badge rounded-pill">Laravel</span>
-                    <span className="badge rounded-pill">MySQL</span>
-                    <a href="assets/img/project-02.png" data-gallery="portfolio-gallery-fullstack" className="glightbox preview-link">
-                      <i className="bi bi-zoom-in"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-lg-4 col-md-6 portfolio-item isotope-item filter-uiux">
-                <div className="portfolio-content h-100">
-                  <img src="assets/img/project-03.png" className="img-fluid" alt="Project Three" />
-                  <div className="portfolio-info">
-                    <p>Interface design study focused on layout, hierarchy, and usability.</p>
-                    <span className="badge rounded-pill">Figma</span>
-                    <span className="badge rounded-pill">UI/UX</span>
-                    <a href="assets/img/project-03.png" data-gallery="portfolio-gallery-uiux" className="glightbox preview-link">
-                      <i className="bi bi-zoom-in"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-lg-4 col-md-6 portfolio-item isotope-item filter-web">
-                <div className="portfolio-content h-100">
-                  <img src="assets/img/project-04.png" className="img-fluid" alt="Project Four" />
-                  <div className="portfolio-info">
-                    <h4>Frontend interface study</h4>
-                    <p>Responsive JavaScript and React interface exploration.</p>
-                    <span className="badge rounded-pill">JavaScript</span>
-                    <span className="badge rounded-pill">React</span>
-                    <a href="assets/img/project-04.png" data-gallery="portfolio-gallery-web" className="glightbox preview-link">
-                      <i className="bi bi-zoom-in"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-lg-4 col-md-6 portfolio-item isotope-item filter-fullstack">
-                <div className="portfolio-content h-100">
-                  <img src="assets/img/project-05.png" className="img-fluid" alt="Project Five" />
-                  <div className="portfolio-info">
-                    <h4>Backend application study</h4>
-                    <p>PHP and Node.js development practice represented by a local work sample.</p>
-                    <span className="badge rounded-pill">PHP</span>
-                    <span className="badge rounded-pill">Node.js</span>
-                    <a href="assets/img/project-05.png" data-gallery="portfolio-gallery-fullstack" className="glightbox preview-link">
-                      <i className="bi bi-zoom-in"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
