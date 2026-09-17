@@ -14,7 +14,7 @@ export default function PlaygroundPage() {
         <p className="portfolio-eyebrow">Playground / collection</p>
         <h1 id="playground-title">Component Playground</h1>
         <p>Browse authored interface references with enough context to understand where each pattern belongs.</p>
-        <p className="playground-copy">These entries are documentation-first references; source and preview areas remain reserved until the later Playground editor and preview stories ship.</p>
+        <p className="playground-copy">Each published example includes a constrained, browser-scoped editor, a safe live preview, and the relevant usage context.</p>
       </div>
       <div className="container">
         <div className="playground-grid">

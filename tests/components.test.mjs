@@ -28,11 +28,39 @@ test("published Playground records have stable, unique URL-safe slugs and requir
     component.title &&
     component.purpose &&
     component.technology &&
-    component.usageContext,
+    component.usageContext &&
+    component.preview.label &&
+    component.preview.description,
   ));
 });
 
-test("published Playground data executes with complete records", async () => {
+test("published Playground data declares editable, safe source contracts and preview limits", async () => {
+  const { publishedComponents } = await loadComponentData();
+
+  assert.ok(publishedComponents.every((component) => component.source.editableSource.trim().length > 0));
+  assert.ok(publishedComponents.every((component) => component.source.format === "html-css" || component.source.format === "react-css"));
+  assert.ok(publishedComponents.every((component) => Array.isArray(component.source.allowedDependencies) && component.source.allowedDependencies.length > 0));
+  assert.ok(publishedComponents.every((component) => Number.isFinite(component.source.previewLimits.maxCharacters) && component.source.previewLimits.maxCharacters > 0));
+  assert.ok(publishedComponents.every((component) => Number.isFinite(component.source.previewLimits.maxLines) && component.source.previewLimits.maxLines > 0));
+  assert.ok(publishedComponents.every((component) => Number.isFinite(component.source.previewLimits.maxRenderMs) && component.source.previewLimits.maxRenderMs > 0));
+  assert.ok(publishedComponents.every((component) => Array.isArray(component.source.previewLimits.allowedTags) && component.source.previewLimits.allowedTags.length > 0));
+});
+
+test("interactive editor keeps draft and submitted preview state separate and rejects unsafe inputs", async () => {
+  const editor = await readFile(new URL("../src/app/playground/[slug]/playground-editor.tsx", import.meta.url), "utf8");
+
+  assert.match(editor, /const \[draft, setDraft\] = useState/);
+  assert.match(editor, /const \[submittedSource, setSubmittedSource\] = useState/);
+  assert.match(editor, /setSubmittedSource\(draft\)/);
+  assert.match(editor, /setDraft\(initialSource\);\s*setSubmittedSource\(initialSource\)/s);
+  assert.match(editor, /sandbox=""/);
+  assert.match(editor, /@import/);
+  assert.match(editor, /url/);
+  assert.match(editor, /attributePattern/);
+  assert.match(editor, /maxRenderMs/);
+});
+
+test("published Playground data executes with complete records and reset-safe contracts", async () => {
   const { components, publishedComponents, getComponentBySlug, isComponentComplete } = await loadComponentData();
 
   assert.equal(publishedComponents.length, components.filter((component) => isComponentComplete(component)).length);
@@ -44,9 +72,10 @@ test("published Playground data executes with complete records", async () => {
   assert.ok(publishedComponents.every((component) => isComponentComplete(component)));
   assert.equal(isComponentComplete({ ...publishedComponents[0], title: "  " }), false);
   assert.equal(isComponentComplete({ ...publishedComponents[0], limitations: ["  "] }), false);
+  assert.equal(isComponentComplete({ ...publishedComponents[0], source: { ...publishedComponents[0].source, editableSource: "" } }), false);
 });
 
-test("static export emits collection, detail, recovery, and sitemap content", () => {
+test("static export emits collection, detail, recovery, and interactive editor surfaces", () => {
   const command = process.platform === "win32" ? (process.env.ComSpec ?? "cmd.exe") : "npm";
   const args = process.platform === "win32" ? ["/d", "/s", "/c", "npm run build"] : ["run", "build"];
   const result = spawnSync(command, args, {
@@ -54,7 +83,9 @@ test("static export emits collection, detail, recovery, and sitemap content", ()
     encoding: "utf8",
   });
 
-  assert.equal(result.status, 0, `${result.error?.message ?? ""}\n${result.stdout ?? ""}\n${result.stderr ?? ""}`);
+  assert.equal(result.status, 0, `${result.error?.message ?? ""}
+${result.stdout ?? ""}
+${result.stderr ?? ""}`);
 
   const out = join(projectRoot, "out");
   const index = readFile(join(out, "index.html"), "utf8");
@@ -69,9 +100,12 @@ test("static export emits collection, detail, recovery, and sitemap content", ()
       assert.match(indexHtml, /data-nav="playground"/);
       assert.match(collectionHtml, /Component Playground/);
       assert.match(collectionHtml, /Responsive status card/);
-      assert.match(collectionHtml, /documentation-first references/);
-      assert.match(firstDetailHtml, /Source surface reserved/);
-      assert.match(firstDetailHtml, /Preview surface reserved/);
+      assert.match(collectionHtml, /Each published example includes a constrained, browser-scoped editor/);
+      assert.match(firstDetailHtml, /Run/);
+      assert.match(firstDetailHtml, /Reset/);
+      assert.match(firstDetailHtml, /Copy/);
+      assert.match(firstDetailHtml, /Download/);
+      assert.match(firstDetailHtml, /Rendered after Run/);
       assert.match(secondDetailHtml, /React feature list/);
       assert.match(sitemapXml, /<loc>https:\/\/sahamali\.dev\/playground<\/loc>/);
       assert.match(sitemapXml, /playground\/responsive-status-card/);

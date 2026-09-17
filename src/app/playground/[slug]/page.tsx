@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getComponentBySlug, isComponentComplete, publishedComponents } from "@/data/components";
+import PlaygroundEditor from "./playground-editor";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -52,27 +53,7 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
 
         <div className="playground-detail-grid">
           <div className="playground-detail-main">
-            <section className="playground-surface" aria-labelledby="component-preview">
-              <div className="playground-surface-heading">
-                <div>
-                  <span className="playground-surface-label">Preview</span>
-                  <h2 id="component-preview">{component.preview.label}</h2>
-                </div>
-                <span className="playground-reserved">Coming in a later story</span>
-              </div>
-              <p>{component.preview.description}</p>
-            </section>
-
-            <section className="playground-surface" aria-labelledby="component-source">
-              <div className="playground-surface-heading">
-                <div>
-                  <span className="playground-surface-label">Source</span>
-                  <h2 id="component-source">{component.source.label}</h2>
-                </div>
-                <span className="playground-reserved">Read-only placeholder</span>
-              </div>
-              <p>{component.source.description}</p>
-            </section>
+            <PlaygroundEditor key={component.slug} component={component} />
 
             <section className="playground-copy" aria-labelledby="component-context">
               <h2 id="component-context">Purpose and context</h2>
