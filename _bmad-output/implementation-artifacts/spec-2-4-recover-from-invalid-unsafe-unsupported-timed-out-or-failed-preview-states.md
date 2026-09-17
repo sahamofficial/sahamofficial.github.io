@@ -80,3 +80,8 @@ context:
 - Confirm invalid HTML/React source returns a clear inline failure message and keeps the editor usable.
 - Confirm Reset restores the original component source and re-enables a valid preview path.
 - Confirm keyboard navigation still reaches the editor, Run, Reset, and collection-return links after a rejected preview.
+
+### Review Findings
+
+- [x] [Review][Patch] Rejected previews keep rendering stale content instead of clearing the iframe when validation fails [src/app/playground/[slug]/playground-editor.tsx:215-228] [src/app/playground/[slug]/playground-editor.tsx:267-278]
+- [x] [Review][Patch] The timeout recovery branch is unreachable because renderSafePreview performs only synchronous validation and string generation [src/app/playground/[slug]/playground-editor.tsx:215-228]

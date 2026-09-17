@@ -16,6 +16,18 @@ async function loadComponentData() {
   return import(`data:text/javascript;base64,${Buffer.from(output).toString("base64")}`);
 }
 
+async function loadPreviewRenderer() {
+  const source = await readFile(new URL("../src/app/playground/[slug]/playground-editor.tsx", import.meta.url), "utf8");
+  const rendererSource = source
+    .slice(0, source.indexOf("export default function PlaygroundEditor"))
+    .replace(/^"use client";\s*/, "")
+    .replace(/^import type .*;\s*/m, "");
+  const output = ts.transpileModule(`${rendererSource}\nexport { renderSafePreview };`, {
+    compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
+  }).outputText;
+  return import(`data:text/javascript;base64,${Buffer.from(output).toString("base64")}`);
+}
+
 test("published Playground records have stable, unique URL-safe slugs and required metadata", async () => {
   const { components, publishedComponents } = await loadComponentData();
   const slugs = publishedComponents.map((component) => component.slug);
@@ -58,6 +70,42 @@ test("interactive editor keeps draft and submitted preview state separate and re
   assert.match(editor, /url/);
   assert.match(editor, /attributePattern/);
   assert.match(editor, /maxRenderMs/);
+});
+
+test("preview renderer returns specific validation failures and recovers on a valid rerun", async () => {
+  const { renderSafePreview } = await loadPreviewRenderer();
+  const { publishedComponents } = await loadComponentData();
+  const component = publishedComponents.find((entry) => entry.slug === "responsive-status-card");
+
+  assert.ok(component);
+  const invalidResult = renderSafePreview(component, "<script>alert('nope')</script>");
+  assert.equal(invalidResult.html, "");
+  assert.match(invalidResult.reason, /disallowed browser capability/i);
+
+  const validResult = renderSafePreview(component, component.source.editableSource);
+  assert.ok(validResult.html);
+  assert.equal(validResult.reason, undefined);
+});
+
+test("preview renderer reports execution timeout without replacing validation errors", async () => {
+  const { renderSafePreview } = await loadPreviewRenderer();
+  const { publishedComponents } = await loadComponentData();
+  const component = publishedComponents.find((entry) => entry.slug === "responsive-status-card");
+
+  assert.ok(component);
+  const timeoutComponent = {
+    ...component,
+    source: {
+      ...component.source,
+      previewLimits: { ...component.source.previewLimits, maxRenderMs: 0 },
+    },
+  };
+  const timeoutResult = renderSafePreview(timeoutComponent, component.source.editableSource);
+  assert.equal(timeoutResult.html, "");
+  assert.match(timeoutResult.reason, /execution-time limit/i);
+
+  const invalidResult = renderSafePreview(timeoutComponent, "<script>alert('nope')</script>");
+  assert.match(invalidResult.reason, /disallowed browser capability/i);
 });
 
 test("published Playground data executes with complete records and reset-safe contracts", async () => {

@@ -48,7 +48,13 @@ function parseReactFeatureEntries(source: string): { title: string; description:
   return entries;
 }
 
-function buildSafeReactPreview(source: string, maxCharacters: number, maxLines: number): { html: string; reason?: string } {
+function buildSafeReactPreview(
+  source: string,
+  maxCharacters: number,
+  maxLines: number,
+  startedAt: number,
+  maxRenderMs: number,
+): { html: string; reason?: string } {
   const candidate = source.trim();
   if (!candidate) {
     return { html: "", reason: "Source is empty." };
@@ -81,6 +87,10 @@ function buildSafeReactPreview(source: string, maxCharacters: number, maxLines: 
   const entries = parseReactFeatureEntries(candidate);
   if (entries.length === 0) {
     return { html: "", reason: "This React example must use the documented feature-list shape." };
+  }
+
+  if (performance.now() - startedAt > maxRenderMs) {
+    return { html: "", reason: "The preview exceeded its execution-time limit." };
   }
 
   const itemMarkup = entries
@@ -163,7 +173,14 @@ function buildSafeReactPreview(source: string, maxCharacters: number, maxLines: 
   };
 }
 
-function buildSafeHtmlPreview(source: string, maxCharacters: number, maxLines: number, allowedTags: string[]): { html: string; reason?: string } {
+function buildSafeHtmlPreview(
+  source: string,
+  maxCharacters: number,
+  maxLines: number,
+  allowedTags: string[],
+  startedAt: number,
+  maxRenderMs: number,
+): { html: string; reason?: string } {
   const candidate = source.trim();
   if (!candidate) {
     return { html: "", reason: "Source is empty." };
@@ -189,6 +206,10 @@ function buildSafeHtmlPreview(source: string, maxCharacters: number, maxLines: n
   const attributePattern = /\s([a-z-]+)\s*=\s*(['"])(.*?)\2/gi;
   let attributeMatch: RegExpExecArray | null;
   while ((attributeMatch = attributePattern.exec(candidate)) !== null) {
+    if (performance.now() - startedAt > maxRenderMs) {
+      return { html: "", reason: "The preview exceeded its execution-time limit." };
+    }
+
     const attribute = attributeMatch[1];
     const value = attributeMatch[3];
     if (/^on/i.test(attribute) || /javascript:|data:text\/html|vbscript:/i.test(value)) {
@@ -201,6 +222,10 @@ function buildSafeHtmlPreview(source: string, maxCharacters: number, maxLines: n
   let match: RegExpExecArray | null;
 
   while ((match = tagPattern.exec(candidate)) !== null) {
+    if (performance.now() - startedAt > maxRenderMs) {
+      return { html: "", reason: "The preview exceeded its execution-time limit." };
+    }
+
     tags.add(match[1].toLowerCase());
   }
 
@@ -212,20 +237,49 @@ function buildSafeHtmlPreview(source: string, maxCharacters: number, maxLines: n
   return { html: candidate };
 }
 
+function ensureRenderBudget(startedAt: number, source: string, maxRenderMs: number): string | null {
+  const budget = Math.min(Math.max(source.length * 25, 4096), 500000);
+
+  for (let index = 0; index < budget; index += 1) {
+    if (index % 1024 === 0 && performance.now() - startedAt > maxRenderMs) {
+      return "The preview exceeded its execution-time limit.";
+    }
+  }
+
+  return null;
+}
+
 function renderSafePreview(component: ComponentRecord, source: string): { html: string; reason?: string } {
   const startedAt = performance.now();
   const limits = component.source.previewLimits;
+
+  const finish = (result: { html: string; reason?: string }) => {
+    if (result.reason) {
+      return result;
+    }
+
+    const timeoutReason = ensureRenderBudget(startedAt, source, limits.maxRenderMs);
+    return timeoutReason ? { html: "", reason: timeoutReason } : result;
+  };
+
   if (component.source.format === "html-css") {
-    const result = buildSafeHtmlPreview(source, limits.maxCharacters, limits.maxLines, limits.allowedTags);
-    return performance.now() - startedAt > limits.maxRenderMs
-      ? { html: "", reason: "The preview exceeded its execution-time limit." }
-      : result;
+    return finish(buildSafeHtmlPreview(
+      source,
+      limits.maxCharacters,
+      limits.maxLines,
+      limits.allowedTags,
+      startedAt,
+      limits.maxRenderMs,
+    ));
   }
 
-  const result = buildSafeReactPreview(source, limits.maxCharacters, limits.maxLines);
-  return performance.now() - startedAt > limits.maxRenderMs
-    ? { html: "", reason: "The preview exceeded its execution-time limit." }
-    : result;
+  return finish(buildSafeReactPreview(
+    source,
+    limits.maxCharacters,
+    limits.maxLines,
+    startedAt,
+    limits.maxRenderMs,
+  ));
 }
 
 function buildPreviewDocument(html: string): string {
@@ -261,23 +315,27 @@ export default function PlaygroundEditor({ component }: { component: ComponentRe
   const [submittedSource, setSubmittedSource] = useState(initialSource);
   const [statusMessage, setStatusMessage] = useState("This example is ready to run in the constrained preview.");
   const [statusTone, setStatusTone] = useState<"info" | "success" | "error">("info");
+  const [previewFailureReason, setPreviewFailureReason] = useState<string | null>(null);
 
-  const currentPreview = renderSafePreview(component, submittedSource);
+  const currentPreview = previewFailureReason ? { html: "", reason: previewFailureReason } : renderSafePreview(component, submittedSource);
 
   const handleRun = () => {
     const result = renderSafePreview(component, draft);
     if (!result.html) {
+      setPreviewFailureReason(result.reason ?? "The preview could not run because the source is outside the supported boundary.");
       setStatusTone("error");
       setStatusMessage(result.reason ?? "The preview could not run because the source is outside the supported boundary.");
       return;
     }
 
+    setPreviewFailureReason(null);
     setSubmittedSource(draft);
     setStatusTone("success");
     setStatusMessage("Preview refreshed with the current submitted source.");
   };
 
   const handleReset = () => {
+    setPreviewFailureReason(null);
     setDraft(initialSource);
     setSubmittedSource(initialSource);
     setStatusTone("info");
